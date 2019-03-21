@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{report}
+\documentclass[12pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -8,9 +8,9 @@
 \usepackage{hyperref}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{natbib} %bibtex!!
-
+\newtheorem{definition}{Definicja}
 \author{Weronika Lara}
-\title{tymczasowy...}
+\title{Numeryczne rozwiązywanie równań różniczkowych drugiego rzędu z warunkami brzegowymi}
 \begin{document}
 
 \maketitle
@@ -20,10 +20,98 @@
 Cytując \citep[Rozdział 3, sekcja 2]{palczewski2004rownania}
 
 \chapter{Preliminaria}
-%wstępna wiedza do zrozumienia tematu
+\begin{definition}
+Niech $F : R \times R^{n+1} \to R$ . Postacią ogólną równania różniczkowego nazywamy równianie: 
+\begin{equation*}
+F(t, x(t), x'(t),..., x^{(n)}(t)) = 0
+\end{equation*} 
+Rzędem równania nazywamy wtedy liczbę naturalą $n$. 
+\end{definition}
+\begin{definition}
+Rozwiązaniem równania różniczkowego nazywamy funkcję $y:(a, b)\times R$ różniczkowalna tyle razy, ile wynosi rząd równania i taka, że dla dowolnego $t (a, b)$
+\begin{equation*}
+F(t, y(t), y'(t),..., y^{(n)}(t)) = 0
+\end{equation*} 
+\end{definition}
+\begin{definition}  
 
-\chapter{Głowna teoria}
-% czesc teoretyczna pracy
+
+
+
+
+
+
+\chapter{Metoda Eulera}
+Najprostszą metodą numeryczną rozwiązywania równań różniczkowych jest metoda Eulera. Przybliżamy pochodną poprzez iloraz różnicowy dla pewnego
+parametru $h > 0$ 
+\begin{equation*}
+\frac{x(t+h) - x(t)}{h} \approx \frac{dx}{dt}
+\end{equation*}
+\newline
+i otrzymujemy otwarty schemat Eulera:
+\begin{equation*}
+\frac{x_h(t+h)-x_h(t)}{h} = f(t,x(t))
+\end{equation*}
+\newline 
+czy inaczej 
+\begin{equation*}
+x_h(t+h) = x_h(t) + hf(t,x(t))
+\end{equation*}
+\newline
+znając rozwiązanie w punkcie $t_0 x_h(t0) = x_0$ możemy wyznaczyć przybliżone rozwiązanie
+$xh$ w kolejnych punktach $t_n = t_0 + nh$ z powyższego wzoru. Ale można też przybliżyć
+pochodną biorąc parametr $−h$ w tył:
+\begin{equation*}
+\frac{x_h(t)-x_h(t-h)}{h} \approx \frac{dx}{dt}
+\end{equation*}
+\newline
+i wtedy zastępując pochodną przez taki iloraz otrzymujemy zamknięty schemat Eulera:
+\begin{equation*}
+\frac{x_h(t)-x_h(t-h)}{h} = f(t,x_h(t))
+\end{equation*}
+\newline
+czy inaczej 
+\begin{equation*}
+x_h(t+h) = x_h(t) + hf(t,x_h(t+h))
+\end{equation*}
+\newline
+Warto zauważyć, że jeśli znamy rozwiązanie w punkcie $t_0$, tzn.$ x_0$) = $x_0$, to aby wyznaczyć kolejne przybliżenia rozwiązania w punktach $t = t_n = t_0+nh$ należy rozwiązać równania postaci:
+\begin{equation*}
+g(y):= y -hf(t, y) - x_h(t) = 0$
+\end{equation*}
+\newline
+względem $y$, co sprawia, że zamknięty schemat Eulera może wydać się mało praktyczny w porównaniu z otwartym schematem Eulera. Dla niektórych równań jest to pozorne. Zauważmy tylko, że im $h$ mniejsze, tym potencjalnie powyższe równanie jest łatwiejsze do rozwiązania. 
+\chapter{Schemat  Rungego-Kutty}
+Podstawową klasą schematów jednokrokowych są tzw. schematy Rungego-Kutty. 
+Załóżmy, że znamy $x_n$, i chcemy wyliczyć wartość $x_{n+1}$ ze wzoru uwzględniającego wartość
+pola wektorowego nie tylko w $x_n$, ale również w dodatkowym punkcie 
+$x^{\sim}$. Wtedy
+\begin{equation*}
+x_{n+1} = F(h,t_n,x_n,x^{\sim})
+\end{equation*}
+\newline
+Biorąc schemat otwarty Eulera z krokiem $h^{\sim}$ otrzymujemy punkt
+\begin{equation*}
+x^{\sim} = xn + h f^{\sim}(t,x(t))
+\end{equation*}
+\newline
+który, jak wiemy, przybliża $x(t+h^{\sim})$, ale niedokładnie. Możemy policzyć wartość pola wektorowego $f$ w tym punkcie i następnie, wykorzystując wartość $y_n = f(t_n, x_n)$ i $y^{\sim} = f(t_{n+h},x^{\sim})$, znaleźć lepsze przybliżenie $x(t_{n+1})$ - czyli np. za przybliżenie pola wektorowego wziąć ważoną średnią obu wartości $by_n+cy^{\sim}$ dla pewnych ustalonych wag $b$,$c$. Możliwości
+jest wiele. Pojawia się pytanie: jak oceniać różne konstrukcje $F$? Można tak dobierać $F$, aby rząd schematu był możliwie duży. 
+\newline
+Załóżmy, że $h^{\sim}=ah$. Wtedy szukamy schematu postaci:
+\begin{equation*}
+x_{n+1} = xn + bhf_n + chf(t_n + ah, x_n + ahf(t_n,x_n))
+\end{equation*}
+\newline
+tak, aby schemat miał maksymalny rząd.
+\newline
+Rozwijamy rozwiązanie $x$ w szereg Taylora:
+
+
+
+
+
+
 
 \chapter{Cześć praktyczna}
 % prezentacja teorii w praktyce
