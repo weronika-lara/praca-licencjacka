@@ -32,8 +32,7 @@ Rozwiązaniem równania różniczkowego nazywamy funkcję $y:(a, b)\times R$ ró
 \begin{equation*}
 F(t, y(t), y'(t),..., y^{(n)}(t)) = 0
 \end{equation*} 
-\end{definition}
-\begin{definition}  
+\end{definition} 
 
 
 
@@ -60,7 +59,7 @@ x_h(t+h) = x_h(t) + hf(t,x(t))
 \newline
 znając rozwiązanie w punkcie $t_0 x_h(t0) = x_0$ możemy wyznaczyć przybliżone rozwiązanie
 $xh$ w kolejnych punktach $t_n = t_0 + nh$ z powyższego wzoru. Ale można też przybliżyć
-pochodną biorąc parametr $−h$ w tył:
+pochodną biorąc parametr $-h$ w tył:
 \begin{equation*}
 \frac{x_h(t)-x_h(t-h)}{h} \approx \frac{dx}{dt}
 \end{equation*}
@@ -77,7 +76,7 @@ x_h(t+h) = x_h(t) + hf(t,x_h(t+h))
 \newline
 Warto zauważyć, że jeśli znamy rozwiązanie w punkcie $t_0$, tzn.$ x_0$) = $x_0$, to aby wyznaczyć kolejne przybliżenia rozwiązania w punktach $t = t_n = t_0+nh$ należy rozwiązać równania postaci:
 \begin{equation*}
-g(y):= y -hf(t, y) - x_h(t) = 0$
+g(y):= y -hf(t, y) - x_h(t) = 0
 \end{equation*}
 \newline
 względem $y$, co sprawia, że zamknięty schemat Eulera może wydać się mało praktyczny w porównaniu z otwartym schematem Eulera. Dla niektórych równań jest to pozorne. Zauważmy tylko, że im $h$ mniejsze, tym potencjalnie powyższe równanie jest łatwiejsze do rozwiązania. 
