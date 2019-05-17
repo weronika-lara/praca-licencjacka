@@ -39,7 +39,14 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 
 %TODO definicja zbioru otwartego
 
-%TODO norma
+
+\begin{definition}
+Niech $X$ będzie przestrzenią nad ciałem $K \in \setR \lor  $
+\newline Funkcję $\parallel\cdot\parallel$ nazywamy normą na $X$ jeśli spełnione są następujące warunki 
+\item[M1] $\forall_{x\in X} (\parallel x \parallel = 0 \implies x =\emptyset$)
+\item[M2] $\forall_{\alpha \in K}  \forall_{x \in X}  \parallel x \cdot\alpha\parallel = \parallel\alpha\parallel\cdot\parallel x \parallel $
+\item[M3] $\forall{x,y\in X} \parallel x+y \parallel \leq \parallel x \parallel + \parallel y \parallel$
+\end{definition}
 
 \section{Równania różniczkowe zwyczajne}
 
@@ -114,7 +121,16 @@ Dyskretyzacje w dziedzinie pozostawiają bogatą rodzinę modeli. Różnice pomi
 
 W sekcji tej rozważamy zagadnienie Cauchy'ego (patrz problem \ref{prob-zagadnienie-cauchy}) pierwszego rzędu. 
 
-%TODO twierdzenia Peano i Picarda-Lindelofa
+
+\begin{theorem}[Peano]
+Jeśli $\f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$, to istnieje rozwiązanie (\ref{prob-zagadnienie-cauchy}) określone w pewnym otoczeniu $t_{0}$. 
+\end{theorem}
+
+\begin{theorem}[Picarda - Lindelfa]
+Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$ oraz $f$ jest funkcją lipschtizowską względem $x$ w pewnej kuli $B((t_{0},x_{0}),\delta)$, tzn. 
+\newline \exists $L\geq 0 \forall ((t,x)(t,y) B((t_{0},x_{0}),\delta)  \parallel f(t,x) - f(t,y) \parallel \leq L\parallel x-y \parallel $
+\newline to istnieje $ c> 0 $ i $\x \in C^{1}((t_0 - c, t_0 + c ), \setR^{n}) $ takie,że $x$ jest jednoznacznym rozwiązaniem (\ref{prob-zagadnienie-cauchy}).
+\end{theorem}
 
 
 Omówmy kilka najprostszych schematów przybliżonego rozwiązywania takich równań.
@@ -147,6 +163,12 @@ Wykorzystanie powyższego algorytmu zaprezentowaliśmy w przykładzie \ref{examp
 
 %TODO Teoria zbieżności schematów jednokrokowych.
 \section{Teoria zbieżności schematów jednokrokowych}
+
+\begin{definition}
+Dla zadania początkowego (\ref{prob-zagadnienie-cauchy}) schematem jednokrokowym dla stałego kroku $h = \frac{T-t_0}{N}$ nazywamy równanie różnicowe: 
+\newline $x_{n+1} = x_n + h\phi(h,t_{n},x_{n},x{n+1})  n = 0,....,N$
+\newline gdzie $t_{j} = t_{0} + jh$ a $\phi$ jest funkcją ciągłą określoną na $[0,H) \times [t_0,T) \times U_{x_0} \times U_{x_0} $ dla $ U_{x_0} $ otoczenia $x_0$.   
+
 
 Teoria zbieżnosci schematów jednokrokowych jest teorią odmienną od teorii dla schematów wielokrokowych liniowych. 
 
