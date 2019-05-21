@@ -39,7 +39,14 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 
 %TODO definicja zbioru otwartego
 
-%TODO norma
+
+\begin{definition}
+Niech $X$ będzie przestrzenią nad ciałem $K \in \setR \lor  $
+\newline Funkcję $\parallel\cdot\parallel$ nazywamy normą na $X$ jeśli spełnione są następujące warunki 
+\item[M1] $\forall_{x\in X} (\parallel x \parallel = 0 \implies x =\emptyset$)
+\item[M2] $\forall_{\alpha \in K}  \forall_{x \in X}  \parallel x \cdot\alpha\parallel = \parallel\alpha\parallel\cdot\parallel x \parallel $
+\item[M3] $\forall{x,y\in X} \parallel x+y \parallel \leq \parallel x \parallel + \parallel y \parallel$
+\end{definition}
 
 \section{Równania różniczkowe zwyczajne}
 
@@ -114,7 +121,16 @@ Dyskretyzacje w dziedzinie pozostawiają bogatą rodzinę modeli. Różnice pomi
 
 W sekcji tej rozważamy zagadnienie Cauchy'ego (patrz problem \ref{prob-zagadnienie-cauchy}) pierwszego rzędu. 
 
-%TODO twierdzenia Peano i Picarda-Lindelofa
+
+\begin{theorem}[Peano]
+Jeśli $\f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$, to istnieje rozwiązanie (\ref{prob-zagadnienie-cauchy}) określone w pewnym otoczeniu $t_{0}$. 
+\end{theorem}
+
+\begin{theorem}[Picarda - Lindelfa]
+Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$ oraz $f$ jest funkcją lipschtizowską względem $x$ w pewnej kuli $B((t_{0},x_{0}),\delta)$, tzn. 
+\newline \exists $L\geq 0 \forall ((t,x)(t,y) B((t_{0},x_{0}),\delta)  \parallel f(t,x) - f(t,y) \parallel \leq L\parallel x-y \parallel $
+\newline to istnieje $ c> 0 $ i $\x \in C^{1}((t_0 - c, t_0 + c ), \setR^{n}) $ takie,że $x$ jest jednoznacznym rozwiązaniem (\ref{prob-zagadnienie-cauchy}).
+\end{theorem}
 
 
 Omówmy kilka najprostszych schematów przybliżonego rozwiązywania takich równań.
@@ -146,6 +162,58 @@ $$
 Wykorzystanie powyższego algorytmu zaprezentowaliśmy w przykładzie \ref{example-otwarty-euler}.
 
 %TODO Teoria zbieżności schematów jednokrokowych.
+\section{Teoria zbieżności schematów jednokrokowych}
+
+\begin{definition}
+Dla zadania początkowego (\ref{prob-zagadnienie-cauchy}) schematem jednokrokowym dla stałego kroku $h = \frac{T-t_0}{N}$ nazywamy równanie różnicowe: 
+\newline $x_{n+1} = x_n + h\phi(h,t_{n},x_{n},x{n+1})  n = 0,....,N$
+\newline gdzie $t_{j} = t_{0} + jh$ a $\phi$ jest funkcją ciągłą określoną na $[0,H) \times [t_0,T) \times U_{x_0} \times U_{x_0} $ dla $ U_{x_0} $ otoczenia $x_0$.   
+
+
+Teoria zbieżnosci schematów jednokrokowych jest teorią odmienną od teorii dla schematów wielokrokowych liniowych. 
+
+Istotnym pojęciem jest tu zgodność schematu jednokrokowego - inaczej konsystentność, którą definiujemy następująco: 
+
+\begin{definition} \label{def-zgodnosc}
+
+Schemat jednokrokowy jest zgodny (konsystentny) jeśli :
+
+\item $g$ jest ciągłą ze względu na wszystkie zmienne
+\item $g(0,t,x,x) = f(t,x)$ dla każdego $(t,x)$
+\item $g$ jest lipschtizowska ze względu na zmienne $x_n$ i $x_n+1$ tzn, istnieje stała $L>0$ taka, że dla wszystkich $x_1,x_2,y_1,y_2 \in U_x_0$
+
+$|g(h,t,x_1,x_2) - g(h,t,y_1,y_2)| \leq L\sum{k=1}^{2}|x_k - y_k|$
+\end{definition}
+
+\begin{theorem} %\label{o zbieżności schematów jednokrokowych} 
+Jeśli rozwiązanie zagadnienia początkowego \ref{prob-zagadnienie-cauchy} $x \in C^{p+1}([t_0,T])$, schemat jednokrokowy jest zgodny i jest rzędu $p\geqslant1$, to ten schemat jest zbieżny z rzędem p. 
+
+\end{theorem}
+\begin{proof}
+Dowód zostanie przedstawiony tylko dla schematów otwartych rzędu $p$  tzn. $g(h,t,x,y) = g(h,t,x)$. 
+Oznaczmy przez $E_n = x_n - x(t_n)$, czyli błąd pomiędzy obliczonym schematem przybliżeniem rozwiązania dla czasu $t_n$, a dokładną wartością rozwiązania $x(t_n)$. 
+Niech $\tau_n = e_h(t_n) = x(t_{n+1}) - x(t_n) - h(g(h,t_n,x_n) $ czyli $\tau_n$ to lokalny błąd schematu dla czasu $t_n$. Wtedy otrzymujemy, że 
+$E_n = E_{n-1} + h(g(h,t_{n-1},x_{n-1}) - g(h,t_{n-1},x(t_{n-1}))) - \tau_{n-1} $,
+a stąd korzystając ze zgodności schematu, a dokładniej lipschtizowskości funkcji $g$, \ref{def-zgodnosc}, otrzymujemy
+$|E_n| \leqslant (1 + h * L)|E_{n-1}| + |\tau_{n-1}| $ .
+Z indukcji matematycznej otrzymujemy :
+$|E_n| \leqslant (1 + h*L)^{n}|E_0| + \sum{k=0}^{n-1} (1+ h*L)^{n-k-1} |\tau_k| $
+
+Korzystając z tego, że ($|1+x|\leqslant e^{|x|}$)
+$(1 + h*L)^{n} \leqslant e^{n*h*L} \leqslant e^{L*(T-t_0)} $
+dla $n$ takich, że $h*n\leqslant T - t_0 $ widzimy, że
+
+$ |E_n| \leqslant e^{L*(T-t_0)}(|E_0| + \sum{k=0}^{n-1}|\tau_k|) $
+Zauważmy, że $E_0 = 0$. Widzimy tez, że 
+$|\tau_n| \leqslant e_h$.
+Ponieważ schemat ma rząd $p$ i $x \in C^{p+1}$, to $ e_h = O(h^{p+1}) $ zatem 
+$ |E_n| \leqslant e^{L*(T-t_0)}n * e_n \leq e^{L*(T-t_0)} \frac{T-t_0}{h}O(h^{p+1) = O(h^p)$. 
+
+\end{proof}
+W szczególności zbieżność z rzędem $p$ oznacza dla ustalonego $t \in [t_0,T]$ i $n*h = t$, że
+$|x_n^{h} - x(t)| = O(h^{p}) \rightarrow 0  h\rightarrow0 (n \rightarrow \infty)$. 
+
+
 
 
 
