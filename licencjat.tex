@@ -32,15 +32,43 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 \end{itemize}
 
 \section{Elementy rachunku różniczkowego i całkowego}
+\begin{definition} [Pochodna]
+Niech $D \subset \setR^k , x^0 \in D , h \in \setR^k$. Jeżeli istnieje skończona granica
+$$
+\limit_{t \to 0}  \frac{f(x^0 + th) - f(x^0)}{t}
+$$
+to nazywamy ją pochodną funkcji $f$ w punkcie $x^0$ w kierunku wektora $h$ i oznaczamy ją $\ddx{x}f(x^0)$.  
+\end{definition}
+
+\begin{definition} [Pochodne cząstkowe]
+Niech $D \subset \setR^k$ , $x^0 \in intD$ $ i \in {1,\cdots,k}$. Pochodną cząstkową funkcji $f$ w punkcie $x^0$ względem i-tej zmiennej (współrzędnej)  nazywamy pochodną kierunkową funkcji $f$ w punkcie $x^0$ w kierunku $e^i = (0, \codts, 0, 1( i-ta pozycja), 0, \cdots, 0) \in \setR^k$, o ile ona istnieje i oznaczamy $\ddx{x_i}f_{x_{i}}(x^0) $
+\end{definition}
+
+\begin{definition} [Gradient funkcji]
+Jeżeli istnieją wszystkie pochodne cząstkowe funkcji $f$ w punkcie $x^0$, to wektor 
+\begin{equation}
+[\ddx{x_1}f_{x_{1}}(x_0), \cdots, \ddx{x_k}f_{x_{k}}(x_0)]
+\end{equation}
+ nazywamy gradientem funkcji $f$ w punkcie $x^0$ i oznaczamy $\bigtriangledown f(x^0)$ .
+\end{definition}
 
 %TODO definicja przestrzeni C^k
 
 \section{Elementy analizy funkcjonalne}
 
-%TODO definicja zbioru otwartego
+\begin{definition} [Punkt wewnętrzny zbioru]
+Niech $A \subset \setR^k, x^0 \in \setR^k$ . Punkt $x^0$ nazywamy punktem wewnętrznym zbioru $A$ gdy:
+$$
+\exists  r>0    \ball{(r,x_0)} \subset A
+$$
+Wnętrzem zbioru $A$ nazywamy zbiór punktów wewnętrznych zbioru $A$ i oznaczamy go $IntA$.
+\end{definition}
 
+\begin{definition} [Zbiór otwarty] 
+Zbiór $A$ nazywamy otwartym, gdy każdy punkt zbioru $A$ jest punktem wewnętrznym zbioru $A$. 
+\end{definition}
 
-\begin{definition}
+\begin{definition} [Norma]
 Niech $X$ będzie przestrzenią nad ciałem $K =\setR $ lub $ K = \setC $. Funkcję $\norm{\cdot}$ nazywamy normą na $X$ jeśli spełnione są następujące warunki 
 \begin{enumerate}
 \item Dla dowolnego $x\in X$
@@ -61,7 +89,7 @@ $$
 
 \section{Równania różniczkowe zwyczajne}
 
-\begin{definition}
+\begin{definition} [Postać ogólna równania różniczkowego]
 Niech $F \colon \setR \times \setR^{n+1} \to \setR$. Postacią ogólną równania różniczkowego zwyczajnego nazywamy równianie: 
 \begin{equation*}
 F(t, x(t), \ddx{t} x(t),..., \ddx[^k]{t^k} x(t) ) = 0,
@@ -177,23 +205,59 @@ Wykorzystanie powyższego algorytmu zaprezentowaliśmy w przykładzie \ref{examp
 
 %TODO Teoria zbieżności schematów jednokrokowych.
 \section{Teoria zbieżności schematów jednokrokowych}
+Teoria zbieżnosci schematów jednokrokowych jest teorią odmienną od teorii dla schematów wielokrokowych liniowych. Należy więc wprowadzić parę istotnych pojęć przybliżających nam ten temat. 
 
-\begin{definition}
+\begin{definition} [Schemat k krokowy]
+Schematem $k$ krokowym rozwiązania zagadnienia początkowego \ref{prob-zagadnienie-cauchy} ze stałym krokiem $h>0$ na odcinku $[t_0,T]$ nazywamy równanie
+$$
+x_n = \Phi (h,t_n,x_{n-k},\cdots,x_{n-1},x_n) \label{k-steps-scheme}
+$$
+dla $ n \geq k$ z warunkami startowymi $x_0,\cdots, x_{k-1}$ gdzie $t_n = t_0 + nh$.
+\end{definition}
+
+\begin{definition} [Błąd schematu jednokrokowego] 
+Niech $ x \in C^{1}([t_0,T])$ dla zagadnienie początkowego \ref{prob-zagadnienie-cauchy} oraz $t=t_0 +nh \in [t_0,T]$.Bład schematu $k$ krokowego postaci \ref{k-steps-scheme} jest postaci 
+$$
+E_h(t) = |x^{h}_{n} - x(t)|
+$$ 
+natomiast błąd globalny 
+$$
+E_h = max_{n=0,\cdots,N} E_h(t^{h}_{n})
+$$
+\end{definition}
+\begin{definition}[Zbieżność schematu]
+Schemat jest zbieżny na $[t_0,T]$ jeśli 
+$$
+E_h \to 0  h \to 0
+$$
+a jest zbieżny z rzędem $p$ gdy dodatkowo dla pewnej stałej $C>0$ niezależnej od $h>0$ zachodzi 
+$$
+E_h \leq C h^p
+$$
+\end{definition}
+\begin{definition}[Błąd lokalny]
+Niech $x \in C^1([t_0,T]) $ będzie rozwiązaniem zagadnienia początkowego \ref{prob-zagadnienie-cauchy}. Dla $h>0$ i schematu $k$ krokowego postaci \ref{k-steps-scheme} błąd lokalny jest postaci
+\begin{equation}
+e_h = \max_{t \in [t_0,T-kh]} |x(t + kh) - \Phi (h,t,x(t),\cdots, x(t + kh))|
+\end{equation}
+\end{definition}
+\begin{definition} [Rząd schematu]
+Schemat \ref{k-steps-scheme} jest rzędu $p$ jeśli dla $x \in C^{p+1}([t_0,T])$ gdzie $x$ jest rozwiązaniem \ref{prob-zagadnienie-cauchy} zachodzi
+$$
+e_h \leq \C h^{p+1}
+$$
+gdzie $C$ jest pewną stałą niezależną od $h$. 
+\end{definition}
+\begin{definition} [Schemat jednokrokowy] 
 Schematem jednokrokowym dla problemu \ref{prob-zagadnienie-cauchy} dla stałego kroku $h = \frac{T-t_0}{N}$ nazywamy równanie różnicowe postaci:
 $$
 x_{n+1} = x_n + h \phi(h,t_{n},x_{n},x_{n+1}),  
 $$
 dla $n = 0,....,N$ oraz gdzie $t_{j} = t_{0} + jh$, a $\phi$ jest funkcją ciągłą określoną na $[0,H) \times [t_0,T) \times U_{x_0} \times U_{x_0} $ gdzie $ U_{x_0} $ jest otoczeniem $x_0$.   
 \end{definition}
-
-
-Teoria zbieżnosci schematów jednokrokowych jest teorią odmienną od teorii dla schematów wielokrokowych liniowych. 
-
-Istotnym pojęciem jest tu zgodność schematu jednokrokowego - inaczej konsystentność, którą definiujemy następująco: 
-
+ 
 \begin{definition}[Zgodność schematu różnicowego]\label{definition-consistency}
-
-Schemat jednokrokowy jest zgodny (konsystentny) jeśli :
+Schemat jednokrokowy jest zgodny jeśli :
 \begin{itemize}
 \item $\phi$ jest ciągłą ze względu na wszystkie zmienne,
 \item $\pi(0,t,x,x) = f(t,x)$ dla każdego $(t,x)$,
