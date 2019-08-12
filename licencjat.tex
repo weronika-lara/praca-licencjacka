@@ -32,7 +32,7 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 \end{itemize}
 
 \section{Elementy rachunku różniczkowego i całkowego}
-\begin{definition} [Pochodna]
+\begin{definition}[Pochodna]
 Niech $D \subset \setR^k , x^0 \in D , h \in \setR^k$. Jeżeli istnieje skończona granica
 $$
 \limit_{t \to 0}  \frac{f(x^0 + th) - f(x^0)}{t}
@@ -41,7 +41,7 @@ to nazywamy ją pochodną funkcji $f$ w punkcie $x^0$ w kierunku wektora $h$ i o
 \end{definition}
 
 \begin{definition} [Pochodne cząstkowe]
-Niech $D \subset \setR^k$ , $x^0 \in intD$ $ i \in {1,\cdots,k}$. Pochodną cząstkową funkcji $f$ w punkcie $x^0$ względem i-tej zmiennej (współrzędnej)  nazywamy pochodną kierunkową funkcji $f$ w punkcie $x^0$ w kierunku $e^i = (0, \codts, 0, 1( i-ta pozycja), 0, \cdots, 0) \in \setR^k$, o ile ona istnieje i oznaczamy $\ddx{x_i}f_{x_{i}}(x^0) $
+Niech $D \subset \setR^k$ , $x^0 \in intD$ $ i \in {1,\cdots,k}$. Pochodną cząstkową funkcji $f$ w punkcie $x^0$ względem i-tej zmiennej (współrzędnej)  nazywamy pochodną kierunkową funkcji $f$ w punkcie $x^0$ w kierunku $e^i = (0, \cdots, 0, 1, 0, \cdots, 0) \in \setR^k$, o ile ona istnieje i oznaczamy $\ddx{x_i}f_{x_{i}}(x^0) $
 \end{definition}
 
 \begin{definition} [Gradient funkcji]
@@ -51,15 +51,46 @@ Jeżeli istnieją wszystkie pochodne cząstkowe funkcji $f$ w punkcie $x^0$, to 
 \end{equation}
  nazywamy gradientem funkcji $f$ w punkcie $x^0$ i oznaczamy $\bigtriangledown f(x^0)$ .
 \end{definition}
+\begin{definition}[klasa $C^{(k)}$]
+Niech $U$ będzie otwartym podzbiorem $ \setR^n $, $ f: U \to \setR $. Mówimy, że funkcja $f$ jest klasy $C^{(k)}$ na $U$,  gdy w zbiorze $U$ istnieją wszystkie pochodne cząstkowe rzędu $k$ funkcji $f$ oraz są one funkcjami ciągłymi w zbiorze $U$. 
+\end{definition}
+\begin{theorem}[Wzór Taylora]
+Dla funkcji $f: \setR \to \setR$ n-krotnie różniczkowalnej ($n \geq 1$) w punkcie $x_0 \in \setR $ istnieje
+funkcja $ h_n: \setR \to \setR $, że 
+\begin{equation}
+f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!} (x-x_0){^k} + h_{n}(x)(x-x_0)^n 
+\end{equation}
+wielomian:
+\begin{equation}
+\sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!} (x-x_0){^k}
+\end{equation}
+nazywamy wielomianem Taylora, funkcje $h_n$  dla $ n \to \infty$ spełniającą 
+\begin{equation}
+\lim_{x \to x_0} h_n = 0
+\end{equation}
+nazywamy resztą Peano .
+\end{theorem}
 
-%TODO definicja przestrzeni C^k
+\begin{definition}[Szereg Taylora]
+Załóżmy, że funkcja $f$ ma pochodne wszystkich rzędów w pewnym otoczeniu $U$ punktu $x_0$. Szereg
+\begin{equation}
+\sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!} (x-x_0)^n = f(x_0) + \frac{f^{(1)}(x_0)}{1!} (x-x_0) + \frac{f^{(2)}(x_0)}{2!} (x-x_0)^{2} + \cdots
+\end{equation}
+nazywamy szeregiem Taylora funkcji $f$ w otoczeniu punktu $x_0$. Wzór Taylora służy do przybliżania wartości funkcji dostatecznie dużo razy różniczkowalnych. W szczególności dla punktu $ x_0 = 0$ szereg Taylora przyjmuje postać 
+\begin{equation}
+\sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n = f(0) + \frac{f^{(1)}(0)}{1!} x + \frac{f^{(2)}(0)}{2!}  x^{2} + \cdots
+\end{equation}
+i nazywa się w tym przypadku szeregiem Maclaurina. 
+
+\end{definition}
+
 
 \section{Elementy analizy funkcjonalne}
 
 \begin{definition} [Punkt wewnętrzny zbioru]
 Niech $A \subset \setR^k, x^0 \in \setR^k$ . Punkt $x^0$ nazywamy punktem wewnętrznym zbioru $A$ gdy:
 $$
-\exists  r>0    \ball{(r,x_0)} \subset A
+\exists  r>0 \quad   \ball{(r,x_0)} \subset A
 $$
 Wnętrzem zbioru $A$ nazywamy zbiór punktów wewnętrznych zbioru $A$ i oznaczamy go $IntA$.
 \end{definition}
@@ -132,8 +163,83 @@ x(t_0) &= x_0,
 gdzie $t_0 \in (a,b)$, $x_0 \in G$ są ustalone z góry. 
 \end{problem}
 
-%TODO przepisać przykład 2.1
+Pokażemy teraz przykład, który obrazuje zastosowanie równań różniczkowych zwyczajnych. 
+\begin{example}[Model populacji gatunku ]
+Najprostszy model populacji danego gatunku zwierząt:
+\begin{align*}
+\ddx{t}N = aN  t>t_0 \\
+ N(t_0) = x_0 > 0
+\end{align*}
+gdzie $N(t)$ - stan populacji w momencie czasu $t$ i $a$ jest stałą większą od zera, szybkością namnażania się osobników, zależną od gatunku. Tu możemy podać rozwiązanie $N(t)=\exp(a(t-t_0))$.
+\newline Ten model jest nierealistyczny, ponieważ populacja - nawet izolowana - nie może rosnąć do nieskończoności. 
 
+\end{example}
+\section{Równania różniczkowe cząstkowe}
+Równania różniczkowe cząstkowe są to równania, których rozwiązaniami są funkcje wielu zmiennych oraz w których pojawiają się pochodne cząstkowe. W tej części wymienimy ich główne typy, którymi będziemy  posługiwali się  w dalszej części pracy. Wprowadźmy oznaczenie 
+$$
+\Delta = \sum_{k=1}^{n} \ddx[{^2 x}]{x^2}  
+$$
+dla $ x \in \Omega \subset \setR^{n} $ gdzie $\Omega$ jest obszarem. 
+\subsection{Równania Eliptyczne}
+Podstawowym przykładem zagadnienia eliptycznego jest równanie Laplace'a postaci 
+$$
+-\Delta u(x) = f(x). 
+$$
+Dokładając warunek brzegowy otrzymamy równanie zwane równaniem Poissona. Szukamy tutaj $u \in C^2(\Omega) \cap C(\Omega)$ takiego, że %tutaj Omega domknięta nie wiem jak zrobić omege z kreską nad sobą
+\begin{align*}
+-\Delta u(x) = f(x)  \\
+u(s) = g(s) 
+\end{align*}
+
+dla $x \in \Omega$ i $s \in \eth \Omega$. 
+Możemy również wyróżnić ogólniejszą definicję równania eliptycznego drugiego rzędu. Rozważmy równanie różniczkowe liniowe drugiego rzędu dla ogólnego operatora liniowego drugiego rzędu $L$ \label{line operator}, określonego dla $ u \in C^2(G)$ dla $G \subset \setR^{n}$ : %dopisac co to L
+$$
+Lu = -\sum_{k,l =1}^{n} a_kl(x) \ddx[u^2]{x^k} (x) + c(x)u(x) = f(x) 
+$$
+gdzie $ a_{kl}, b_{k}, c, f, $ są danymi funkcjami określonymi na $G \subset \setR^N$ .
+\begin{definition}
+Mówimy, że równanie  \ref{line operator} jest eliptyczne w punkcie $x$ gdy macierz $A(x) = (a_{kl}(x))_{kl=1,\cdots,n}$ jest dodatnio określona tzn dla dowolnego $ \xi \in \setR^{n}$ zachodzi :
+$$
+\xi^{t} A(x) \xi \geq 0
+$$
+Operator L jest eliptyczny w obszarze $\Omega$ jesli $L$ jest eliptyczny w każdym punkcie obszaru $\Omega$.
+\end{definition}
+\subsection{Równania hiperboliczne pierwszego rzędu}
+Dla pewnego $ x \in \Omega \subset \setR^{N} $ równaniem różniczkowym hiperbolicznym pierwszego rzędu nazywamy równanie postaci:
+$$
+F(x,u,\ddx[{ u}]{u},...,\ddx[{u}]{u^N}) = 0
+$$
+gdzie $F : \Omega \times G \subset \Omega \times \setR \times \setR^{N} \to \setR$ i obszaru $\Omega \subset \setR^n $
+\newline
+W szczególności 
+$$
+F(x,u,\nabla u) = \vec{a(x)}^T \nabla u + b(x)
+$$
+dla danych funkcji $ a_k,b,c: \Omega \to \setR$. 
+\subsection{Równania hiperboliczne drugiego rzędu} 
+Dla dowolnego $t>0$ oraz $ x \in \Omega $ równaniem liniowym hiperbolicznym drugiego rzędu nazywamy równanie 
+$$
+\ddx[u^2]{t^2} - Lu = f
+$$ 
+dla operatora $L$ eliptycznego w $\Omega \subset \setR^N$, gdzie $ u_{tt} = \ddx[^2u]{t}$.  
+\begin{example}[Równanie falowe]
+Niech $x \in \Omega \subset \setR^N $ , dla $ N = 1,2,3$
+$$
+\ddx[^2u]{t^2} - \Delta u = f 
+$$
+\end{example}
+\subsection{Równania paraboliczne}
+Dla pewnego $t>0$, $x \in \Omega \subset \setR^N$ oraz operatora eliptycznego $L$ równanie
+$$
+\ddx[u]{t} -  Lu = f 
+$$
+nazywamy równaniem liniowym parabolicznym drugiego rzędu. 
+\begin{example} [Równanie przewodnictwa cieplnego]
+Niech $t>0$, $x \in \Omega \subset \setR^N $ dla $ N = 1,2,3 $
+$$
+\ddx[u]{t} - \Delta u = f
+$$
+\end{example}
 
 \chapter{Numeryczne rozwiązywanie równań różniczkowych}
 
@@ -244,7 +350,7 @@ e_h = \max_{t \in [t_0,T-kh]} |x(t + kh) - \Phi (h,t,x(t),\cdots, x(t + kh))|
 \begin{definition} [Rząd schematu]
 Schemat \ref{k-steps-scheme} jest rzędu $p$ jeśli dla $x \in C^{p+1}([t_0,T])$ gdzie $x$ jest rozwiązaniem \ref{prob-zagadnienie-cauchy} zachodzi
 $$
-e_h \leq \C h^{p+1}
+e_h \leq C h^{p+1}
 $$
 gdzie $C$ jest pewną stałą niezależną od $h$. 
 \end{definition}
@@ -254,6 +360,12 @@ $$
 x_{n+1} = x_n + h \phi(h,t_{n},x_{n},x_{n+1}),  
 $$
 dla $n = 0,....,N$ oraz gdzie $t_{j} = t_{0} + jh$, a $\phi$ jest funkcją ciągłą określoną na $[0,H) \times [t_0,T) \times U_{x_0} \times U_{x_0} $ gdzie $ U_{x_0} $ jest otoczeniem $x_0$.   
+\end{definition}
+\begin{definition}[Schemat jednokrokowy otwarty]
+Prz założeniach powyższej definicji, schematem jednokrokowym otwartym nazywamy 
+$$
+x_{n+1} = x_n + h \phi(h,t_{n},x_{n}),  
+$$
 \end{definition}
  
 \begin{definition}[Zgodność schematu różnicowego]\label{definition-consistency}
@@ -269,26 +381,59 @@ $$
 
 \end{definition}
 
-\begin{theorem}[O zbieżności schematu różnicowego] \label{theorem-convergence-one-step-schema} 
+\begin{theorem}[O zbieżności schematu jednokrokowego] \label{theorem-convergence-one-step-schema} 
 Jeśli rozwiązanie zagadnienia początkowego \ref{prob-zagadnienie-cauchy} $x \in C^{p+1}([t_0,T])$, schemat jednokrokowy jest zgodny i jest rzędu $p\geqslant1$, to ten schemat jest zbieżny z rzędem p. 
 
 \end{theorem}
 \begin{proof}[Dowód twierdzenia \ref{theorem-convergence-one-step-schema} dla schematów otwartych]
 
-Dowód zostanie przedstawiony tylko dla schematów otwartych rzędu $p$  tzn. $g(h,t,x,y) = g(h,t,x)$. 
-Oznaczmy przez $E_n = x_n - x(t_n)$, czyli błąd pomiędzy obliczonym schematem przybliżeniem rozwiązania dla czasu $t_n$, a dokładną wartością rozwiązania $x(t_n)$. Niech $\tau_n = e_h(t_n) = x(t_{n+1}) - x(t_n) - h(g(h,t_n,x_n) $ czyli $\tau_n$ to lokalny błąd schematu dla czasu $t_n$. Wtedy otrzymujemy, że 
-$E_n = E_{n-1} + h(g(h,t_{n-1},x_{n-1}) - g(h,t_{n-1},x(t_{n-1}))) - \tau_{n-1} $,
-a stąd korzystając ze zgodności schematu, a dokładniej lipschtizowskości funkcji $g$, oraz definicji \ref{definition-consistency}, otrzymujemy
+Niech $ x \in C^{p+1}([t_0,T]) $ będzie rozwiązaniem zagadnienia początkowego  \ref{prob-zagadnienie-cauchy}. Niech $ N \in \setN $ i $ h = \frac{T-t_0}{N} $. Niech $g$ będzie funkcją ze schematu jednokrokowego otwartego dla \ref{prob-zagadnienie-cauchy}. Załóżmy, że temat ten jest zgodny tzn. 
+\begin{itemize}
+\item $g$ jest ciągła ze względu na wszystkie zmienne 
+\item $ g(0,t,x) = f(t,x)$ dla wszystkich $ (t,x) $
+\item $ \exists_{L>0} $ takie, że dla wszystkich $x_1 , x_2 \in U_{x_{0}} $, $L$ niezależne od $h$ zachodzi
 $$
-\abs{E_n} \leq (1 + h \cdot L) \abs{E_{n-1}} + \abs{\tau_{n-1}} .
+\abs{\phi(h,t,x_1,) - \phi(h,t,x_2)} \leq L  \abs{x_1 - x_2} ,
 $$
-Z indukcji matematycznej otrzymujemy:
+\end{itemize}
+i jest rzędu $p$. 
+Oznaczmy przez $ (x_n)_{n-0}^{N} $ ciąg wartości uzyskanych ze schematu jednokrokowego otwartego oraz $(t_n)_{n=0}^{N}$ ciąg czasów, opisanych formułą $ t_n = t_0 + nh $ , $ n \in \set{0, \cdots, N} $. Oznaczmy przez $E_n = x_n - x(t_n)$ błąd pomiędzy obliczonym schematem przybliżeniem rozwiązania dla czasu $t_n$, a dokładną wartością rozwiązania $x(t_n)$. Niech $\tau_n = x(t_{n+1}) - x(t_n) - h(g(h,t_n,x_n) $. Zauważmy, że 
 $$
-\abs{E_n} \leq (1 + h \cdot L)^{n} \abs{E_0} + \sum_{k=0}^{n-1} (1+ h \cdot L)^{n-k-1} \abs{\tau_k} 
+E_n = E_{n-1} + h(g(h,t_{n-1},x_{n-1}) - g(h,t_{n-1},x(t_{n-1}))) - \tau_{n-1} 
+$$. 
+Istotnie
+\begin{equation}
+\begin{array}{rl}
+P &= E_{n-1} + h(g(h,t_{n-1},x_{n-1}) - g(h,t_{n-1},x(t_{n-1}))) - \tau_{n-1} \\
+ &= x_{n-1} - x(t_{n-1} + h(g(h,t_{n-1},x_{n-1}) - g(h,t_{n-1},x(t_{n-1}))) - \tau_{n-1} \\
+ &= x(t_{n}) - x(t_{n-1}) - h(g(h,t_{n-1},x_{n-1}) \\
+ &= x_{n-1} + hg(h,t_{n-1},x(t_{n-1})) - x(t_n) \\
+ &= x_n - x(t_n) = E_n 
+\end{array}
+\end{equation} 
+Pokażemy, że zachodzi 
+\begin{equation} \label{proof1}
+\forall_{n \in \set{1,\cdots,N}} \quad  \abs{E_n} \leq (1 + h \cdot L) \abs{E_{n-1}} + \abs{\tau_{n-1}} .
+\end{equation}
+ 
+Niech $n \in \set{1,\cdots,N} $ 
+\begin{equation}
+\begin{array}{rl}
+\abs{E_n} &= \abs{E_{n-1} + h(g(h,t_{n-1},x_{n-1}) - g(h,t_{n-1},x(t_{n-1}))) - \tau_{n-1}} \\
+&\leq \abs{E_n-1} + h \abs{g(h,t_{n-1},x_{n-1}) - g(h,t_{n-1},x(t_{n-1}))} + \abs{ \tau_{n-1}}\\
+&\leq \abs{E_n-1} + h \cdot L \abs{x_{n-1} - x(t_{n-1})} + \abs{ \tau_{n-1}}\\
+&= \abs{E_n-1} + \abs{E_n-1} h \cdot L + \abs{ \tau_{n-1}}\\
+&= \abs{E_n} \leq (1 + h \cdot L) \abs{E_{n-1}} + \abs{\tau_{n-1}} 
+\end{array}
+\end{equation}
+Z dowolności $n \in \set{1, \cdots, N}$ mamy \ref{proof1}. 
+Zauważmy, że 
 $$
-Korzystając z tego, że $|1+x|\leqslant e^{|x|}$ oraz 
+\forall_{n \in \set{1,\cdots,N}} \abs{E_n} \leq (1 + h \cdot L)^{n} \abs{E_0} + \sum_{k=0}^{n-1} (1+ h \cdot L)^{n-k-1} \abs{\tau_k} 
 $$
-(1 + h \cdot L)^{n} \leq e^{n \cdot h \cdot L} \leq e^{L \cdot (T-t_0)} 
+Istotnie dla ustalonego $n$, stosując \ref{proof1} $n-1$ krotnie otrzymujemy powyższe. Korzystając z tego, że $|1+x|\leqslant e^{|x|}$ otrzymujemy
+$$
+\forall_{n \in \set{1,\cdots,N}}(1 + h \cdot L)^{n} \leq (1 + h \cdot L)^{N} \leq e^{N \cdot h \cdot L} \leq e^{L \cdot (T-t_0)} 
 $$
 dla $n$ takich, że $h\cdot n\leq  T - t_0 $ widzimy, że
 $$
@@ -298,71 +443,24 @@ Zauważmy, że $E_0 = 0$. Widzimy też, że
 $$
 \abs{\tau_n} \leq e_h.
 $$
-Ponieważ schemat ma rząd $p$ i $x \in C^{p+1}$, to $ e_h = O(h^{p+1}) $ zatem 
-$$ 
-\abs{E_n} \leq e^{L\cdot(T-t_0)} n \cdot e_n \leq e^{L \cdot (T-t_0)} \frac{T-t_0}{h}O(h^{p+1}) = O(h^p).
-$$ 
-
+Ponieważ schemat ma rząd $p$ to $\exists_C>0$ takie, że $e_h \leq Ch^{p+1} $ . Zatem
+$$
+\abs{E_N} \leq  e^{L \cdot (T-t_0)} \cdot N \cdot Ch^{p+1}
+= e^{L \cdot (T-t_0)} \frac{T-t_0}{h} \cdot Ch^{p+1}
+= e^{L \cdot (T-t_0)} (T-t_0) Ch^p
+$$
+Z dowolności $N$ mamy
+$$
+\forall_{N \in \setN} \abs{E_N} \leq e^{L \cdot (T-t_0)} (T-t_0) Ch^p
+$$
+gdy $ N \to \infty $ to $ h \to 0 $ oraz $ E_N \to 0$. Zatem schemat jest zbieżny z rzędem $p$.
 \end{proof}
 
-\begin{remark*}
-W szczególności zbieżność z rzędem $p$ oznacza dla ustalonego $t \in [t_0,T]$ i $n \cdot h = t$, że
-
-$$
-|x_n^{h} - x(t)| = O(h^{p}) \to 0  h = 0,
-$$
-gdy $n \to \infty$. 
-\end{remark*}
 
 
 
 
 
-
-
-% \section{Numeryczne rozwiązywanie równań hiperbolicznych}
-% \section{Numeryczne rozwiązywanie równań eliptyczne}
-% \section{Numeryczne rozwiązywanie równań parabolicznych}
-
-%Najprostszą metodą numeryczną rozwiązywania równań różniczkowych jest metoda Eulera. Przybliżamy pochodną poprzez iloraz różnicowy dla pewnego
-%parametru $h > 0$ 
-%\begin{equation*}
-%\frac{x(t+h) - x(t)}{h} \approx \frac{dx}{dt}
-%\end{equation*}
-%\newline
-%i otrzymujemy otwarty schemat Eulera:
-%\begin{equation*}
-%\frac{x_h(t+h)-x_h(t)}{h} = f(t,x(t))
-%\end{equation*}
-%\newline 
-%czy inaczej 
-%\begin{equation*}
-%x_h(t+h) = x_h(t) + hf(t,x(t))
-%\end{equation*}
-%\newline
-%znając rozwiązanie w punkcie $t_0 x_h(t0) = x_0$ możemy wyznaczyć przybliżone rozwiązanie
-%$xh$ w kolejnych punktach $t_n = t_0 + nh$ z powyższego wzoru. Ale można też przybliżyć
-%pochodną biorąc parametr $-h$ w tył:
-%\begin{equation*}
-%\frac{x_h(t)-x_h(t-h)}{h} \approx \frac{dx}{dt}
-%\end{equation*}
-%\newline
-%i wtedy zastępując pochodną przez taki iloraz otrzymujemy zamknięty schemat Eulera:
-%\begin{equation*}
-%\frac{x_h(t)-x_h(t-h)}{h} = f(t,x_h(t))
-%\end{equation*}
-%\newline
-%czy inaczej 
-%\begin{equation*}
-%x_h(t+h) = x_h(t) + hf(t,x_h(t+h))
-%\end{equation*}
-%\newline
-%Warto zauważyć, że jeśli znamy rozwiązanie w punkcie $t_0$, tzn.$ x_0$) = $x_0$, to aby wyznaczyć kolejne przybliżenia rozwiązania w punktach $t = t_n = t_0+nh$ należy rozwiązać równania postaci:
-%\begin{equation*}
-%g(y):= y -hf(t, y) - x_h(t) = 0
-%\end{equation*}
-%\newline
-%względem $y$, co sprawia, że zamknięty schemat Eulera może wydać się mało praktyczny w porównaniu z otwartym schematem Eulera. Dla niektórych równań jest to pozorne. Zauważmy tylko, że im $h$ mniejsze, tym potencjalnie powyższe równanie jest łatwiejsze do rozwiązania. 
 %\chapter{Schemat  Rungego-Kutty}
 %Podstawową klasą schematów jednokrokowych są tzw. schematy Rungego-Kutty. 
 %Załóżmy, że znamy $x_n$, i chcemy wyliczyć wartość $x_{n+1}$ ze wzoru uwzględniającego wartość
