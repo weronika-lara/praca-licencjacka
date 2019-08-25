@@ -90,7 +90,7 @@ i nazywa się w tym przypadku szeregiem Maclaurina.
 \begin{definition} [Punkt wewnętrzny zbioru]
 Niech $A \subset \setR^k, x^0 \in \setR^k$ . Punkt $x^0$ nazywamy punktem wewnętrznym zbioru $A$ gdy:
 $$
-\exists  r>0 \quad   \ball{(r,x_0)} \subset A
+\exists  r>0 \quad   \ball{x_0}{r} \subset A
 $$
 Wnętrzem zbioru $A$ nazywamy zbiór punktów wewnętrznych zbioru $A$ i oznaczamy go $IntA$.
 \end{definition}
@@ -154,26 +154,26 @@ gdzie $(a,b) \subset \setR$ jest dowolnym nietrywialnym i ograniczonym przedzia�
 
 Interesować nas będzie następująca klasa problemów nazywana zagadnieniami początkowymi lub zagadnienia Cauchy'ego.
 
-\begin{problem}[Zagadnienie Cauchy'ego] \label{prob-zagadnienie-cauchy}
+\begin{problem}[Zagadnienie Cauchy'ego] 
 Zagadnienie Cauchy'ego nazywamy równanie różniczkowe zwyczajne z warunkiem początkowym postaci:
-\begin{align*}
-\ddx{t} x &= f(t,x), \\
-x(t_0) &= x_0,
-\end{align*}
+\begin{equation} \label{prob-zagadnienie-cauchy}
+\left\{\begin{array}{ll}
+\ddx{t} x = f(t,x) & \\
+x(t_0) = x_0 &,
+\end{array} \right.
+\end{equation}
 gdzie $t_0 \in (a,b)$, $x_0 \in G$ są ustalone z góry. 
 \end{problem}
-
-Pokażemy teraz przykład, który obrazuje zastosowanie równań różniczkowych zwyczajnych. 
-\begin{example}[Model populacji gatunku ]
-Najprostszy model populacji danego gatunku zwierząt:
-\begin{align*}
-\ddx{t}N = aN  t>t_0 \\
- N(t_0) = x_0 > 0
-\end{align*}
-gdzie $N(t)$ - stan populacji w momencie czasu $t$ i $a$ jest stałą większą od zera, szybkością namnażania się osobników, zależną od gatunku. Tu możemy podać rozwiązanie $N(t)=\exp(a(t-t_0))$.
-\newline Ten model jest nierealistyczny, ponieważ populacja - nawet izolowana - nie może rosnąć do nieskończoności. 
-
-\end{example}
+%Pokażemy teraz przykład, który obrazuje zastosowanie równań różniczkowych zwyczajnych. 
+%\begin{example}[Model populacji gatunku ]
+%Najprostszy model populacji danego gatunku zwierząt:
+%\begin{align*}
+%\ddx{t}N = aN  t>t_0 \\
+ %N(t_0) = x_0 > 0
+%\end{align*}
+%gdzie $N(t)$ - stan populacji w momencie czasu $t$ i $a$ jest stałą większą od zera, szybkością namnażania %się osobników, zależną od gatunku. Tu możemy podać rozwiązanie $N(t)=\exp(a(t-t_0))$.
+%\newline Ten model jest nierealistyczny, ponieważ populacja - nawet izolowana - nie może rosnąć do %nieskończoności. 
+%\end{example}
 \section{Równania różniczkowe cząstkowe}
 Równania różniczkowe cząstkowe są to równania, których rozwiązaniami są funkcje wielu zmiennych oraz w których pojawiają się pochodne cząstkowe. W tej części wymienimy ich główne typy, którymi będziemy  posługiwali się  w dalszej części pracy. Wprowadźmy oznaczenie 
 $$
@@ -241,7 +241,7 @@ $$
 $$
 \end{example}
 
-\chapter{Numeryczne rozwiązywanie równań różniczkowych}
+\chapter{Numeryczne zagadnienia początkowe}
 
 \section{Ogólna teoria numerycznego rozwiązywania równań różniczkowych}
 
@@ -286,30 +286,53 @@ Omówmy kilka najprostszych schematów przybliżonego rozwiązywania takich rów
 \subsection{Schemat otwarty Eulera}
 
 \begin{definition}[Przybliżenie pochodnej dla schematu otwartego]
-Przybliżeniem pochodnej w modelach dyskretyzacji opartych o schemat otwarty Eulera nazywamy przybliżenie pochodnej funkcji
+Przybliżeniem pochodnej w modelach dyskretyzacji opartych o schemat otwarty Eulera nazywamy przybliżenie pochodnej funkcji $\ddx{t}x$
 $$
-\ddx{t}x \approx \frac{x(t+h) - x(t)}{h},
+ \frac{x(t+h) - x(t)}{h},
 $$
 gdzie $h >0, h \in \setR $ jest ustalonym krokiem. 
 \end{definition}
 
-\begin{algorithm}[Schemat otwarty Eulera]
+\begin{algorithm}[Schemat otwarty Eulera]\label{Euler_algoritm}
 Następujące postępowanie służące do rozwiązywania zagadnienia \ref{prob-zagadnienie-cauchy} nazywamy schametam otwartym Eulera:
 \begin{enumerate}
 \item Ustalamy $N$ ilość punktów w dziedzinie równania. 
-\item Ustalamy $h>0$ rozmiar kroku.
+\item Dla ustalonego $N$ wyznaczamy krok $h>0$. 
 \item Generujemy dyskretyzację dziedziny $t_0 = t_0$, $t_1 = t_0 + h$, \ldots, $t_N = t_{N-1}+h$. 
 \item Ustalamy $x(t_0) = x_0$ zgodnie z warunkiem początkowym.
 \item Dla kolejny $n \in \set{0, \ldots, N-1}$ stosujemy wzór
 $$
-x(t_{n+1}) = x(t_n) + h f(t_n, x(t_n)).
+x(t_{n}) = x(t_{n-1}) + h f(t_{n-1}, x(t_{n-1})).
 $$
 \end{enumerate}
 \end{algorithm}
 
 Wykorzystanie powyższego algorytmu zaprezentowaliśmy w przykładzie \ref{example-otwarty-euler}.
+\subsection{Schemat otwarty Rungego-Kutty rzędu 4}
+W przypadku schematu otwartego Rungego - Kutty rzędu 4 punkty $ (1) - (4) $ z algorytmu \ref{Euler_algoritm} są takie same. Różnica następuje w punkcie $(5)$ czyli we wzorze, dzięki któremu wyznaczamy wartości $x(t_n)$. Metoda ta jest dokładniejsza od wspomnianej wcześniej metody Eulera.
+\begin{algorithm}
+Dla zagadnienia początkowego \ref{prob-zagadnienie-cauchy} następujące postępowanie nazywamy schematem Rungego-Kutty rzędu 4 
+\begin{enumerate}
+\item Ustalamy $N$ ilość punktów w dziedzinie równania. 
+\item Dla ustalonego $N$ wyznaczamy krok $h>0$. 
+\item Generujemy dyskretyzację dziedziny $t_0 = t_0$, $t_1 = t_0 + h$, \ldots, $t_N = t_{N-1}+h$. 
+\item Ustalamy $x(t_0) = x_0$ zgodnie z warunkiem początkowym.
+\item Dla kolejny $n \in \set{0, \ldots, N-1}$ stosujemy wzór
+$$
+x(t_{n}) = x(t_{n-1}) + \frac{h}{6} ( K_1 + 2K_2 + 2K_3 + K_4 )
+$$
+gdzie :
+$$
+\begin{array}{cl}
+K_1 &= f(t_{n-1},x_{n-1}) \\
+K_2 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_1) \\
+K_3 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_2) \\
+K_4 &= f(t_{n-1} + h, x_{n-1} + hK_3) 
+\end{array}
+$$
+\end{enumerate}
 
-%TODO Teoria zbieżności schematów jednokrokowych.
+\end{algorithm}
 \section{Teoria zbieżności schematów jednokrokowych}
 Teoria zbieżnosci schematów jednokrokowych jest teorią odmienną od teorii dla schematów wielokrokowych liniowych. Należy więc wprowadzić parę istotnych pojęć przybliżających nam ten temat. 
 
@@ -375,7 +398,7 @@ Schemat jednokrokowy jest zgodny jeśli :
 \item $\pi(0,t,x,x) = f(t,x)$ dla każdego $(t,x)$,
 \item $\phi$ jest lipschtizowska ze względu na zmienne $x_n$ i $x_{n+1}$ tzn, istnieje stała $L>0$ taka, że dla wszystkich $x_1,x_2,y_1,y_2 \in U_{x_0}$ zachodzi
 $$
-\abs{\phi(h,t,x_1,x_2) - \phi(h,t,y_1,y_2)} \leq L  \sum_{k=1}^{2} \abs{x_k - y_k}
+\abs{\phi(h,t,x_1,x_2) - \phi(h,t,y_1,y_2)} \leq L  ( \abs{x_1 - y_1} + \abs{x_2 - y_2})
 $$
 \end{itemize}
 
@@ -387,7 +410,7 @@ Jeśli rozwiązanie zagadnienia początkowego \ref{prob-zagadnienie-cauchy} $x \
 \end{theorem}
 \begin{proof}[Dowód twierdzenia \ref{theorem-convergence-one-step-schema} dla schematów otwartych]
 
-Niech $ x \in C^{p+1}([t_0,T]) $ będzie rozwiązaniem zagadnienia początkowego  \ref{prob-zagadnienie-cauchy}. Niech $ N \in \setN $ i $ h = \frac{T-t_0}{N} $. Niech $g$ będzie funkcją ze schematu jednokrokowego otwartego dla \ref{prob-zagadnienie-cauchy}. Załóżmy, że temat ten jest zgodny tzn. 
+Niech $ x \in C^{p+1}([t_0,T]) $ będzie rozwiązaniem zagadnienia początkowego  \ref{prob-zagadnienie-cauchy}. Niech $ N \in \setN $ i $ h = \frac{T-t_0}{N} $. Niech $g$ będzie funkcją ze schematu jednokrokowego otwartego dla \ref{prob-zagadnienie-cauchy}. Załóżmy, że schemat ten jest zgodny tzn. 
 \begin{itemize}
 \item $g$ jest ciągła ze względu na wszystkie zmienne 
 \item $ g(0,t,x) = f(t,x)$ dla wszystkich $ (t,x) $
@@ -428,12 +451,12 @@ Niech $n \in \set{1,\cdots,N} $
 \end{equation}
 Z dowolności $n \in \set{1, \cdots, N}$ mamy \ref{proof1}. 
 Zauważmy, że 
+\begin{equation} \label{proof2}
+\forall_{n \in \set{1,\cdots,N}} \quad \abs{E_n} \leq (1 + h \cdot L)^{n} \abs{E_0} + \sum_{k=0}^{n-1} (1+ h \cdot L)^{n-k-1} \abs{\tau_k} 
+\end{equation}
+Istotnie dla ustalonego $n$, stosując \  \ref{proof1} \  $n-1$ \  krotnie otrzymujemy \ \ref{proof2} . Korzystając z tego, że $|1+x|\leqslant e^{|x|}$ otrzymujemy
 $$
-\forall_{n \in \set{1,\cdots,N}} \abs{E_n} \leq (1 + h \cdot L)^{n} \abs{E_0} + \sum_{k=0}^{n-1} (1+ h \cdot L)^{n-k-1} \abs{\tau_k} 
-$$
-Istotnie dla ustalonego $n$, stosując \ref{proof1} $n-1$ krotnie otrzymujemy powyższe. Korzystając z tego, że $|1+x|\leqslant e^{|x|}$ otrzymujemy
-$$
-\forall_{n \in \set{1,\cdots,N}}(1 + h \cdot L)^{n} \leq (1 + h \cdot L)^{N} \leq e^{N \cdot h \cdot L} \leq e^{L \cdot (T-t_0)} 
+\forall_{n \in \set{1,\cdots,N}} \quad (1 + h \cdot L)^{n} \leq (1 + h \cdot L)^{N} \leq e^{N \cdot h \cdot L} \leq e^{L \cdot (T-t_0)} 
 $$
 dla $n$ takich, że $h\cdot n\leq  T - t_0 $ widzimy, że
 $$
@@ -443,7 +466,7 @@ Zauważmy, że $E_0 = 0$. Widzimy też, że
 $$
 \abs{\tau_n} \leq e_h.
 $$
-Ponieważ schemat ma rząd $p$ to $\exists_C>0$ takie, że $e_h \leq Ch^{p+1} $ . Zatem
+Ponieważ schemat ma rząd $p$ to \ $\exists_C>0$ \ takie, że $e_h \leq Ch^{p+1} $ . Zatem
 $$
 \abs{E_N} \leq  e^{L \cdot (T-t_0)} \cdot N \cdot Ch^{p+1}
 = e^{L \cdot (T-t_0)} \frac{T-t_0}{h} \cdot Ch^{p+1}
@@ -451,53 +474,134 @@ $$
 $$
 Z dowolności $N$ mamy
 $$
-\forall_{N \in \setN} \abs{E_N} \leq e^{L \cdot (T-t_0)} (T-t_0) Ch^p
+\forall_{N \in \setN} \quad \abs{E_N} \leq e^{L \cdot (T-t_0)} (T-t_0) Ch^p
 $$
 gdy $ N \to \infty $ to $ h \to 0 $ oraz $ E_N \to 0$. Zatem schemat jest zbieżny z rzędem $p$.
 \end{proof}
+\chapter{Numeryczne zagadnienia brzegowe}
+W tym rozdziale wprowadzimy dodatkowe oznaczenia: 
+\begin{itemize}
+\item pierwszą pochodną danej funkcji będziemy oznaczali przez $x'$,
+\item drugą pochodną danej funkcji  będziemy oznaczali przez $u''$,
+\item jeżeli będziemy chcieli rozróżnić pochodne funkcji co do zmiennych, przykładowo chcemy pochodną funkcji po zmiennej $t$ to będziemy używali oznaczali $u_t'$, $u_t''$. Analogicznie dla innych zmiennych.
+\end{itemize}
+Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
+\begin{equation} \label{boundary_diff_equa}
+\left\{ \begin{array}{ll}
+-u''(x) + cu(x) =f & \\
+u(a) = \alpha & \\
+u(b) = \beta & 
+\end{array} \right.
+\end{equation}
+gdzie stała $c$ jest nieujemna, odcinek $ [a,b]$ jest ustalony i znane są wartości $\alpha$ oraz $\beta$. Przyjmijmy następujące oznaczenia na różnicę skończoną w przód i różnicę skończoną w tył. Dla $h>0$ :
+\begin{equation} \label{finite_diff}
+\begin{array}{c}
+\delta_h u(x) = \frac{u(x+h) - u(x)}{h}   \\
+\overline{\delta_h} u(x) = \frac{u(x)-u(x-h)}{h}  
+\end{array}
+\end{equation}
+Jeżeli $h$ będzie miało ustaloną wartość to indeks dolny $h$ będziemy opuszczali. Zauważmy, że 
+$$
+-u''(x) = -\delta \overline{\delta} u(x).
+$$
+Podstawy \ref{finite_diff} do \ref{boundary_diff_equa}. Wówczas dla ustalonego $h>0$ otrzymujemy: 
+\begin{equation}
+\begin{array}{rl}
+-\delta (\frac{u(x)-u(x-h}{h}) + cu(x) &= f(x)  \\
+- \frac{1}{h} (\delta u(x) - \delta u(x-h) ) + cu(x) &= f(x) \\
+-\frac{1}{h} (\frac{u(x+h)-u(x)}{h} - \frac{u(x)-u(x-h)}{h}) + cu(x) &= f(x) \\
+-\frac{u(x+h)}{h^2} + \frac{u(x)}{h^2} + \frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x)& = f(x) \\
+-\frac{u(x+h)}{h^2} + 2\frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x) &= f(x) .
+\end{array}
+\end{equation}
+Mnożąc obie strony przez $-h^2$ oraz $x_n = x_{n-1} - nh$ dla $n \in \setN$  otrzymujemy :
+\begin{equation}
+u(x_{n+1}) - 2u(x_n) + u(x_{n-1}) + cu(x_n)h^2 = f(x_n)h^2,
+\end{equation}
+stąd:
+\begin{equation} \label{boundary_model}
+u(x_{n+1}) = 2u(x_n) - u(x_{n-1}) - cu(x_n)h^2 - f(x_n)h^2.
+\end{equation}
+Na tym etapie widać istotną różnice między zagadnieniami początkowymi umówionymi w poprzednim rozdziale, a zagadnieniami brzegowymi poruszonymi w obecnym. Patrząc na zagadnienie \ref{prob-zagadnienie-cauchy} mieliśmy podany warunek początkowy $x(t_0) = x_0$. Zatem znaliśmy moment $t_0$ oraz wartość funkcji dla dla tej chwili dzięki czemu łatwo mogliśmy skorzystać ze wzorów podanych np. w metodzie Eulera na wartość $x(n+1)$. W metodach brzegowych warunek początkowy zastąpiony jest przez warunki brzegowe. Patrząc na nasz przykład są to :
+$$
+\left\{ \begin{array}{ll}
+u(a) = \alpha & \\
+u(b) = \beta & 
+\end{array} \right.
+$$
+Z założeń znane są wartości $u(x_0) = \alpha $ oraz $u(x_n) = \beta $. Nie znamy wartości w punkcie $x_1$. Oznaczmy zatem $u(x_1) = s$ gdzie $s$ jest szukaną wartością. Ta wartość jest nam potrzebna, żeby skorzystać ze wzoru \ref{boundary_model} . Zatem żeby rozwiązać ten problem musimy ułożyć układ równań liniowych. Mamy więc, że 
+\begin{equation}
+\left\{ \begin{array}{ll}
+u(x_{n+1}) = 2u(x_n) - u(x_{n-1}) - cu(x_n)h^2 - f(x_n)h^2 & \\
+u(x_0) = \alpha & \\
+u(x_1) = s & \\
+u(x_n) = \beta & 
+\end{array} \right.
+\end{equation}
+Zastosujmy powyższy algorytm dla pierwszych czterech punktów, czyli dla $x_0$, $x_1$, $x_2$ oraz $x_3$. Mamy zatem:
+\begin{equation}
+\left\{ \begin{array}{ll}
+u(x_0) = \alpha & \\
+u(x_2) = 2u(x_1) - u(x_{0}) - cu(x_1)h^2 - f(x_1)h^2 & \\ 
+u(x_3) = 2u(x_2) - u(x_{1}) - cu(x_2)h^2 - f(x_2)h^2 & \\
+u(x_3) = \beta & 
+\end{array} \right.
+\end{equation}
+Zatem otrzymaliśmy układ czterech równań liniowych z czterema niewiadomymi. Problem w obecnej postaci jesteśmy wstanie rozwiązać. Zapiszmy ten układ za pomocą postaci macierzowej :
+$$ 
+\left[ \begin{array}{cccc}
+1 & 0 & 0 & 0 \\
+1-ch^2 & -2 & 1 & 0 \\
+0 & 1-ch^2 & -2 & 1 \\
+0 & 0 & 0 & 1 
+\end{array} \right] \cdot
+\left[ \begin{array}{c}
+u_0 \\
+u_1 \\
+u_2 \\
+u_3  
+\end{array} \right] =
+\left[ \begin{array}{c}
+\alpha \\
+-f(x_0)h^2 \\
+-f(x_1)h^2\\
+\beta   
+\end{array} \right] .
+$$
+Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz. Otrzymujemy wtedy:
+$$ 
+\left[ \begin{array}{cccc}
+1 & 0 & 0 & 0 \\
+1-ch^2 & -2 & 1 & 0 \\
+0 & 1-ch^2 & -2 & 1 \\
+0 & 0 & 0 & 1 
+\end{array} \right]
+\left[ \begin{array}{c}
+u_0 \\
+u_1 \\
+u_2 \\
+u_3  
+\end{array} \right] = 
+\left[ \begin{array}{cccc}
+-2 & 1 & 0 & 0 \\
+1-ch^2 & -2 & 1 & 0 \\
+0 & 1-ch^2 & -2 & 1 \\
+0 & 0 & 1-ch^2 & -1 
+\end{array} \right] \cdot
+\left[ \begin{array}{c}
+u_1 \\
+u_2 \\
+u_3 \\
+u_4 
+\end{array} \right] 
+$$
 
 
 
-
-
-
-%\chapter{Schemat  Rungego-Kutty}
-%Podstawową klasą schematów jednokrokowych są tzw. schematy Rungego-Kutty. 
-%Załóżmy, że znamy $x_n$, i chcemy wyliczyć wartość $x_{n+1}$ ze wzoru uwzględniającego wartość
-%pola wektorowego nie tylko w $x_n$, ale również w dodatkowym punkcie 
-%$x^{\sim}$. Wtedy
-%\begin{equation*}
-%x_{n+1} = F(h,t_n,x_n,x^{\sim})
-%\end{equation*}
-%\newline
-%Biorąc schemat otwarty Eulera z krokiem $h^{\sim}$ otrzymujemy punkt
-%\begin{equation*}
-%x^{\sim} = xn + h f^{\sim}(t,x(t))
-%\end{equation*}
-%\newline
-%który, jak wiemy, przybliża $x(t+h^{\sim})$, ale niedokładnie. Możemy policzyć wartość pola wektorowego $f$ w tym punkcie i następnie, wykorzystując wartość $y_n = f(t_n, x_n)$ i $y^{\sim} = f(t_{n+h},x^{\sim})$, znaleźć lepsze przybliżenie $x(t_{n+1})$ - czyli np. za przybliżenie pola wektorowego wziąć ważoną średnią obu wartości $by_n+cy^{\sim}$ dla pewnych ustalonych wag $b$,$c$. Możliwości
-%jest wiele. Pojawia się pytanie: jak oceniać różne konstrukcje $F$? Można tak dobierać $F$, aby rząd schematu był możliwie duży. 
-%\newline
-%Załóżmy, że $h^{\sim}=ah$. Wtedy szukamy schematu postaci:
-%\begin{equation*}
-%x_{n+1} = xn + bhf_n + chf(t_n + ah, x_n + ahf(t_n,x_n))
-%\end{equation*}
-%\newline
-%tak, aby schemat miał maksymalny rząd.
-%\newline
-%Rozwijamy rozwiązanie $x$ w szereg Taylora:
-
-
-\chapter{Cześć praktyczna}
-
-\section{Schemat otwarty Eulera}
-
-
+\chapter{Podsumowanie}
 \begin{example}[Przykład] \label{example-otwarty-euler}
 %TODO tutaj przykład porównujący schemat otwarty
 \end{example}
-
-\chapter{Podsumowanie}
 
 \bibliographystyle{plain}
 \bibliography{bibliografia}
