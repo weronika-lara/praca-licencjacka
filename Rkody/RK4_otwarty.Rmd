@@ -1,0 +1,117 @@
+---
+title: "RK4"
+author: "WLara"
+date: "15 sierpnia 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Schemat otwraty RK4
+
+Rozważmy równanie różniczkowe postaci
+
+$$
+y' = -y^2, \quad y(0) = 1
+$$
+Wiemy, że rozwiązaniem teoretycznym tego problemu jest funkcja 
+$$
+y(x) = \frac{1}{1+x}, x \in [0,\infty].
+$$
+Przypomnijmy wzór na schemat otwarty RK4
+$$
+x(t_{n}) = x(t_{n-1}) + \frac{h}{6} ( K_1 + 2K_2 + 2K_3 + K_4 )
+$$
+gdzie 
+$$
+\begin{array}{cl}
+K_1 &= f(t_{n-1},x_{n-1}) \\
+K_2 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_1) \\
+K_3 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_2) \\
+K_4 &= f(t_{n-1} + h, x_{n-1} + hK_3) 
+\end{array}
+$$
+
+
+```{r}
+#K1 = rownanie(t[i-1], x[,i-1])
+#K2 = rownanie(t[i-1] + (h/2), x[,i-1] + (h/2)*K1)
+#K3 = rownanie(t[i-1] + (h/2), x[,i-1] + (h/2)*K2)
+#K4 =  rownanie(t[i-1] + h, x[,i-1] + h*K3)
+```
+
+```{r}
+RK4_otwarty= function(rownanie, x0 , t0, h, N){
+  t = seq(from=t0, to=t0+N*h,length.out = N+1)
+  xn = matrix(0, nrow = length(x0), ncol = N+1)
+  xn[,1] = x0
+  t[1] = t0
+  for (i in 2:(N+1)){
+    K1 = rownanie(t[i-1],  xn[,i-1])
+    K2 = rownanie(t[i-1] + (h/2), xn[,i-1] + (h/2)*K1)
+    K3 = rownanie(t[i-1] + (h/2), xn[,i-1] + (h/2)*K2)
+    K4 =  rownanie(t[i-1] + h, xn[,i-1] + h*K3)
+    xn[,i] = xn[,i-1]+(h/6)*(K1 + 2*K2 + 2*K3 + K4)
+   
+  }
+  result = list(time=t, values=xn)
+ return(result)
+}
+```
+
+```{r}
+
+rownanie = function(t, x){
+  return(-x^2)
+}
+
+x0 = c(1)
+t0 = 0
+t_end = 100  
+N = 1000
+h = (t_end - t0) / N
+
+
+
+solution = RK4_otwarty(rownanie, x0, t0, h , N)
+```
+
+```{r}
+t = seq(t0,t_end, by=0.01)
+plot(t, 1/(1+t), type = 'l', col='black' )
+lines(solution$time, solution$values, col='red')
+```
+
+```{r}
+rownanie = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 1000
+h = (t_end - t0) / N
+
+
+solution = RK4_otwarty(rownanie, x0, t0, h , N)
+```
+
+```{r}
+t = seq (t0, t_end, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution$time, solution$values[1,], col='red')
+```
+
+
+
+
+
+
+
+
