@@ -19,7 +19,9 @@
 
 \chapter{Wstęp}
 
-Cytując \citep[Rozdział 3, sekcja 2]{palczewski2004rownania}
+Tematem tej pracy są numeryczne metody rozwiązywania równań różniczkowych drugiego rzędu z warunkami brzegowymi. Same równania różniczkowe są szeroko omówionym zagadnieniem w programie studiów. Jednakże ich naturalna kontynuacja - w postaci metod numerycznych - jest omówiona jedynie szczątkowo. Grupuje ona techniki algorytmiczne i komputerowe, które pozwalają rozwiązywać praktyczne problemy opisywane za pomocą równań. W tej pracy omówimy najprostsze techniki rozwiązywania przybliżonego równań różniczkowych (tak zwyczajnych jak i cząstkowych) skupiając się w znacznej części na zaprezentowaniu działających implementacji własnych. Rozpoczynamy od najprostszych schematów tzw. otwartych, chcąc pokazać czytelnikowi zmianę stopnia trudności po przejściu do zagadnień brzegowych. Rozważania swoje ograniczamy jedynie do równań drugiego stopnia liniowych, gdyż jest to i tak dostatecznie bogata klasa problemów - do zaprezentowania różnic pomiędzy podejściami. 
+
+Praca uporządkowana jest w następujący sposób. W rozdziale 2 znaleźć można wybrane definicje z zakresu równań różniczkowych oraz inne definicje z tematów znajdujących się w programie studiów. W rozdziale trzecim prezentujemy teorię dotyczącą numerycznego rozwiązywania zagadnień początkowych dla równań zwyczajnych. Rozdział ten zakończony jest prezentacją własnej implementacji metod otwartego Eulera oraz Rungego-Kutty stopnia czwartego. W rozdziale 4 znajduje się natomiast ogólna teoria dotycząca zagadnień brzegowych. Na początku rozważane jest równanie zwyczajne drugiego rzędu, przy pomocy którego przedstawimy różnicę w podejściach pomiędzy zagadnieniami Cauchy'ego a zagadnieniami brzegowymi. W dalszej części przedstawimy metodę przybliżonego rozwiązywania równań eliptycznych, przy pomocy którego przedstawimy problemy jakie charakteryzują równania cząstkowe w porównaniu do równań zwyczajnych. 
 
 \chapter{Preliminaria}
 
@@ -32,63 +34,90 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 \end{itemize}
 
 \section{Elementy rachunku różniczkowego i całkowego}
-\begin{definition}[Pochodna]
-Niech $D \subset \setR^k , x^0 \in D , h \in \setR^k$. Jeżeli istnieje skończona granica
+
+Poniżej zaprezentujemy wybranego pojęcia z podstaw rachunku różniczkowego. Część z przypomnianych tu pojęć, to najbardziej podstawowe elementy tej teorii. Przypominamy je jednak, gdyż w pracy wprowadzane są ich odpowiedniki z teorii równań różnicowych i uznajemy za wartościowe porównanie ich budowy do oryginałów. 
+
+\begin{definition}[Pochodna] [\citep{andrzejczak2019analiza1}]
+Dla dowolnej funkcji rzeczywistej $f$ określonej na przedziale $J \subset \setR $ i dowolnego punktu wewnętrznego $ t \in J$ mówimy, że funkcja $f$ jest różniczkowalna w punkcie $t$, jeśli istnieje granica
 $$
-\limit_{t \to 0}  \frac{f(x^0 + th) - f(x^0)}{t}
+\limit_{x \to t}  \frac{f(x) - f(t)}{x-t}.
 $$
-to nazywamy ją pochodną funkcji $f$ w punkcie $x^0$ w kierunku wektora $h$ i oznaczamy ją $\ddx{x}f(x^0)$.  
+Liczbę $\ddx{x}f(t)$ nazywamy wówczas pochodną funkcji $f$ w punkcie $t$.  
+\end{definition}
+\begin{definition}[Funkcja różniczkowalna][\citep{andrzejczak2019analiza1}]
+Funkcję $ f: J \to \setR $ nazywamy różniczkowalną, jeśli jest ona różniczkowalna w każdym punkcie swej dziedziny. Funkcję $\ddx{x}f(x)$ dla $x \in J$, czyli $\ddx{x}f(x) : J \to \setR $, nazywamy wówczas pochodną funkcji $f$. 
 \end{definition}
 
-\begin{definition} [Pochodne cząstkowe]
+\begin{definition}[Pochodne cząstkowe]
 Niech $D \subset \setR^k$ , $x^0 \in intD$ $ i \in {1,\cdots,k}$. Pochodną cząstkową funkcji $f$ w punkcie $x^0$ względem i-tej zmiennej (współrzędnej)  nazywamy pochodną kierunkową funkcji $f$ w punkcie $x^0$ w kierunku $e^i = (0, \cdots, 0, 1, 0, \cdots, 0) \in \setR^k$, o ile ona istnieje i oznaczamy $\ddx{x_i}f_{x_{i}}(x^0) $
 \end{definition}
 
-\begin{definition} [Gradient funkcji]
+\begin{definition}[Gradient funkcji]
 Jeżeli istnieją wszystkie pochodne cząstkowe funkcji $f$ w punkcie $x^0$, to wektor 
 \begin{equation}
 [\ddx{x_1}f_{x_{1}}(x_0), \cdots, \ddx{x_k}f_{x_{k}}(x_0)]
 \end{equation}
  nazywamy gradientem funkcji $f$ w punkcie $x^0$ i oznaczamy $\bigtriangledown f(x^0)$ .
 \end{definition}
+
 \begin{definition}[klasa $C^{(k)}$]
 Niech $U$ będzie otwartym podzbiorem $ \setR^n $, $ f: U \to \setR $. Mówimy, że funkcja $f$ jest klasy $C^{(k)}$ na $U$,  gdy w zbiorze $U$ istnieją wszystkie pochodne cząstkowe rzędu $k$ funkcji $f$ oraz są one funkcjami ciągłymi w zbiorze $U$. 
 \end{definition}
-\begin{theorem}[Wzór Taylora]
-Dla funkcji $f: \setR \to \setR$ n-krotnie różniczkowalnej ($n \geq 1$) w punkcie $x_0 \in \setR $ istnieje
-funkcja $ h_n: \setR \to \setR $, że 
+
+\begin{definition}[wielomian Taylora][\citep{andrzejczak2019analiza1}]
+Dla $ n \in \setN $ i dowolnej funkcji $ f: J \to \setR $ n-krotnie różniczkowalnej w punkcie $t$ przedziału $ J \subset \setR $, dla $x \in \setR $  wielomian: 
 \begin{equation}
-f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!} (x-x_0){^k} + h_{n}(x)(x-x_0)^n 
+T_{t}^{n}f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(t)}{k!} (x-t){^k}  
 \end{equation}
-wielomian:
+nazywamy wielomianem Taylora n-go stopnia funkcji $f$ w $t$.
+\end{definition}
+
+\begin{theorem}[Peano, o reszcie][\citep{andrzejczak2019analiza1}] \label{wzor_Peano}
+Dla $n \in \setN$ i dowolnej funkcji $ f: J \to \setR $ n-krotnie różniczkowalnej w punkcie $t$ przedziału $J$, dla $x \in J$ zachodzi równość:
 \begin{equation}
-\sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!} (x-x_0){^k}
+f(x) = T_{t}^{n}f(x) + r_{t}^{n}(x)(x-t)^n ,
 \end{equation}
-nazywamy wielomianem Taylora, funkcje $h_n$  dla $ n \to \infty$ spełniającą 
-\begin{equation}
-\lim_{x \to x_0} h_n = 0
-\end{equation}
-nazywamy resztą Peano .
+gdzie $r_{t}^{n} : J \setminus t \to \setR $ jest funkcją, taką że $ \lim_{x \to t} r_{t}^{n}(x) = 0 $
 \end{theorem}
-
-\begin{definition}[Szereg Taylora]
-Załóżmy, że funkcja $f$ ma pochodne wszystkich rzędów w pewnym otoczeniu $U$ punktu $x_0$. Szereg
-\begin{equation}
-\sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!} (x-x_0)^n = f(x_0) + \frac{f^{(1)}(x_0)}{1!} (x-x_0) + \frac{f^{(2)}(x_0)}{2!} (x-x_0)^{2} + \cdots
-\end{equation}
-nazywamy szeregiem Taylora funkcji $f$ w otoczeniu punktu $x_0$. Wzór Taylora służy do przybliżania wartości funkcji dostatecznie dużo razy różniczkowalnych. W szczególności dla punktu $ x_0 = 0$ szereg Taylora przyjmuje postać 
-\begin{equation}
-\sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n = f(0) + \frac{f^{(1)}(0)}{1!} x + \frac{f^{(2)}(0)}{2!}  x^{2} + \cdots
-\end{equation}
-i nazywa się w tym przypadku szeregiem Maclaurina. 
-
+\begin{definition}[Wzór Taylora][\cite{andrzejczak2019analiza1}]
+Wzór \ref{wzor_Peano} nazywamy wzorem Taylora z resztą, czyli różnicą 
+$$
+R_{t}^{n} := f(x) - T_{t}^{n}f(x), 
+$$
+w postaci Peano. 
 \end{definition}
 
 
-\section{Elementy analizy funkcjonalne}
+\section{Elementy teorii równań różnicowych}
+ 
+\begin{definition}[Iloraz różnicowy]
+Jeżeli $ f: J \to \setR $ oraz $ a \in J$ to ilorazem różnicowym funkcji $f$ w punkcie $a$ nazywamy funkcję $ (\Delta_{a}f) : J \setminus a \to \setR $ określoną wzorem: 
+$$
+(\Delta_{a}f)(x) = \frac{f(x) - f(a)}{x-a}
+$$
+\end{definition}
+%TODO definicja operator różnicowy wprzód
+\begin{definition}[Operator różnicowy wprzód]
+Dla ustalonego kroku $h>0 $, operatorem różnicowym wprzód nazywać będziemy 
+$$
+\delta_h u(x) = \frac{u(x+h) - u(x)}{h}
+$$
+\end{definition}
+
+%TODO definicja operator różnic0wy w tył
+\begin{definition}[Operator różnicowy w tył]
+Dla ustalonego kroku $h>0$. Operatorem różnicowym w tył nazywać będziemy 
+$$
+\overline{\delta_h} u(x) = \frac{u(x)-u(x-h)}{h} 
+$$
+\end{definition}
+
+%TODO co to jest równanie różnicowe
+
+\section{Inne elementy z analizy matematycznej}
 
 \begin{definition} [Punkt wewnętrzny zbioru]
-Niech $A \subset \setR^k, x^0 \in \setR^k$ . Punkt $x^0$ nazywamy punktem wewnętrznym zbioru $A$ gdy:
+Niech $A \subset \setR^k, x^0 \in \setR^k$ . Punkt $x^0 \in A$ nazywamy punktem wewnętrznym zbioru $A$ gdy:
 $$
 \exists  r>0 \quad   \ball{x_0}{r} \subset A
 $$
@@ -120,7 +149,7 @@ $$
 
 \section{Równania różniczkowe zwyczajne}
 
-\begin{definition} [Postać ogólna równania różniczkowego]
+\begin{definition} [Postać ogólna równania różniczkowego][\citep{marcinkowski2011numeryczne}]
 Niech $F \colon \setR \times \setR^{n+1} \to \setR$. Postacią ogólną równania różniczkowego zwyczajnego nazywamy równianie: 
 \begin{equation*}
 F(t, x(t), \ddx{t} x(t),..., \ddx[^k]{t^k} x(t) ) = 0,
@@ -131,13 +160,14 @@ Rzędem takiego równania nazywamy wtedy liczbę naturalną $k$.
 
 Powyższa postać równania różniczkowego nie jest jednak najpowszechniej spotykaną. Powyższą postać możnaby utożsamiać z postacią uwikłaną funkcji. Częściej natomiast interesują nas równania różniczkowe zadane w postaci jawnej.
 
-\begin{definition}[Postać jawna równania różniczkowego zwyczajnego]
+\begin{definition}[Postać jawna równania różniczkowego zwyczajnego][\citep{marcinkowski2011numeryczne}]
 Równaniem różniczkowym zwyczajnym w postaci jawnej nazwiemy równanie postaci
 $$
 \ddx[{^k x}]{t^k} = \function{f}{t,x,\ddx{t}x, \ldots, \ddx[{^{k-1}}]{t^{k-1}} x},
 $$
 którego rozwiązaniem jest funkcja $x \in \Ck{k}{(a,b), \setR^n}$.
 \end{definition}
+
 
 W dalszej części pracy zakładać będziemy, że nasze równania różniczkowe zawsze będą w postaci jawnej.
 
@@ -154,8 +184,8 @@ gdzie $(a,b) \subset \setR$ jest dowolnym nietrywialnym i ograniczonym przedzia�
 
 Interesować nas będzie następująca klasa problemów nazywana zagadnieniami początkowymi lub zagadnienia Cauchy'ego.
 
-\begin{problem}[Zagadnienie Cauchy'ego] 
-Zagadnienie Cauchy'ego nazywamy równanie różniczkowe zwyczajne z warunkiem początkowym postaci:
+\begin{problem}[Zagadnienie Cauchy'ego rzędu jeden][\citep{marcinkowski2011numeryczne}] 
+Zagadnienie Cauchy'ego pierwszego rzędu nazywamy równanie różniczkowe zwyczajne z warunkiem początkowym nazywamy problem postaci:
 \begin{equation} \label{prob-zagadnienie-cauchy}
 \left\{\begin{array}{ll}
 \ddx{t} x = f(t,x) & \\
@@ -163,6 +193,44 @@ x(t_0) = x_0 &,
 \end{array} \right.
 \end{equation}
 gdzie $t_0 \in (a,b)$, $x_0 \in G$ są ustalone z góry. 
+\end{problem}
+
+\begin{theorem}[Peano] [\citep{marcinkowski2011numeryczne}]
+Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$, to istnieje rozwiązanie problemu \ref{prob-zagadnienie-cauchy} określone w pewnym otoczeniu $t_{0}$. 
+\end{theorem}
+
+\begin{theorem}[Picarda - Lindelfa][\citep{marcinkowski2011numeryczne}]
+Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$ oraz $f$ jest funkcją lipschtizowską względem $x$ w pewnej kuli $\ball{(t_0,x_0)}{\delta}$. Tzn.
+ istnieje taka $L\geq 0$, że dla każdych $((t,x),(t,y) \in \ball{(t_0,x_0)}{\delta} $ zachodzi
+$$
+  \norm{f(t,x) - f(t,y)} \leq L \norm{ x-y} 
+$$
+ to istnieje $ c> 0 $ i $x \in \Ck{1}{(t_0-c,t_0+c); \setR^{n} }  $ takie,że $x$ jest jednoznacznym rozwiązaniem (\ref{prob-zagadnienie-cauchy}).
+\end{theorem}
+\subsection{Równania różniczkowe liniowe rzędu dwa }
+\begin{problem}[Zagadnienie Cauchy'ego rzędu dwa]
+Niech $c_1 , c_2 >0 $ oraz $t_0 \in (a,b) $ , $ x_0 \in G $, gdzie $t_0, x_0$ są ustalone.
+Zagadnieniem Cauchy'ego dla równań różniczkowych liniowych zwyczajnych drugiego z warunkiem początkowym postaci nazywamy poniższy problem:
+\begin{equation}
+\left\{\begin{array}{ll}
+\ddx [^2]{t} x(t) + c_1\ddx{t} x(t) + c_2x(t) = f(t,x) & \\
+x(t_0) = s & \\
+\ddx{t} x(t_0) = v &,
+\end{array} \right.
+\end{equation}
+gdzie $ s$ i $v$ to ustalone wartości.
+\end{problem}
+
+\begin{problem}[Zagadnienie brzegowe]
+Zagadnieniem brzegowym dla $ x \in (a,b) $ będziemy nazywać równanie różniczkowe liniowe zwyczajne rzędu dwa postaci:
+\begin{equation}
+\left\{\begin{array}{ll}
+\ddx [^2]{t} x(t) + c_1\ddx{t} x(t) + c_2x(t) = f(t,x) & \\
+x(a) = \alpha & \\
+x(b) = \beta &,
+\end{array} \right.
+\end{equation}
+gdzie $\alpha$ i $\beta$ są ustalone. 
 \end{problem}
 %Pokażemy teraz przykład, który obrazuje zastosowanie równań różniczkowych zwyczajnych. 
 %\begin{example}[Model populacji gatunku ]
@@ -183,13 +251,17 @@ dla $ x \in \Omega \subset \setR^{n} $ gdzie $\Omega$ jest obszarem.
 \subsection{Równania Eliptyczne}
 Podstawowym przykładem zagadnienia eliptycznego jest równanie Laplace'a postaci 
 $$
--\Delta u(x) = f(x). 
+\Delta u(x) = 0. 
 $$
-Dokładając warunek brzegowy otrzymamy równanie zwane równaniem Poissona. Szukamy tutaj $u \in C^2(\Omega) \cap C(\Omega)$ takiego, że %tutaj Omega domknięta nie wiem jak zrobić omege z kreską nad sobą
-\begin{align*}
--\Delta u(x) = f(x)  \\
-u(s) = g(s) 
-\end{align*}
+Dokładając warunek brzegowy otrzymamy inny przypadek zwany równaniem Poissona. Szukamy tutaj $u \in C^2(\Omega) \cap C(\overline{\Omega})$ takiego, że %tutaj Omega domknięta nie wiem jak zrobić omege z kreską nad sobą
+\begin{equation}
+\left\{\begin{array}{ll}
+\Delta u(x) = f(x) & \\
+u(s) = g(s)&
+\end{array} \right. 
+\end{equation}
+
+
 
 dla $x \in \Omega$ i $s \in \eth \Omega$. 
 Możemy również wyróżnić ogólniejszą definicję równania eliptycznego drugiego rzędu. Rozważmy równanie różniczkowe liniowe drugiego rzędu dla ogólnego operatora liniowego drugiego rzędu $L$ \label{line operator}, określonego dla $ u \in C^2(G)$ dla $G \subset \setR^{n}$ : %dopisac co to L
@@ -204,42 +276,43 @@ $$
 $$
 Operator L jest eliptyczny w obszarze $\Omega$ jesli $L$ jest eliptyczny w każdym punkcie obszaru $\Omega$.
 \end{definition}
-\subsection{Równania hiperboliczne pierwszego rzędu}
-Dla pewnego $ x \in \Omega \subset \setR^{N} $ równaniem różniczkowym hiperbolicznym pierwszego rzędu nazywamy równanie postaci:
-$$
-F(x,u,\ddx[{ u}]{u},...,\ddx[{u}]{u^N}) = 0
-$$
-gdzie $F : \Omega \times G \subset \Omega \times \setR \times \setR^{N} \to \setR$ i obszaru $\Omega \subset \setR^n $
-\newline
-W szczególności 
-$$
-F(x,u,\nabla u) = \vec{a(x)}^T \nabla u + b(x)
-$$
-dla danych funkcji $ a_k,b,c: \Omega \to \setR$. 
-\subsection{Równania hiperboliczne drugiego rzędu} 
-Dla dowolnego $t>0$ oraz $ x \in \Omega $ równaniem liniowym hiperbolicznym drugiego rzędu nazywamy równanie 
-$$
-\ddx[u^2]{t^2} - Lu = f
-$$ 
-dla operatora $L$ eliptycznego w $\Omega \subset \setR^N$, gdzie $ u_{tt} = \ddx[^2u]{t}$.  
-\begin{example}[Równanie falowe]
-Niech $x \in \Omega \subset \setR^N $ , dla $ N = 1,2,3$
-$$
-\ddx[^2u]{t^2} - \Delta u = f 
-$$
-\end{example}
-\subsection{Równania paraboliczne}
-Dla pewnego $t>0$, $x \in \Omega \subset \setR^N$ oraz operatora eliptycznego $L$ równanie
-$$
-\ddx[u]{t} -  Lu = f 
-$$
-nazywamy równaniem liniowym parabolicznym drugiego rzędu. 
-\begin{example} [Równanie przewodnictwa cieplnego]
-Niech $t>0$, $x \in \Omega \subset \setR^N $ dla $ N = 1,2,3 $
-$$
-\ddx[u]{t} - \Delta u = f
-$$
-\end{example}
+Istnieją również równania hiperboliczne pierwszego i drugiego rzędu oraz równania paraboliczne, ale nie będą one omawiane w naszej pracy. 
+%\subsection{Równania hiperboliczne pierwszego rzędu}
+%Dla pewnego $ x \in \Omega \subset \setR^{N} $ równaniem różniczkowym hiperbolicznym pierwszego rzędu %nazywamy równanie postaci:
+%$$
+%F(x,u,\ddx[{ u}]{u},...,\ddx[{u}]{u^N}) = 0
+%$$
+%gdzie $F : \Omega \times G \subset \Omega \times \setR \times \setR^{N} \to \setR$ i obszaru $\Omega %%\subset \setR^n $
+%\newline
+%W szczególności 
+%$$
+%F(x,u,\nabla u) = \vec{a(x)}^T \nabla u + b(x)
+%$$
+%dla danych funkcji $ a_k,b,c: \Omega \to \setR$. 
+%\subsection{Równania hiperboliczne drugiego rzędu} 
+%Dla dowolnego $t>0$ oraz $ x \in \Omega $ równaniem liniowym hiperbolicznym drugiego rzędu nazywamy równanie 
+%$$
+%\ddx[u^2]{t^2} - Lu = f
+%$$ 
+%dla operatora $L$ eliptycznego w $\Omega \subset \setR^N$, gdzie $ u_{tt} = \ddx[^2u]{t}$.  
+%\begin{example}[Równanie falowe]
+%Niech $x \in \Omega \subset \setR^N $ , dla $ N = 1,2,3$
+%$$
+%\ddx[^2u]{t^2} - \Delta u = f 
+%$$
+%\end{example}
+%\subsection{Równania paraboliczne}
+%Dla pewnego $t>0$, $x \in \Omega \subset \setR^N$ oraz operatora eliptycznego $L$ równanie
+%$$
+%\ddx[u]{t} -  Lu = f 
+%$$
+%nazywamy równaniem liniowym parabolicznym drugiego rzędu. 
+%\begin{example} [Równanie przewodnictwa cieplnego]
+%Niech $t>0$, $x \in \Omega \subset \setR^N $ dla $ N = 1,2,3 $
+%$$
+%\ddx[u]{t} - \Delta u = f
+%$$
+%\end{example}
 
 \chapter{Numeryczne zagadnienia początkowe}
 
@@ -255,32 +328,16 @@ W teorii numerycznych równań różniczkowych spotyka sie dwa rodzaje dyskretyz
 \item dyskretyzacja w przestrzeni funkcyjnej.
 \end{itemize}
 
-W drugim rodzaju dysktretyzacji przestrzeń funkcji jest zastępowana skończoną liczbą kombinacji funkcji generujących. Funkcje generujące są wybierane na podstawie pewnych zestawów kryteriów. Jedną z najczęsciej spotykanych rodzajów funkcji generujących są tzw. elementy skończone. Tym rodzajem dyskretyzacji nie będziemy zajmować się wogóle w tej pracy.
+W drugim rodzaju dyskretyzacji przestrzeń funkcji jest zastępowana skończoną liczbą kombinacji funkcji generujących. Funkcje generujące są wybierane na podstawie pewnych zestawów kryteriów. Jedną z najczęściej spotykanych rodzajów funkcji generujących są tzw. elementy skończone. Tym rodzajem dyskretyzacji nie będziemy zajmować się w ogóle w tej pracy.
 
-Dyskretyzacja w dziedzinie oznacza zastąpienie ciągłego obszaru dziedziny za pomocą skończonej siatki punktów \footnote{nazywanej często 'grid'}. Funkcja będąca rozwiązaniem jest wtedy przybliżana za pomocą stablicowanej postaci, zaś na wykresie aproksymowana jest przez łamaną łączącą kolejne punkty wykresu. W tej pracy skupimy się wyłącznie na tym rodzaju dyskretyzacji. 
+Dyskretyzacja w dziedzinie oznacza zastąpienie ciągłego obszaru dziedziny za pomocą skończonej siatki punktów \footnote{nazywanej często 'grid'}. Funkcja będąca rozwiązaniem jest wtedy przybliżana za pomocą z z tablicowanej postaci, zaś na wykresie aproksymowana jest przez łamaną łączącą kolejne punkty wykresu. W tej pracy skupimy się wyłącznie na tym rodzaju dyskretyzacji. 
 
 Dyskretyzacje w dziedzinie pozostawiają bogatą rodzinę modeli. Różnice pomiędzy tymi modelami najczęściej dotyczą sposobu aproksymowania operatora pochodnej, ewentualnie ilości składowych przy rozwijaniu wartości funkcji w szeregi potęgowe. 
 
 
 \section{Numeryczne rozwiązywanie równań zwyczajnych}
 
-W sekcji tej rozważamy zagadnienie Cauchy'ego (patrz problem \ref{prob-zagadnienie-cauchy}) pierwszego rzędu. 
-
-
-\begin{theorem}[Peano]
-Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$, to istnieje rozwiązanie problemu \ref{prob-zagadnienie-cauchy} określone w pewnym otoczeniu $t_{0}$. 
-\end{theorem}
-
-\begin{theorem}[Picarda - Lindelfa]
-Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$ oraz $f$ jest funkcją lipschtizowską względem $x$ w pewnej kuli $\ball{(t_0,x_0)}{\delta}$. Tzn.
- istnieje taka $L\geq 0$, że dla każdych $((t,x),(t,y) \in \ball{(t_0,x_0)}{\delta} $ zachodzi
-$$
-  \norm{f(t,x) - f(t,y)} \leq L \norm{ x-y} 
-$$
- to istnieje $ c> 0 $ i $x \in \Ck{1}{(t_0-c,t_0+c); \setR^{n} }  $ takie,że $x$ jest jednoznacznym rozwiązaniem (\ref{prob-zagadnienie-cauchy}).
-\end{theorem}
-
-
+W sekcji tej rozważamy zagadnienie Cauchy'ego (patrz problem \ref{prob-zagadnienie-cauchy}) pierwszego rzędu. Na mocy twierdzeń 
 Omówmy kilka najprostszych schematów przybliżonego rozwiązywania takich równań.
 
 \subsection{Schemat otwarty Eulera}
@@ -336,7 +393,7 @@ $$
 \section{Teoria zbieżności schematów jednokrokowych}
 Teoria zbieżnosci schematów jednokrokowych jest teorią odmienną od teorii dla schematów wielokrokowych liniowych. Należy więc wprowadzić parę istotnych pojęć przybliżających nam ten temat. 
 
-\begin{definition} [Schemat k krokowy]
+\begin{definition} [Schemat k krokowy][\citep{marcinkowski2011numeryczne}]
 Schematem $k$ krokowym rozwiązania zagadnienia początkowego \ref{prob-zagadnienie-cauchy} ze stałym krokiem $h>0$ na odcinku $[t_0,T]$ nazywamy równanie
 $$
 x_n = \Phi (h,t_n,x_{n-k},\cdots,x_{n-1},x_n) \label{k-steps-scheme}
@@ -344,7 +401,7 @@ $$
 dla $ n \geq k$ z warunkami startowymi $x_0,\cdots, x_{k-1}$ gdzie $t_n = t_0 + nh$.
 \end{definition}
 
-\begin{definition} [Błąd schematu jednokrokowego] 
+\begin{definition} [Błąd schematu jednokrokowego] [\citep{marcinkowski2011numeryczne}]
 Niech $ x \in C^{1}([t_0,T])$ dla zagadnienie początkowego \ref{prob-zagadnienie-cauchy} oraz $t=t_0 +nh \in [t_0,T]$.Bład schematu $k$ krokowego postaci \ref{k-steps-scheme} jest postaci 
 $$
 E_h(t) = |x^{h}_{n} - x(t)|
@@ -354,7 +411,7 @@ $$
 E_h = max_{n=0,\cdots,N} E_h(t^{h}_{n})
 $$
 \end{definition}
-\begin{definition}[Zbieżność schematu]
+\begin{definition}[Zbieżność schematu][\citep{marcinkowski2011numeryczne}]
 Schemat jest zbieżny na $[t_0,T]$ jeśli 
 $$
 E_h \to 0  h \to 0
@@ -364,20 +421,20 @@ $$
 E_h \leq C h^p
 $$
 \end{definition}
-\begin{definition}[Błąd lokalny]
+\begin{definition}[Błąd lokalny][\citep{marcinkowski2011numeryczne}]
 Niech $x \in C^1([t_0,T]) $ będzie rozwiązaniem zagadnienia początkowego \ref{prob-zagadnienie-cauchy}. Dla $h>0$ i schematu $k$ krokowego postaci \ref{k-steps-scheme} błąd lokalny jest postaci
 \begin{equation}
 e_h = \max_{t \in [t_0,T-kh]} |x(t + kh) - \Phi (h,t,x(t),\cdots, x(t + kh))|
 \end{equation}
 \end{definition}
-\begin{definition} [Rząd schematu]
+\begin{definition} [Rząd schematu][\citep{marcinkowski2011numeryczne}]
 Schemat \ref{k-steps-scheme} jest rzędu $p$ jeśli dla $x \in C^{p+1}([t_0,T])$ gdzie $x$ jest rozwiązaniem \ref{prob-zagadnienie-cauchy} zachodzi
 $$
 e_h \leq C h^{p+1}
 $$
 gdzie $C$ jest pewną stałą niezależną od $h$. 
 \end{definition}
-\begin{definition} [Schemat jednokrokowy] 
+\begin{definition} [Schemat jednokrokowy] [\citep{marcinkowski2011numeryczne}]
 Schematem jednokrokowym dla problemu \ref{prob-zagadnienie-cauchy} dla stałego kroku $h = \frac{T-t_0}{N}$ nazywamy równanie różnicowe postaci:
 $$
 x_{n+1} = x_n + h \phi(h,t_{n},x_{n},x_{n+1}),  
@@ -391,7 +448,7 @@ x_{n+1} = x_n + h \phi(h,t_{n},x_{n}),
 $$
 \end{definition}
  
-\begin{definition}[Zgodność schematu różnicowego]\label{definition-consistency}
+\begin{definition}[Zgodność schematu różnicowego][\citep{marcinkowski2011numeryczne}]\label{definition-consistency}
 Schemat jednokrokowy jest zgodny jeśli :
 \begin{itemize}
 \item $\phi$ jest ciągłą ze względu na wszystkie zmienne,
@@ -404,7 +461,7 @@ $$
 
 \end{definition}
 
-\begin{theorem}[O zbieżności schematu jednokrokowego] \label{theorem-convergence-one-step-schema} 
+\begin{theorem}[O zbieżności schematu jednokrokowego][\citep{marcinkowski2011numeryczne}] \label{theorem-convergence-one-step-schema} 
 Jeśli rozwiązanie zagadnienia początkowego \ref{prob-zagadnienie-cauchy} $x \in C^{p+1}([t_0,T])$, schemat jednokrokowy jest zgodny i jest rzędu $p\geqslant1$, to ten schemat jest zbieżny z rzędem p. 
 
 \end{theorem}
@@ -479,10 +536,10 @@ $$
 gdy $ N \to \infty $ to $ h \to 0 $ oraz $ E_N \to 0$. Zatem schemat jest zbieżny z rzędem $p$.
 \end{proof}
 \chapter{Numeryczne zagadnienia brzegowe}
-W tym rozdziale wprowadzimy dodatkowe oznaczenia: 
+W tym rozdziale będziemy posługiwali się funkcją szukaną $u(x)$, zamiast $x(t)$. Wprowadzimy również nowe oznaczenie na :
 \begin{itemize}
-\item pierwszą pochodną danej funkcji będziemy oznaczali przez $x'$,
-\item drugą pochodną danej funkcji  będziemy oznaczali przez $u''$,
+\item pierwszą pochodną danej funkcji zamiast $\ddx{x} u(x) $ będziemy oznaczali przez $u'$,
+\item drugą pochodną danej funkcji zamiast $\ddx[^2]{x} u(x)$ będziemy oznaczali przez $u''$,
 \item jeżeli będziemy chcieli rozróżnić pochodne funkcji co do zmiennych, przykładowo chcemy pochodną funkcji po zmiennej $t$ to będziemy używali oznaczali $u_t'$, $u_t''$. Analogicznie dla innych zmiennych.
 \end{itemize}
 Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
@@ -507,64 +564,60 @@ $$
 Podstawy \ref{finite_diff} do \ref{boundary_diff_equa}. Wówczas dla ustalonego $h>0$ otrzymujemy: 
 \begin{equation}
 \begin{array}{rl}
--\delta (\frac{u(x)-u(x-h}{h}) + cu(x) &= f(x)  \\
-- \frac{1}{h} (\delta u(x) - \delta u(x-h) ) + cu(x) &= f(x) \\
--\frac{1}{h} (\frac{u(x+h)-u(x)}{h} - \frac{u(x)-u(x-h)}{h}) + cu(x) &= f(x) \\
--\frac{u(x+h)}{h^2} + \frac{u(x)}{h^2} + \frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x)& = f(x) \\
+-\delta (\frac{u(x)-u(x-h}{h}) + cu(x) &= f(x),  \\
+- \frac{1}{h} (\delta u(x) - \delta u(x-h) ) + cu(x) &= f(x), \\
+-\frac{1}{h} (\frac{u(x+h)-u(x)}{h} - \frac{u(x)-u(x-h)}{h}) + cu(x) &= f(x), \\
+-\frac{u(x+h)}{h^2} + \frac{u(x)}{h^2} + \frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x)& = f(x), \\
 -\frac{u(x+h)}{h^2} + 2\frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x) &= f(x) .
 \end{array}
 \end{equation}
-Mnożąc obie strony przez $-h^2$ oraz $x_n = x_{n-1} - nh$ dla $n \in \setN$  otrzymujemy :
+Mnożąc obie strony przez $-h^2$ otrzymujemy:  otrzymujemy :
 \begin{equation}
-u(x_{n+1}) - 2u(x_n) + u(x_{n-1}) + cu(x_n)h^2 = f(x_n)h^2,
+u(x+h) - 2u(x) + u(x-h) + cu(x)h^2 = f(x)h^2,
 \end{equation}
-stąd:
+wprowadźmy siatkę, czyli zbiór dyskretny dla $ h= \frac{b-a}{N}$ , $k \in \set{1,\cdots,N-1}$  mamy: 
 \begin{equation} \label{boundary_model}
-u(x_{n+1}) = 2u(x_n) - u(x_{n-1}) - cu(x_n)h^2 - f(x_n)h^2.
+u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) - cu(x_k)h^2 - f(x_k)h^2.
 \end{equation}
-Na tym etapie widać istotną różnice między zagadnieniami początkowymi umówionymi w poprzednim rozdziale, a zagadnieniami brzegowymi poruszonymi w obecnym. Patrząc na zagadnienie \ref{prob-zagadnienie-cauchy} mieliśmy podany warunek początkowy $x(t_0) = x_0$. Zatem znaliśmy moment $t_0$ oraz wartość funkcji dla dla tej chwili dzięki czemu łatwo mogliśmy skorzystać ze wzorów podanych np. w metodzie Eulera na wartość $x(n+1)$. W metodach brzegowych warunek początkowy zastąpiony jest przez warunki brzegowe. Patrząc na nasz przykład są to :
-$$
-\left\{ \begin{array}{ll}
-u(a) = \alpha & \\
-u(b) = \beta & 
-\end{array} \right.
-$$
-Z założeń znane są wartości $u(x_0) = \alpha $ oraz $u(x_n) = \beta $. Nie znamy wartości w punkcie $x_1$. Oznaczmy zatem $u(x_1) = s$ gdzie $s$ jest szukaną wartością. Ta wartość jest nam potrzebna, żeby skorzystać ze wzoru \ref{boundary_model} . Zatem żeby rozwiązać ten problem musimy ułożyć układ równań liniowych. Mamy więc, że 
+W zagadnieniach brzegowych nie jest znana wartość $u(x_1)$. Zauważmy,że gdy rozważymy jej wartość $u(x_1) = s \in \setR$ , to stosując nasz schemat możemy obliczyć wszystkie kolejne iteracje . Zatem nasze zadanie wymagać będzie rozwiązania problemu odnalezienia takiego $s$, że $u(x_1) = s$ i $u(x_k) = \beta$. Przyjmując oznaczenie $ x_k = x_0 + kh$ ,dla $ k \in \set{1, \cdots,N-1} $ otrzymujemy układ równań liniowych postaci:
 \begin{equation}
 \left\{ \begin{array}{ll}
-u(x_{n+1}) = 2u(x_n) - u(x_{n-1}) - cu(x_n)h^2 - f(x_n)h^2 & \\
 u(x_0) = \alpha & \\
-u(x_1) = s & \\
-u(x_n) = \beta & 
+\vdots  & \\
+u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) - cu(x_k)h^2 - f(x_k)h^2 = \beta & 
 \end{array} \right.
 \end{equation}
-Zastosujmy powyższy algorytm dla pierwszych czterech punktów, czyli dla $x_0$, $x_1$, $x_2$ oraz $x_3$. Mamy zatem:
+Mamy więc  :
 \begin{equation}
 \left\{ \begin{array}{ll}
 u(x_0) = \alpha & \\
 u(x_2) = 2u(x_1) - u(x_{0}) - cu(x_1)h^2 - f(x_1)h^2 & \\ 
 u(x_3) = 2u(x_2) - u(x_{1}) - cu(x_2)h^2 - f(x_2)h^2 & \\
-u(x_3) = \beta & 
+\vdots & \\
+u(x_k+1) = \beta  
 \end{array} \right.
 \end{equation}
-Zatem otrzymaliśmy układ czterech równań liniowych z czterema niewiadomymi. Problem w obecnej postaci jesteśmy wstanie rozwiązać. Zapiszmy ten układ za pomocą postaci macierzowej :
+Otrzymaliśmy układ $N$ równań liniowych z $N$ niewiadomymi. Problem w obecnej postaci jesteśmy wstanie rozwiązać. Zapiszmy ten układ za pomocą postaci macierzowej :
 $$ 
 \left[ \begin{array}{cccc}
 1 & 0 & 0 & 0 \\
-1-ch^2 & -2 & 1 & 0 \\
-0 & 1-ch^2 & -2 & 1 \\
+-2+ch^2 & 1 & 1 & 0 \\
+-1 & -2+ch^2 & 1 & 0 \\
+\vdots & \vdots & \vdots & \vdots \\
 0 & 0 & 0 & 1 
 \end{array} \right] \cdot
 \left[ \begin{array}{c}
 u_0 \\
 u_1 \\
 u_2 \\
-u_3  
+\vdots \\
+u_{k+1}  
 \end{array} \right] =
 \left[ \begin{array}{c}
 \alpha \\
--f(x_0)h^2 \\
--f(x_1)h^2\\
+-f(x_1)h^2 \\
+-f(x_2)h^2\\
+\vdots \\
 \beta   
 \end{array} \right] .
 $$
@@ -572,30 +625,57 @@ Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz. Otrzymujemy wt
 $$ 
 \left[ \begin{array}{cccc}
 1 & 0 & 0 & 0 \\
-1-ch^2 & -2 & 1 & 0 \\
-0 & 1-ch^2 & -2 & 1 \\
+-1 & -2+ch^2 & 1 & 0 \\
+0 & 1 & -2+ch^2 & 1 \\
+\vdots &  &  &  \\
 0 & 0 & 0 & 1 
 \end{array} \right]
 \left[ \begin{array}{c}
 u_0 \\
 u_1 \\
 u_2 \\
-u_3  
+\vdots \\
+u_{k+1}  
 \end{array} \right] = 
 \left[ \begin{array}{cccc}
--2 & 1 & 0 & 0 \\
-1-ch^2 & -2 & 1 & 0 \\
-0 & 1-ch^2 & -2 & 1 \\
-0 & 0 & 1-ch^2 & -1 
+-2+ch^2 & 1 & 0 & 0 \\
+-1 & -2+ch^2 & 1 & 0 \\
+0 & -1 & -2+ch^2 & 1 \\
+\vdots & \ddots & \ddots & \vdots \\ 
+0 & 0 & -1 & -2+ch^2 \\
 \end{array} \right] \cdot
 \left[ \begin{array}{c}
 u_1 \\
 u_2 \\
 u_3 \\
-u_4 
+\vdots \\
+u_{k} 
 \end{array} \right] 
 $$
-
+Ostatecznie:
+$$
+\left[ \begin{array}{ccccc}
+-2+ch^2 & 1 & 0 & \cdots & 0 \\
+-1 & -2+ch^2 & 1& \cdots & 0 \\
+0 & -1 & -2+ch^2& \cdots & 1 \\
+\vdots &  & \ddots & \ddots & \vdots \\ 
+0 & 0 & \cdots & -1 & -2+ch^2 \\
+\end{array} \right] \cdot
+\left[ \begin{array}{c}
+u_1 \\
+u_2 \\
+u_3 \\
+\vdots \\
+u_{N-1} 
+\end{array} \right] =
+\left[ \begin{array}{c}
+-f(x_0)-\alpha(-2+ch^2) \\
+-f(x_1)h^2 \\
+-f(x_2)h^2\\
+\vdots \\
+-f(x_{N-1})h^2 -\beta (-2+ch^2)   
+\end{array} \right] . 
+$$
 
 
 \chapter{Podsumowanie}
