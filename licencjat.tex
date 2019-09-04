@@ -129,11 +129,11 @@ Zbiór $A$ nazywamy otwartym, gdy każdy punkt zbioru $A$ jest punktem wewnętrz
 \end{definition}
 
 \begin{definition} [Norma]
-Niech $X$ będzie przestrzenią nad ciałem $K =\setR $ lub $ K = \setC $. Funkcję $\norm{\cdot}$ nazywamy normą na $X$ jeśli spełnione są następujące warunki 
+Niech $X$ będzie przestrzenią wektorową nad ciałem $K =\setR $ lub $ K = \setC $. Odwzorowanie $\norm{\cdot}: X \to \setR$ nazywamy normą jeśli spełnione są następujące warunki 
 \begin{enumerate}
-\item Dla dowolnego $x\in X$
+\item Dla dowolnego $x\in X$ przy czym  $  \norm{x} = 0 \implies x = \theta$
 $$
- \norm{x} = 0 \implies x = \theta,
+\norm{x} \geq 0 ,
 $$
 \item Dla dowolnego $\alpha \in K$ oraz dowolnego $x \in X$ 
 $$
@@ -144,12 +144,12 @@ $$
  \norm{x+y} \leq \norm{x} + \norm{y}.
 $$
 \end{enumerate}
-
+Parę $ (X, \norm{\cdot})$ złożoną z przestrzeni wektorowej i zadanej dla niej normy, nazywamy przestrzenią unormowaną. 
 \end{definition}
 
 \section{Równania różniczkowe zwyczajne}
 
-\begin{definition} [Postać ogólna równania różniczkowego][\citep{marcinkowski2011numeryczne}]
+\begin{definition}[Postać ogólna równania różniczkowego \citep{marcinkowski2011numeryczne}]
 Niech $F \colon \setR \times \setR^{n+1} \to \setR$. Postacią ogólną równania różniczkowego zwyczajnego nazywamy równianie: 
 \begin{equation*}
 F(t, x(t), \ddx{t} x(t),..., \ddx[^k]{t^k} x(t) ) = 0,
@@ -583,18 +583,21 @@ W zagadnieniach brzegowych nie jest znana wartość $u(x_1)$. Zauważmy,że gdy 
 \begin{equation}
 \left\{ \begin{array}{ll}
 u(x_0) = \alpha & \\
+u(x_1) = 2u(x_0) - u(x_{-1}) - cu(x_0)h^2 - f(x_0)h^2 & \\
+u(x_2) = 2u(x_1) - u(x_{0}) - cu(x_1)h^2 - f(x_1)h^2 & \\ 
 \vdots  & \\
-u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) - cu(x_k)h^2 - f(x_k)h^2 = \beta & 
+u(x_{N}) = 2u(x_{N-1}) - u(x_{N-2}) - cu(x_{N-1})h^2 - f(x_{N-1})h^2 = \beta & 
 \end{array} \right.
 \end{equation}
 Mamy więc  :
 \begin{equation}
 \left\{ \begin{array}{ll}
 u(x_0) = \alpha & \\
+u(x_1) = 2u(x_0) - u(x_{-1} - cu(x_0)h^2 - f(x_0)h^2 & \\
 u(x_2) = 2u(x_1) - u(x_{0}) - cu(x_1)h^2 - f(x_1)h^2 & \\ 
 u(x_3) = 2u(x_2) - u(x_{1}) - cu(x_2)h^2 - f(x_2)h^2 & \\
 \vdots & \\
-u(x_k+1) = \beta  
+u(x_N) = \beta  
 \end{array} \right.
 \end{equation}
 Otrzymaliśmy układ $N$ równań liniowych z $N$ niewiadomymi. Problem w obecnej postaci jesteśmy wstanie rozwiązać. Zapiszmy ten układ za pomocą postaci macierzowej :
@@ -611,7 +614,7 @@ u_0 \\
 u_1 \\
 u_2 \\
 \vdots \\
-u_{k+1}  
+u_{N}  
 \end{array} \right] =
 \left[ \begin{array}{c}
 \alpha \\
@@ -621,38 +624,7 @@ u_{k+1}
 \beta   
 \end{array} \right] .
 $$
-Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz. Otrzymujemy wtedy:
-$$ 
-\left[ \begin{array}{cccc}
-1 & 0 & 0 & 0 \\
--1 & -2+ch^2 & 1 & 0 \\
-0 & 1 & -2+ch^2 & 1 \\
-\vdots &  &  &  \\
-0 & 0 & 0 & 1 
-\end{array} \right]
-\left[ \begin{array}{c}
-u_0 \\
-u_1 \\
-u_2 \\
-\vdots \\
-u_{k+1}  
-\end{array} \right] = 
-\left[ \begin{array}{cccc}
--2+ch^2 & 1 & 0 & 0 \\
--1 & -2+ch^2 & 1 & 0 \\
-0 & -1 & -2+ch^2 & 1 \\
-\vdots & \ddots & \ddots & \vdots \\ 
-0 & 0 & -1 & -2+ch^2 \\
-\end{array} \right] \cdot
-\left[ \begin{array}{c}
-u_1 \\
-u_2 \\
-u_3 \\
-\vdots \\
-u_{k} 
-\end{array} \right] 
-$$
-Ostatecznie:
+Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz z otrzymując  wtedy :
 $$
 \left[ \begin{array}{ccccc}
 -2+ch^2 & 1 & 0 & \cdots & 0 \\
@@ -669,15 +641,33 @@ u_3 \\
 u_{N-1} 
 \end{array} \right] =
 \left[ \begin{array}{c}
--f(x_0)-\alpha(-2+ch^2) \\
+-f(x_0)-\alpha \\
 -f(x_1)h^2 \\
 -f(x_2)h^2\\
 \vdots \\
--f(x_{N-1})h^2 -\beta (-2+ch^2)   
+-f(x_{N-1})h^2 -\beta    
 \end{array} \right] . 
 $$
-
-
+\section{Schemat brzegowy dla problemu dwuwymiarowego}
+Rozważmy modelowe zadanie eliptyczne na kwadracie jednostkowym $ \overline{\Omega} = [0,1]^2 $. Zadanie polega na znalezieniu $ u \in C^2(\Omega) \cap C(\overline{\Omega} $ takiego, że
+\begin{equation} \label{eliptical_equation}
+\left\{ \begin{array}{ll}
+-\Delta u(x) + cu(x) = f(x) & \\
+u(s) = g(s) &
+\end{array} \right.
+\end{equation}
+dla $ x \in \Omega $ , gdzie $\Delta u = \sum_{k=1}^{2} u''(x_k) = u''(x_1) + u''(x_2)$, a $c$ jest ustaloną nieujemną stałą. Funkcja $f$ jest ciągła na $\Omega$, natomiast funkcja $g$ jest ciągła na $\delta \Omega$. Zakładamy, że istnieje jednoznaczne rozwiązanie \ref{eliptical_equation}. Dla $h>0$ korzystając z różnicy skończonej wprzód i w tył z \ref{finite_diff} zastosujemy następującą aproksymację drugiej pochodnej cząstkowej :
+\begin{equation}
+\Delta u(x)_k= \frac{u(x-he_{k}) - 2u(x) + u(x+he_k)}{h^2}
+\end{equation}
+gdzie $e_k$ jest k-tym wersorem. Zatem dla $ i,j \in \set{1,\cdots,N-1} $ otrzymujemy 
+$$
+\frac{u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j})+u(x_{i,j-1})+u(x_{i,j+1})}{h^2} + cu(x_{i,j}) = f(x_{ij})
+$$
+mnożąc przez $h^2$ otrzymujemy 
+\begin{equation}
+u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j})+u(x_{i,j-1})+u(x_{i,j+1}) + ch^2u(x_{i,j}) = h^2f(x_{ij})
+\end{equation}
 \chapter{Podsumowanie}
 \begin{example}[Przykład] \label{example-otwarty-euler}
 %TODO tutaj przykład porównujący schemat otwarty
