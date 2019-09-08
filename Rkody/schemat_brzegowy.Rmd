@@ -43,7 +43,7 @@ $$
 # Kod eksperymentu
 
 ```{r}
-lschemat_brzegowy = function(f, c , t0 , tN, x0, xN , N)
+schemat_brzegowy = function(f, c , t0 , tN, x0, xN , N)
 {
   h = (tN-t0)/N
   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
