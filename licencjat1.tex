@@ -14,8 +14,59 @@
 \author{Weronika Lara}
 \title{Numeryczne rozwiązywanie równań różniczkowych drugiego rzędu z warunkami brzegowymi}
 \begin{document}
+\begin{titlepage}
+\begin{flushleft}
+\end{flushleft}
+\begin{center}
+\textsc{{\huge Politechnika Łódzka}}
+\end{center}
+\bigskip
+\bigskip
+\begin{center}
+\textsc{{\Large Wydział Fizyki Technicznej, Informatyki i~Matematyki Stosowanej}}
+\end{center}
+\bigskip
+\bigskip
+\begin{Large}
+Kierunek: Matematyka 
+\\Specjalność: Matematyczne metody analizy danych biznesowych
 
-\maketitle
+\end{Large}
+\bigskip
+\bigskip
+\noindent\hrulefill
+\begin{center}
+{\textbf{{\Large Numeryczne rozwiązywanie równań różniczkowych drugiego rzędu z warunkami brzegowymi.}}}
+\end{center}
+\begin{flushright}
+{\large 
+Weronika Lara
+
+Nr albumu: 
+204107
+}
+\end{flushright}
+\noindent\hrulefill
+\bigskip
+\bigskip
+\begin{center}
+{\large Praca licencjacka
+napisana w~Instytucie Matematyki 
+\\Politechniki Łódzkiej 
+\bigskip
+\bigskip
+\\Promotor: dr, mgr inż. Piotr Kowalski
+ }
+\end{center}
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\begin{center}
+{\textsc{\large Łódź, wrzesień 2019}}
+\end{center}
+\end{titlepage}
+\tableofcontents
 
 \chapter{Wstęp}
 
@@ -30,8 +81,12 @@ Praca uporządkowana jest w następujący sposób. W rozdziale 2 znaleźć możn
 W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych pojęć.
 \begin{itemize}
 \item $\setN$ zbiór liczb naturalnych.
+\item $\setR$ zbiór liczb rzeczywistych.
 \item $K$ ciało nad zbiorem liczbowym.
-\item $\delta \Omega $ 
+\item $\delta \Omega $ domknięcie zbioru.
+\item $J$ dowolny przedział.
+\item $IntB$ wnętrze zbioru.
+\item $C^k(U) = \set{u: U \to \setR} $ funkcja $u$ jest k-krotnie różniczkowalna w sposób ciągły na przedziale $U$. 
 \item $\ddx{t} f(t)$ - oznaczać będzie pochodna funkcji $f$ po zmiennej $t$. W szczególności $\ddx[^n]{t^n}$ oznaczać będzie $n$-tą pochodną po tejże zmiennej.
 \item $t, x, y, u$ - W przekroju pracy rozważane są równania zwyczajne oraz cząstkowe. W przypadku równań zwyczajnych najczęściej symbolem $t$ oznaczać będziemy zmienną, natomiast $x$ będzie używane do oznaczania poszukiwanej funkcji. W przypadku równań cząstkowych natomiast symbolami $t,x,y$ oznaczać będziemy zmienne (czasami również $x_1,\ldots,x_n$) natomiast $u$ oznaczać będzie naszą nieznaną i poszukiwaną funkcję.
 \end{itemize}
@@ -67,9 +122,9 @@ Jeżeli funkcja \eqref{def_poch_czastk} jest różniczkowalna w punkcie $a_i$, t
 \end{definition}
 
 
-\begin{definition}[klasa $C^{(k)}$]
-Niech $U$ będzie otwartym podzbiorem $ \setR^n $, $ f: U \to \setR $. Mówimy, że funkcja $f$ jest klasy $C^{(k)}$ na $U$,  gdy w zbiorze $U$ istnieją wszystkie pochodne cząstkowe rzędu $k$ funkcji $f$ oraz są one funkcjami ciągłymi w zbiorze $U$. 
-\end{definition}
+%\begin{definition}[klasa $C^{(k)}$]
+%Niech $U$ będzie otwartym podzbiorem $ \setR^n $, $ f: U \to \setR $. Mówimy, że funkcja $f$ jest klasy $C^{(k)}$ na $U$,  gdy w zbiorze $U$ istnieją wszystkie pochodne cząstkowe rzędu $k$ funkcji $f$ oraz są one funkcjami ciągłymi w zbiorze $U$. 
+%\end{definition}
 
 \begin{definition}[Wielomian Taylora \citep{andrzejczak2019analiza1}]
 Dla $ n \in \setN $ i dowolnej funkcji $ f: J \to \setR $ n-krotnie różniczkowalnej w punkcie $t$ przedziału $ J \subset \setR $, dla $x \in \setR $  wielomian: 
@@ -372,7 +427,7 @@ Następujące postępowanie służące do rozwiązywania zagadnienia \ref{prob-z
 \begin{enumerate}
 \item Ustalamy $N$ ilość punktów w dziedzinie równania. 
 \item Dla ustalonego $N$ wyznaczamy krok $h>0$ według wzoru $h=\frac{T_N - t_0}{N}$. 
-\item Generujemy dyskretyzację dziedziny dla $ n \in \set{0,\cdots,N}  t_0 = t_0, t_1 = t_0 + h, \cdots, t_N = t_{N-1}+ Nh$. 
+\item Generujemy dyskretyzację dziedziny dla $ n \in \set{0,\cdots,N}  t_0 = t_0, t_1 = t_0 + h, \cdots, t_N = t_{0}+ Nh$. 
 \item Ustalamy $x(t_0) = x_0$ zgodnie z warunkiem początkowym.
 \item Dla kolejny $n \in \set{1, \ldots, N}$ stosujemy wzór
 $$
@@ -388,7 +443,7 @@ Dla zagadnienia początkowego \ref{prob-zagadnienie-cauchy} następujące postę
 \begin{enumerate}
 \item Ustalamy $N$ ilość punktów w dziedzinie równania. 
 \item Dla ustalonego $N$ wyznaczamy krok $h>0$ według wzoru $h=\frac{T_N-t_0}{N}$. 
-\item Generujemy dyskretyzację dziedziny dla $n \in \set{0,\cdots,N}  t_0 = t_0, t_1 = t_0 + h, \cdots, t_N = t_{N-1}+ Nh$. 
+\item Generujemy dyskretyzację dziedziny dla $n \in \set{0,\cdots,N}  t_0 = t_0, t_1 = t_0 + h, \cdots, t_N = t_{0}+ Nh$. 
 \item Ustalamy $x(t_0) = x_0$ zgodnie z warunkiem początkowym.
 \item Dla kolejny $n \in \set{1, \ldots, N}$ stosujemy wzór
 $$
@@ -530,7 +585,7 @@ Zauważmy, że
 \begin{equation} \label{proof2}
 \forall_{n \in \set{1,\cdots,N}} \quad \abs{E_n} \leq (1 + h \cdot L)^{n} \abs{E_0} + \sum_{k=0}^{n-1} (1+ h \cdot L)^{n-k-1} \abs{\tau_k} 
 \end{equation}
-Istotnie dla ustalonego $n$, stosując \  \eqref{proof1} \  $n-1$ \  krotnie otrzymujemy \ \eqref{proof2} . Korzystając z tego, że \footnote{Dowód tej własności znajdziemy w} $|1+x|\leqslant e^{|x|}$ otrzymujemy
+Istotnie dla ustalonego $n$, stosując \  \eqref{proof1} \  $n-1$ \  krotnie otrzymujemy \ \eqref{proof2} . Korzystając z tego, że \footnote{Dowód tej własności znajdziemy w \ref{dowod_wlasnosci}} $|1+x|\leqslant e^{|x|}$ otrzymujemy
 $$
 \forall_{n \in \set{1,\cdots,N}} \quad (1 + h \cdot L)^{n} \leq (1 + h \cdot L)^{N} \leq e^{N \cdot h \cdot L} \leq e^{L \cdot (T-t_0)} .
 $$
@@ -560,6 +615,7 @@ W tym rozdziale będziemy posługiwali się funkcją szukaną $u$, zamiast $x$ i
 \item pierwszą pochodną danej funkcji zamiast $\ddx{x} u(x) $ będziemy oznaczali przez $u_{x}$,
 \item drugą pochodną danej funkcji zamiast $\ddx[^2]{x} u(x)$ będziemy oznaczali przez $u_{xx}$,
 \end{itemize}
+\subsection{Schemat brzegowy dla problemu jednowymiarowego}
 Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
 \begin{equation} \label{boundary_diff_equa}
 \left\{ \begin{array}{ll}
@@ -591,37 +647,39 @@ Podstawmy \eqref{finite_diff} do \eqref{boundary_diff_equa}. Wówczas dla ustalo
 \end{equation}
 Mnożąc obie strony przez $-h^2$ otrzymujemy:  otrzymujemy :
 \begin{equation}
-u(x+h) - 2u(x) + u(x-h) + cu(x)h^2 = f(x)h^2,
+u(x+h) - 2u(x) + u(x-h) - cu(x)h^2 = -f(x)h^2,
 \end{equation}
 wprowadźmy siatkę, czyli zbiór dyskretny dla $ h= \frac{b-a}{N}$ , $k \in \set{1,\cdots,N-1}$  mamy: 
 \begin{equation} \label{boundary_model}
-u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) - cu(x_k)h^2 - f(x_k)h^2.
+u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) + cu(x_k)h^2 + f(x_k)h^2.
 \end{equation}
 W zagadnieniach brzegowych nie jest znana wartość $u(x_1)$. Zauważmy, że gdy rozważymy jej wartość $u(x_1) = s \in \setR$ , to stosując nasz schemat możemy obliczyć wszystkie kolejne iteracje . Zatem nasze zadanie wymagać będzie rozwiązania problemu odnalezienia takiego $s$, że $u(x_1) = s$ i $u(x_k) = \beta$. Przyjmując oznaczenie $ x_k = x_0 + kh$ ,dla $ k \in \set{1, \cdots,N-1} $ otrzymujemy układ równań liniowych postaci:
 \begin{equation}
 \left\{ \begin{array}{ll}
 u(x_0) = \alpha & \\
-u(x_1) = 2u(x_0) - u(x_{-1}) - cu(x_0)h^2 - f(x_0)h^2 & \\
-u(x_2) = 2u(x_1) - u(x_{0}) - cu(x_1)h^2 - f(x_1)h^2 & \\ 
+u(x_1) = 2u(x_0) - u(x_{-1}) + cu(x_0)h^2 + f(x_0)h^2 & \\
+u(x_2) = 2u(x_1) - u(x_{0}) + cu(x_1)h^2 + f(x_1)h^2 & \\ 
 \vdots  & \\
-u(x_{N}) = 2u(x_{N-1}) - u(x_{N-2}) - cu(x_{N-1})h^2 - f(x_{N-1})h^2  & \\
+u(x_{N}) = 2u(x_{N-1}) - u(x_{N-2}) + cu(x_{N-1})h^2 + f(x_{N-1})h^2  & \\
 u(x_N) = \beta &
 \end{array} \right.
 \end{equation}
 Otrzymaliśmy układ $N+1$ równań liniowych z $N+1$ niewiadomymi. Problem w obecnej postaci jesteśmy wstanie rozwiązać. Zapiszmy ten układ za pomocą postaci macierzowej :
 $$ 
-\left[ \begin{array}{cccc}
-1 & 0 & 0 & 0 \\
--2-ch^2 & 1 & 1 & 0 \\
-1 & -2-ch^2 & 1 & 0 \\
-\vdots & \vdots & \vdots & \vdots \\
-0 & 0 & 0 & 1 
+\left[ \begin{array}{ccccc}
+1 & 0 & 0 & \cdots &0 \\
+-2-ch^2 & 1 & 1 &\cdots &0 \\
+1 & -2-ch^2 & 1 &\cdots &0 \\
+\vdots & \vdots & \vdots &  &\vdots \\
+0& 0 & \cdots& -2-ch^2 & 1 \\
+0 & 0 & 0&\cdots & 1 
 \end{array} \right] \cdot
 \left[ \begin{array}{c}
 u_0 \\
 u_1 \\
 u_2 \\
 \vdots \\
+u_{N} \\
 u_{N}  
 \end{array} \right] =
 \left[ \begin{array}{c}
@@ -629,6 +687,7 @@ u_{N}
 -f(x_1)h^2 \\
 -f(x_2)h^2\\
 \vdots \\
+-f(x_{N}) \\
 \beta   
 \end{array} \right] .
 $$
@@ -710,15 +769,15 @@ $$
 Algorytm ten również stworzy nam układ równań liniowych tak jak w przypadku schematu brzegowego jednowymiarowego, ale o wiele bardziej skomplikowany z racji tego, że poruszamy się w zbiorze dwuwymiarowym. Zapiszemy nasz problem w postaci macierzowej. Dla uproszczenia zapisu przyjmijmy $u(x_{1,2}) = u_{1,2}, F= 4+ch^2$.
 $$
 \left[ \begin{array}{ccccccccc}
-F & 1 & 1 & 0 & 0 & 0& 0 & 0 & 0\\
-1 & F & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
-1 & 0 & F & 0 & 1 & 1& 0 & 0 & 0 \\
-0 & 1 & 0 & F & 0& 0 & 1 & 0 & 0  \\ 
-0 & 1 & 1& 0 & F & 0& 1 & 1 & 0 \\
-0 & 0 & 1 & 0 & 0 & F & 0 & 1 & 0 \\
-0 & 0 & 0 & 1 & 1 & 0 & F & 0 & 1 \\
-0 & 0 & 0 & 0 & 1 & 1 & 0 & F & 1 \\
-0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & F
+F & -1 & -1 & 0 & 0 & 0& 0 & 0 & 0\\
+-1 & F & 0 & -1 & -1 & 0 & 0 & 0 & 0 \\
+-1 & 0 & F & 0 & -1 & -1& 0 & 0 & 0 \\
+0 & -1 & 0 & F & 0& 0 & -1 & 0 & 0  \\ 
+0 & -1 & -1& 0 & F & 0& -1 & -1 & 0 \\
+0 & 0 & -1 & 0 & 0 & F & 0 & -1 & 0 \\
+0 & 0 & 0 & -1 & -1 & 0 & F & 0 & -1 \\
+0 & 0 & 0 & 0 & -1 & -1 & 0 & F & -1 \\
+0 & 0 & 0 & 0 & 0 & 0 & -1 & -1 & F
 \end{array} \right] \cdot
 \left[ \begin{array}{c}
 u_{2,2} \\
@@ -732,11 +791,15 @@ u_{3,4} \\
 u_{4,4}
 \end{array} \right] =
 \left[ \begin{array}{c}
--f(x_0)-\alpha \\
--f(x_1)h^2 \\
--f(x_2)h^2\\
-\vdots \\
--f(x_{N-1})h^2 -\beta    
+f(x_{2,2})-a_2 -a_3 \\
+f(x_{3,2})h^2 -a_4 \\
+f(x_{2,3})h^2 -a_5\\
+f(x_{4,2})h^2 -a_6 -a_{10} \\
+f(x_{3,3})h^2 \\
+f(x_{2,4})h^2 -a_7 -a_{11} \\
+f(x_{4,3})h^2 -a_{12} \\
+f(x_{3,4})h^2 -a_{13} \\
+f(x_{4,4})h^2 - a_{14} -a_{15} 
 \end{array} \right] . 
 $$
 
@@ -744,6 +807,12 @@ $$
 
 
 \end{problem}
+
+
+\chapter{Podsumowanie}
+\begin{example}[Przykład] \label{example-otwarty-euler}
+%TODO tutaj przykład porównujący schemat otwarty
+\end{example}
 \appendix
 \chapter{Wybrane nierówności liczb rzeczywistych}
 \begin{lemma}
@@ -752,10 +821,26 @@ $$
 |1+x|\leqslant e^{|x|}.
 $$
 \end{lemma}
-\chapter{Podsumowanie}
-\begin{example}[Przykład] \label{example-otwarty-euler}
-%TODO tutaj przykład porównujący schemat otwarty
-\end{example}
+\begin{proof}
+Dla dowolnego $x \in \setR $ mamy,że
+\begin{equation}\label{dowod_wlasnosci}
+e^x \leq (e^x)|_{0}^{1} = (x-0) \cdot e^0 = x+1
+\end{equation}
+Rozważmy następujące przypadki:
+\begin{enumerate}
+\item Gdy $ x \in [0, + \infty)$. Wynika wprost z \eqref{dowod_wlasnosci}.
+\item Gdy $ x \in (-\infty, -1]$. Niech $ x \in (-\infty, -1]$, wtedy $-x \in (1, + \infty)$ zatem zachodzi z \eqref{dowod_wlasnosci}.
+\item Gdy $x \in (-1,0)$. Ponieważ $ x \in (-1,0) \subset [-1,+\infty)$. Z \eqref{dowod_wlasnosci} mamy
+$$
+e^{|x|} \leq e^x \leq x+1 = |x+1|
+$$
+\end{enumerate}
+\end{proof}
+
+
+
+
+
 
 \bibliographystyle{plain}
 \bibliography{bibliografia}
