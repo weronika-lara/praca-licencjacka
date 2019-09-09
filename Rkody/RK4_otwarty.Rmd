@@ -35,12 +35,6 @@ K_4 &= f(t_{n-1} + h, x_{n-1} + hK_3)
 $$
 
 
-```{r}
-#K1 = rownanie(t[i-1], x[,i-1])
-#K2 = rownanie(t[i-1] + (h/2), x[,i-1] + (h/2)*K1)
-#K3 = rownanie(t[i-1] + (h/2), x[,i-1] + (h/2)*K2)
-#K4 =  rownanie(t[i-1] + h, x[,i-1] + h*K3)
-```
 
 ```{r}
 RK4_otwarty= function(rownanie, x0 , t0, h, N){
@@ -108,7 +102,35 @@ plot(t, sin(t), type = 'l', col = 'black')
 lines(solution$time, solution$values[1,], col='red')
 ```
 
+Weźmy teraz równanie postaci 
+$$
+y'=2y \quad y(0)=1
+$$
+Wiemy, że rozwiązaniem teoretycznym jest funckja :
+$$
+y = e^{2x}
+$$
 
+```{r}
+rownanie = function(t,x){
+  return(2*x)
+}
+x0 = c(1)
+t0 = 0
+t_end = 100  
+N = 1000
+h = (t_end - t0) / N
+
+
+  
+solution = RK4_otwarty(rownanie, x0, t0, h , N)
+```
+
+```{r}
+t = seq(t0,t_end, by=0.001)
+plot(t, exp(2*t), type = 'l', col='black' )
+lines(solution$time, solution$values, col='red')
+```
 
 
 

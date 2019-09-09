@@ -146,6 +146,33 @@ t = seq(t0,t_end, by=0.001)
 plot(t, t^2 + t + 0.5, type = 'l', col='black' )
 lines(solution$time, solution$values, col='red')
 ```
+Weźmy teraz równanie postaci 
+$$
+y'=2y \quad y(0)=1
+$$
+Wiemy, że rozwiązaniem teoretycznym jest funckja :
+$$
+y = e^{2x}
+$$
+
+```{r}
+rownanie = function(t,x){
+  return(2*x)
+}
+x0 = c(1)
+t0 = 0
+t_end = 100  
+N = 1000
+h = (t_end - t0) / N
 
 
+  
+solution = schemat_otwarty(rownanie, x0, t0, h , N)
+```
+
+```{r}
+t = seq(t0,t_end, by=0.001)
+plot(t, exp(2*t), type = 'l', col='black' )
+lines(solution$time, solution$values, col='red')
+```
 
