@@ -33,7 +33,7 @@ translator= function(i, j, row_size){
   return ( (j-1) * row_size + i)
 }
 
-schemat_eliptyczny = function(f, c , g , x0, xn, y0, yn , n)
+schemat_eliptyczny = function(f, c , g , x0, xn, y0, yn , N)
 {
   h1 = (xn-x0) / N
   h2 = (yn-y0) / N
@@ -56,8 +56,27 @@ schemat_eliptyczny = function(f, c , g , x0, xn, y0, yn , n)
       } else {
         A[translator(i,j, N-1), translator(i+1,j, N-1)] = -1
       }
+      # u_{i,j-1}
+      if (j == 1){
+        b[translator(i,j,N-1)] = b[translator(i,j,N-1)] + g(x0,y[j])
+      } else {
+        A[translator(i,j,N-1), translator(i,j-1,N-1)] = -1
+      }
+      #u_{i,j+1}
+      if (j == N-1){
+        b[translator(i,j,N-1)] = b[translator(i,j,N-1)] + g(xN,y[j])
+      } else {
+        A[translator(i,j,N-1), translator(i,j+1,N-1)] = -1
+      }
     }
   }
-  print(A);
+  x = solve(A, b)
+  result = list(time=c(x0, x, xN), values = c(y0, y, yN))
+  return(result)
 }
 ```
+
+```{r}
+
+```
+
