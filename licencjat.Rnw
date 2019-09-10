@@ -10,7 +10,7 @@
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{natbib} %bibtex!!
 \usepackage[polish, section]{dyschemist}
-
+\usepackage{Sweave}
 \author{Weronika Lara}
 \title{Numeryczne rozwiązywanie równań różniczkowych drugiego rzędu z warunkami brzegowymi}
 \begin{document}
@@ -610,15 +610,202 @@ Gdy $ N \to \infty $ to $ h \to 0 $ oraz $ E_N \to 0$. Zatem schemat jest zbież
 
 
 \section{Przykłady numeryczne}
-
+W sekcji tej zaprezentujemy przykłady wykorzytsujące schemat Eulera otwarty(w skrócie będziemy pisali schemat Eulera) oraz Rungego-Kutty rzędu 4 (w skórcie będziemy oznaczali RK 4). Weźmy równanie różniczkowe postaci:
+$$
+x'' = -x \quad x(0)=0, x'(0) = 1.
+$$
+Jego rozwiązaniem jest oczywiście funkcja $\sin(t)$. Zdefiniujmy teraz kody odpowiadające naszym schematom. Potrzebne będzie 5 parametrów:
+\begin{itemize}
+\item równania (funkcję prawej strony równania)
+\item warunku początkowego
+\item kroku $h$, 
+\item chwili $t_0$
+\item oraz ilości kroków $N$.
+\end{itemize}
+Zacznijmy od schematu Eulera. Przypomnijmy wzór na dla tego algorytmu:
+$$
+x(t_n) = x(t_{n-1}) + hf(t_{n-1},x(t_{n-1}))
+$$
 <<>>=
-x = c(1,2)
-x
+schemat_otwarty = function(rownanie1, x0 , t0, h, N){
+  t = seq(from=t0, to=t0+N*h,length.out = N+1)
+  xn = matrix(0, nrow = length(x0), ncol = N+1)
+  xn[,1] = x0
+  t[1] = t0
+  for (i in 2:(N+1)){
+    xn[,i] = xn[,i-1]+h*rownanie1(t[i-1], xn[,i-1])
+  }
+  result1 = list(time=t, values=xn)
+  return(result1)
+}
+
+@
+Przypomnijmy wzór na schemat otwarty RK 4
+$$
+x(t_{n}) = x(t_{n-1}) + \frac{h}{6} ( K_1 + 2K_2 + 2K_3 + K_4 )
+$$
+gdzie 
+$$
+\begin{array}{cl}
+K_1 &= f(t_{n-1},x_{n-1}) \\
+K_2 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_1) \\
+K_3 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_2) \\
+K_4 &= f(t_{n-1} + h, x_{n-1} + hK_3) 
+\end{array}
+$$
+<<>>=
+RK4_otwarty= function(rownanie2, x0 , t0, h, N){
+  t = seq(from=t0, to=t0+N*h,length.out = N+1)
+  xn = matrix(0, nrow = length(x0), ncol = N+1)
+  xn[,1] = x0
+  t[1] = t0
+  for (i in 2:(N+1)){
+    K1 = rownanie2(t[i-1],  xn[,i-1])
+    K2 = rownanie2(t[i-1] + (h/2), xn[,i-1] + (h/2)*K1)
+    K3 = rownanie2(t[i-1] + (h/2), xn[,i-1] + (h/2)*K2)
+    K4 =  rownanie2(t[i-1] + h, xn[,i-1] + h*K3)
+    xn[,i] = xn[,i-1]+(h/6)*(K1 + 2*K2 + 2*K3 + K4)
+   
+  }
+  result2 = list(time=t, values=xn)
+ return(result2)
+}
+@
+<<>>=
+rownanie1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 10 
+N = 100
+h = (t_end - t0) / N
+
+
+solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
+@
+<<>>=
+rownanie2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 100
+h = (t_end - t0) / N
+
+
+solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
+@
+Przedstawimy wspólny wykres funkcji $\sin(t)$ porównujący te dwa schematy. Kolor czerowny odpowiada przybliżeniu otrzymanego przez schemat Eulera, zielony obrazuje przybliżenie otrzymane z RK 4.
+<<fig=TRUE>>=
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution1$time, solution1$values[1,], col='red')
+lines(solution2$time, solution2$values[1,], col='green')
+@
+W dalszej częsci przykładu pokazujemy jak istotny jest dobór odpowiedniego $N$. Różnice pokażemy dla funkcji $sin(t)$ i na schemacie RK 4. 
+\begin{itemize}
+\item $N=10000$,
+\item $N=1000$,
+\item $N=100$.
+\end{itemize}
+Zatem weźmy $N=10000$:
+<<>>=
+rownanie2_1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 10000
+h = (t_end - t0) / N
+
+
+solution2_1 = RK4_otwarty(rownanie2_1, x0, t0, h , N)
 @
 
-<<>>=
+Prezentujemy wspólny wykres. Kolor czerowny odpowiada przybliżeniu uzyskanemu ze schematu RK 4
 
+<<fig=TRUE>>=
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_1$time, solution2_1$values[1,], col='red')
 @
+
+Dla $N=1000$
+<<>>=
+rownanie2_2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 1000
+h = (t_end - t0) / N
+
+
+solution2_2 = RK4_otwarty(rownanie2_2, x0, t0, h , N)
+@
+
+Wykres:
+<<fig=TRUE>>=
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_2$time, solution2_2$values[1,], col='green')
+@
+
+Dla $N=100$
+<<>>=
+rownanie2_3 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 100
+h = (t_end - t0) / N
+
+
+solution2_3 = RK4_otwarty(rownanie2_3, x0, t0, h , N)
+@
+
+Wykres:
+<<fig=TRUE>>=
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_3$time, solution2_3$values[1,], col='purple')
+@
+
+Zaprezentujemy teraz wykres wspólny dla $N=10000$, $N=1000$, $N=100$.
+<<fig=TRUE>>=
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_1$time, solution2_1$values[1,], col='red')
+lines(solution2_2$time, solution2_2$values[1,], col='green')
+lines(solution2_3$time, solution2_3$values[1,], col='purple')
+@
+
 
 
 
@@ -819,7 +1006,76 @@ $$
 
 
 \end{problem}
+\chapter{Przykładowe rozwiązanie schematu brzegowego jednowymiarowego}
+W dalszej części zainteresowaliśmy przejściem od zagadnień początkowych, do trudniejszych zagadnień - tj. zagadnień brzegowych. W tym eksperymencie przyjrzymy się liniowemu równaniu drugiego stopnia niejednorodnym z warunkami brzegowymi w przypadku jednowymiarowym. Interesuje nas równanie postaci
+$$
+\left\lbrace
+\begin{array}{c}
+-x''(t) + c x(t) = f(t), \quad t \in (a,b), \\
+x(a) = \alpha \\
+x(b) = \beta
+\end{array}
+\right.
+$$
+Do rozwiązania tego zagadnienia wykorzystamy nietypowy bo mieszane przybliżenie operatora drugiej pochodnej. Dokładnie skorzystamy z operatorów 
+$$
+\delta_h \colon x \mapsto \frac{x(t+h) - x(t)}{h}
+$$
+oraz
 
+$$
+\overline{\delta}_h \colon x \mapsto \frac{x(t) - x(t-h)}{h}
+$$
+
+Przybliżając 
+$$
+x'' \approx \delta_h \overline{\delta}_h x.
+$$
+
+W tym przykładzie konkretnie omówimy równanie drugiego rzędu postaci
+$$
+x'' = -x \quad x(0)=0, x'(0) = 1.
+$$
+
+Jego rozwiązaniem jest oczywiście funkcja $\sin(t)$.
+<<>>=
+schemat_brzegowy = function(f, c , t0 , tN, x0, xN , N)
+{
+  h = (tN-t0)/N
+  t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+  A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+  A[row(A) - col(A) == -1] = 1
+  A[row(A) - col(A) == 1] = 1
+  b = -1 * f(t) * h
+  b[1] = b[1] - x0
+  b[N-1] = b[N-1] - xN
+  x = solve(A, b)
+  result = list(time=c(t0, t, tN), values = c(x0, x, xN))
+  return(result)
+}
+@
+
+Zdefiniujmy funkcje $f$ zawartą w kodzie.
+<<>>=
+f = function(t){
+  return(rep(0,times = length(t)))
+}
+c = -1
+t0 = 0
+tN = 5*pi/2
+x0 = 0
+xN = 1
+N =100
+
+solution = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
+@
+
+Przedstawimy wykres funckji $sin(t)$ wraz z przybliżeniem otrzymanym z algorytmu. Przybliżenie otrzymane przy użyciu schematu brzegowego jednowymiarowego oznaczone jest kolorem czerwonym.
+<<fig=TRUE>>=
+t = seq(0,to=4*pi, length.out = 1000)
+plot(t, sin(t),type = 'l')
+lines(solution$time, solution$values,col='red')
+@
 
 \chapter{Podsumowanie}
 \begin{example}[Przykład] \label{example-otwarty-euler}
