@@ -1,0 +1,178 @@
+---
+title: "kody"
+author: "WLara"
+date: "12 sierpnia 2019"
+output: html_document
+---
+#todo : modele:
+#rk4(teoria do pracy plus kod)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Schemat otwarty Eulera
+
+W tej części rozważymy sobie równanie różniczkowe postaci 
+$$
+y' = -y^2, \quad y(0) = 1
+$$
+
+Wiemy, że rozwiązaniem teoretycznym tego problemu jest funkcja 
+
+$$
+y(x) = \frac{1}{1+x}, x \in [0,\infty].
+$$
+
+## Scehmat otwarty
+
+Zdefiniujmy kod naszego schematu otwartego. Potrzeba w nim 5 parametrów.
+
+* równania (funkcję prawej strony równania)
+* warunku początkowego
+* kroku $h$, 
+* chwili $t_0$
+* oraz ilości kroków $N$.
+
+Przypomnijmy wzór na schemat otwarty
+$$
+x(t_n) = x(t_{n-1}) + hf(t_{n-1},x(t_{n-1}))
+$$
+
+```{r}
+schemat_otwarty = function(rownanie, x0 , t0, h, N){
+  t = seq(from=t0, to=t0+N*h,length.out = N+1)
+  xn = matrix(0, nrow = length(x0), ncol = N+1)
+  xn[,1] = x0
+  t[1] = t0
+  for (i in 2:(N+1)){
+    xn[,i] = xn[,i-1]+h*rownanie(t[i-1], xn[,i-1])
+  }
+  result = list(time=t, values=xn)
+  return(result)
+}
+```
+
+```{r}
+rownanie = function(t, x){
+  return(-x^2)
+}
+
+x0 = c(1)
+t0 = 0
+t_end = 100  
+N = 1000
+h = (t_end - t0) / N
+
+
+  
+solution = schemat_otwarty(rownanie, x0, t0, h , N)
+```
+
+```{r}
+t = seq(t0,t_end, by=0.001)
+plot(t, 1/(1+t), type = 'l', col='black' )
+lines(solution$time, solution$values, col='red')
+```
+
+Sprawdźmy dalej równanie drugiego rzedu postaci
+$$
+x'' = -x \quad x(0)=0, x'(0) = 1.
+$$
+
+Jego rozwiązaniem jest oczywiście funkcja $\sin(t)$
+
+```{r}
+rownanie = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 10 
+N = 100
+h = (t_end - t0) / N
+
+
+solution = schemat_otwarty(rownanie, x0, t0, h , N)
+
+
+```
+
+
+```{r}
+t = seq (t0, t_end, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution$time, solution$values[1,], col='red')
+```
+
+```{r}
+macierz = matrix (0, nrow = 3, ncol = 4)
+macierz
+```
+
+```{r}
+macierz[,1] = c(1,2,3)
+macierz
+```
+Weźmy teraz równanie różniczkowe postaci
+$$
+y'= 2x +1 \quad y(0)=1
+$$
+Wiemy, że rozwiązaniem teorytycznym jest funkcja 
+$$
+y=x^2 + x + \frac{1}{2}
+$$
+```{r}
+rownanie = function(t,x){
+  return(2*t +1)
+}
+x0 = c(1)
+t0 = 0
+t_end = 100  
+N = 1000
+h = (t_end - t0) / N
+
+
+  
+solution = schemat_otwarty(rownanie, x0, t0, h , N)
+```
+
+```{r}
+t = seq(t0,t_end, by=0.001)
+plot(t, t^2 + t + 0.5, type = 'l', col='black' )
+lines(solution$time, solution$values, col='red')
+```
+Weźmy teraz równanie postaci 
+$$
+y'=2y \quad y(0)=1
+$$
+Wiemy, że rozwiązaniem teoretycznym jest funckja :
+$$
+y = e^{2x}
+$$
+
+```{r}
+rownanie = function(t,x){
+  return(2*x)
+}
+x0 = c(1)
+t0 = 0
+t_end = 100  
+N = 1000
+h = (t_end - t0) / N
+
+
+  
+solution = schemat_otwarty(rownanie, x0, t0, h , N)
+```
+
+```{r}
+t = seq(t0,t_end, by=0.001)
+plot(t, exp(2*t), type = 'l', col='black' )
+lines(solution$time, solution$values, col='red')
+```
+

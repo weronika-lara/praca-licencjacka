@@ -1,0 +1,82 @@
+---
+title: "Zagadnienie brzegowe eliptyczne"
+author: "Weronika Lara"
+date: "9 września 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Wprowadzenie 
+
+W tej części zajmiemy się zagadnieniem eliptycznym w przestrzeni dwuwymiarowej $\mathbb{R}^2$ postaci
+$$
+- \Delta u(x) + c u(x) = f(x) \\
+u(s) = g(s)
+$$
+
+...
+
+Równanie to wyprowadza postać rekurencyjną
+
+$$
+-u_{i-1,j} + 4 u_{ij} - u_{i+1,j} - u_{i,j-1} - u_{i,j+1} + ch^2 u_{ij} = h^2 f(x_{ij})
+$$
+
+# Implementacja
+
+```{r}
+
+translator= function(i, j, row_size){
+  return ( (j-1) * row_size + i)
+}
+
+schemat_eliptyczny = function(f, c , g , x0, xn, y0, yn , N)
+{
+  h1 = (xn-x0) / N
+  h2 = (yn-y0) / N
+  x = seq(from=x0+h1, to=x0+(N-1)*h1,length.out = N-1)
+  y = seq(from=y0+h2, to=y0+(N-1)*h2,length.out = N-1)
+  size = (N-1)^2
+  A = diag(4+c*h1*h2,nrow=size,ncol=size)
+  b = h1*h2*f(x,y)
+  for (i in 1:(N-1)){
+    for (j in 1:(N-1)){
+      # u_{i-1,j}
+      if (i == 1) {
+        b[translator(i,j, N-1)] = b[translator(i,j, N-1)] + g(x[i],y0)
+      } else {
+        A[translator(i,j,N-1), translator(i-1,j,N-1)] = -1
+      }
+      # u_{i+1,j}
+      if (i == N-1){
+        b[translator(i,j,N-1)] = b[translator(i,j,N-1)] + g(x[i],yN)
+      } else {
+        A[translator(i,j, N-1), translator(i+1,j, N-1)] = -1
+      }
+      # u_{i,j-1}
+      if (j == 1){
+        b[translator(i,j,N-1)] = b[translator(i,j,N-1)] + g(x0,y[j])
+      } else {
+        A[translator(i,j,N-1), translator(i,j-1,N-1)] = -1
+      }
+      #u_{i,j+1}
+      if (j == N-1){
+        b[translator(i,j,N-1)] = b[translator(i,j,N-1)] + g(xN,y[j])
+      } else {
+        A[translator(i,j,N-1), translator(i,j+1,N-1)] = -1
+      }
+    }
+  }
+  x = solve(A, b)
+  result = list(time=c(x0, x, xN), values = c(y0, y, yN))
+  return(result)
+}
+```
+
+```{r}
+
+```
+

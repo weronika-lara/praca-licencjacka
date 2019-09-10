@@ -1,0 +1,563 @@
+---
+title: "ekperyment"
+author: "WLara"
+date: "1 września 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+W tym ekperymencie pokażemy jak względem siebie mają się opisane w naszej pracy schematy. Wszystkie przybliżenia danej funckji zaprezentujemy na wspólnym wykresie. Ponadto pokażemy jak istotny jest dobór odpowiedniego $N$. Zobaczymy jak schematy pracują dla :
+$$
+
+\item N=1000
+\item N=100
+\item N=10
+
+$$
+Weźmy równanie różniczkowe postaci:
+
+$$
+x'' = -x \quad x(0)=0, x'(0) = 1.
+$$
+Jego rozwiązaniem jest oczywiście funkcja $\sin(t)$
+ 
+##Euler_Otwarty
+
+```{r}
+schemat_otwarty = function(rownanie1, x0 , t0, h, N){
+  t = seq(from=t0, to=t0+N*h,length.out = N+1)
+  xn = matrix(0, nrow = length(x0), ncol = N+1)
+  xn[,1] = x0
+  t[1] = t0
+  for (i in 2:(N+1)){
+    xn[,i] = xn[,i-1]+h*rownanie1(t[i-1], xn[,i-1])
+  }
+  result1 = list(time=t, values=xn)
+  return(result1)
+}
+```
+
+
+## RK4_otwarty
+
+```{r}
+RK4_otwarty= function(rownanie2, x0 , t0, h, N){
+  t = seq(from=t0, to=t0+N*h,length.out = N+1)
+  xn = matrix(0, nrow = length(x0), ncol = N+1)
+  xn[,1] = x0
+  t[1] = t0
+  for (i in 2:(N+1)){
+    K1 = rownanie2(t[i-1],  xn[,i-1])
+    K2 = rownanie2(t[i-1] + (h/2), xn[,i-1] + (h/2)*K1)
+    K3 = rownanie2(t[i-1] + (h/2), xn[,i-1] + (h/2)*K2)
+    K4 =  rownanie2(t[i-1] + h, xn[,i-1] + h*K3)
+    xn[,i] = xn[,i-1]+(h/6)*(K1 + 2*K2 + 2*K3 + K4)
+   
+  }
+  result2 = list(time=t, values=xn)
+ return(result2)
+}
+```
+ 
+##Schemat_brzegowy
+
+```{r}
+library(matlib)
+
+schemat_brzegowy = function(f, c , t0 , tN, x0, xN , N)
+{
+  h = (tN-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2 -c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] - x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   result = list(time=c(t0, t, tN), values = c(x0, x, xN))
+   return(result)
+}
+```
+
+
+
+Zaprezentujemy teraz wykres wspólny przybliżeń funkcji $ sin(t) $ uzyskanych przez powyższe schematy. Kolor czerowny odpowiada przybliżeniu otrzymanego przez schemat Eulera, zielony obrazuje przybliżenie otrzymane z RK_4 natomiast fioletowy pokazuje schemat_brzegowy. Otrzymane przybliżenia są dla $N=1000$.
+
+##N=1000
+
+```{r}
+rownanie1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 10 
+N = 1000
+h = (t_end - t0) / N
+
+
+solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
+```
+
+```{r}
+rownanie2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 1000
+h = (t_end - t0) / N
+
+
+solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
+```
+
+```{r}
+f = function(t){
+  return(rep(0,times = length(t)))
+  }
+c = -1
+t0 = 0
+tN = pi/2*5
+x0 = 0
+xN = 1
+N =1000
+
+solution3 = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
+
+```
+
+
+```{r}
+rownanie3 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = 0
+xN = 1
+t0 = 0
+t_end = pi/2*5 
+N = 1000
+c = -1
+
+h = (t_end-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] -  x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   solution3 = list(time=c(t0, t, tN), values = c(x0, x, xN))
+```
+
+```{r}
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution1$time, solution1$values[1,], col='red')
+lines(solution2$time, solution2$values[1,], col='green')
+lines(solution3$time, solution3$values, col='purple')
+```
+
+
+Zobaczmy jak nasze schematy zachowują się jeżeli zmniejszymy nasze N. 
+
+## N=100 
+```{r}
+rownanie1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 10 
+N = 100
+h = (t_end - t0) / N
+
+
+solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
+```
+
+```{r}
+rownanie2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 100
+h = (t_end - t0) / N
+
+
+solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
+```
+
+```{r}
+f = function(t){
+  return(rep(0,times = length(t)))
+  }
+c = -1
+t0 = 0
+tN = pi/2*5
+x0 = 0
+xN = 1
+N =100
+
+solution3 = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
+
+```
+
+```{r}
+rownanie3 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+
+x0 = 0
+xN = 1
+t0 = 0
+t_end = pi/2*5 
+N = 100
+c = -1
+
+h = (t_end-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] -  x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   solution3 = list(time=c(t0, t, tN), values = c(x0, x, xN))
+```
+Wykres dla $N=100$ . Kolory przybliżeń pozostają te same.
+
+```{r}
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution1$time, solution1$values[1,], col='red')
+lines(solution2$time, solution2$values[1,], col='green')
+lines(solution3$time, solution3$values, col='purple')
+```
+
+Ponownie zmnijeszamy nasze $N$. 
+
+##N=10
+```{r}
+rownanie1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 10 
+N = 10
+h = (t_end - t0) / N
+
+
+solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
+```
+
+```{r}
+rownanie2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 10
+h = (t_end - t0) / N
+
+
+solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
+```
+
+```{r}
+f = function(t){
+  return(rep(0,times = length(t)))
+  }
+c = -1
+t0 = 0
+tN = pi/2*5
+x0 = 0
+xN = 1
+N =10
+
+solution3 = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
+
+```
+
+```{r}
+rownanie3 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = 0
+xN = 1
+t0 = 0
+t_end = pi/2*5 
+N = 10
+c = -1
+
+h = (t_end-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] -  x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   solution3 = list(time=c(t0, t, tN), values = c(x0, x, xN))
+```
+
+Wykres dla $N=10$ . Kolory przybliżeń pozostają te same.
+
+```{r}
+t = seq (t0, to= 10*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution1$time, solution1$values[1,], col='red')
+lines(solution2$time, solution2$values[1,], col='green')
+lines(solution3$time, solution3$values, col='purple')
+```
+
+
+Ten eksperyment miał na celu zaprezentowania dlaczego ważnym jest odpowiedni dobór $N$.
+Im większe $N$ tym mnijeszy błąd przybliżenia. Najbardziej satysfakcjonujące otrzymaliśmy dla $N = 1000$. Przy $N = 10 $ widzimy, że nasze schematy są bardzo niedokładne. 
+
+Porónamy teraz dokładność schematów dla innych przykładów równań różniczkowych.Wszystkie przybliżenia umieścimy na wspólnym wykresie.W tej części eksperymentu ustalmy,że $N=100$ Weźmy teraz równanie różniczkowe postaci
+
+$$
+y'=2y \quad y(0)=1
+$$
+
+Wiemy, że rozwiązaniem teoretycznym jest funckja :
+
+$$
+y = e^{2x}
+$$
+
+```{r}
+rownanie1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 10 
+N = 1000
+h = (t_end - t0) / N
+
+
+solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
+```
+
+```{r}
+rownanie2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 1000
+h = (t_end - t0) / N
+
+
+solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
+```
+
+```{r}
+f = function(t){
+  return(rep(0,times = length(t)))
+  }
+c = -1
+t0 = 0
+tN = 100
+x0 = 0
+xN = 1
+N =1000
+
+solution3 = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
+
+```
+
+```{r}
+rownanie3 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = 0
+xN = 1
+t0 = 0
+t_end = 100 
+N = 1000
+c = -1
+
+
+h = (t_end-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] -  x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   solution3 = list(time=c(t0, t, tN), values = c(x0, x, xN))
+```
+
+Czarna linia wykresu przedstawia wykres funckji $ e^{2t}$. Kolor czerowny obrazuje przybliżenie tej funckji schematem Eulera, zielony pokazuje przybliżenie uzyskane przez metodą RK_4, natomiast fioletowy odpowiada przybliżeniu schematem brzegowym.
+
+```{r}
+t = seq (t0, to= 10, by=0.01)
+plot(t, exp(2*t), type = 'l', col = 'black')
+lines(solution1$time, solution1$values[1,], col='red')
+lines(solution2$time, solution2$values[1,], col='green')
+lines(solution3$time, solution3$values, col='purple')
+```
+
+Weźmy teraz równanie różniczkowe postaci
+$$
+y'= 2x +1 \quad y(0)=1
+$$
+Wiemy, że rozwiązaniem teorytycznym jest funkcja 
+$$
+y=x^2 + x + \frac{1}{2}
+$$
+
+```{r}
+rownanie1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 10 
+N = 100
+h = (t_end - t0) / N
+
+
+solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
+```
+
+```{r}
+rownanie2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 100
+h = (t_end - t0) / N
+
+
+solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
+```
+
+```{r}
+f = function(t){
+  return(rep(0,times = length(t)))
+  }
+c = -1
+t0 = 0
+tN = 10
+x0 = 0
+xN = 1
+N =100
+
+solution3 = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
+
+```
+
+```{r}
+rownanie3 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = 0
+xN = 1
+t0 = 0
+t_end = 10 
+N = 100
+c = -1
+
+
+h = (t_end-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] -  x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   solution3 = list(time=c(t0, t, tN), values = c(x0, x, xN))
+```
+
+Czarna linia wykresu przedstawia wykres funckji $ x^2 + x + \frac{1}{2}$. Kolor czerowny obrazuje przybliżenie tej funckji schematem Eulera, zielony pokazuje przybliżenie uzyskane przez metodą RK_4, natomiast fioletowy odpowiada przybliżeniu schematem brzegowym.
+
+```{r}
+t = seq (t0, to= 100, by=0.001)
+plot(t, t^2 + t + 1/2, type = 'l', col = 'black')
+lines(solution1$time, solution1$values[1,], col='red')
+lines(solution2$time, solution2$values[1,], col='green')
+lines(solution3$time, solution3$values, col='purple')
+```

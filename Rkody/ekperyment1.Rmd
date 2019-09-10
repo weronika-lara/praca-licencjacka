@@ -1,0 +1,121 @@
+---
+title: "ekperyment1"
+author: "WLara"
+date: "2 września 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## RK4_otwarty
+
+```{r}
+RK4_otwarty= function(rownanie2, x0 , t0, h, N){
+  t = seq(from=t0, to=t0+N*h,length.out = N+1)
+  xn = matrix(0, nrow = length(x0), ncol = N+1)
+  xn[,1] = x0
+  t[1] = t0
+  for (i in 2:(N+1)){
+    K1 = rownanie2(t[i-1],  xn[,i-1])
+    K2 = rownanie2(t[i-1] + (h/2), xn[,i-1] + (h/2)*K1)
+    K3 = rownanie2(t[i-1] + (h/2), xn[,i-1] + (h/2)*K2)
+    K4 =  rownanie2(t[i-1] + h, xn[,i-1] + h*K3)
+    xn[,i] = xn[,i-1]+(h/6)*(K1 + 2*K2 + 2*K3 + K4)
+   
+  }
+  result2 = list(time=t, values=xn)
+ return(result2)
+}
+```
+  
+##N=10000
+  
+```{r}
+rownanie2_1 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 10000
+h = (t_end - t0) / N
+
+
+solution2_1 = RK4_otwarty(rownanie2_1, x0, t0, h , N)
+```
+
+```{r}
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_1$time, solution2_1$values[1,], col='red')
+```
+
+##N=1000
+
+```{r}
+rownanie2_2 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 1000
+h = (t_end - t0) / N
+
+
+solution2_2 = RK4_otwarty(rownanie2_2, x0, t0, h , N)
+```
+
+```{r}
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_2$time, solution2_2$values[1,], col='green')
+```
+
+
+##N=100
+
+```{r}
+rownanie2_3 = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = c(0, 1)
+t0 = 0
+t_end = 100 
+N = 100
+h = (t_end - t0) / N
+
+
+solution2_3 = RK4_otwarty(rownanie2_3, x0, t0, h , N)
+```
+
+```{r}
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_3$time, solution2_3$values[1,], col='purple')
+```
+
+Wykres wspólny dla $N=10000$, $N=1000$, $N=100$.
+
+```{r}
+t = seq (t0, to= 4*pi, by=0.01)
+plot(t, sin(t), type = 'l', col = 'black')
+lines(solution2_1$time, solution2_1$values[1,], col='red')
+lines(solution2_2$time, solution2_2$values[1,], col='green')
+lines(solution2_3$time, solution2_3$values[1,], col='purple')
+```
+

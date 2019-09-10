@@ -1,0 +1,165 @@
+---
+title: "schemat_brzegowy"
+author: "WLara"
+date: "20 sierpnia 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Wprowadzenie
+
+W dalszej części zainteresowaliśmy przejściem od zagadnień początkowych (proste dla noobów), do trudniejszych zagadnień - tj. zagadnień brzegowych. W tym eksperymencie przyjrzymy się liniowemu równaniu drugiego stopnia niejednorodnym z warunkami brzegowymi w przypadku jednowymiarowym
+
+Interesuje nas równanie postaci
+$$
+\left\lbrace
+\begin{array}{c}
+-x''(t) + c x(t) = f(t), \quad t \in (a,b), \\
+x(a) = \alpha \\
+x(b) = \beta
+\end{array}
+\right.
+$$
+
+Do rozwiązania tego zagadnienia wykorzystamy nietypowy bo mieszane przybliżenie operatora drugiej pochodnej. Dokładnie skorzystamy z operatorów 
+
+$$
+\delta_h \colon x \mapsto \frac{x(t+h) - x(t)}{h}
+$$
+oraz
+
+$$
+\overline{\delta}_h \colon x \mapsto \frac{x(t) - x(t-h)}{h}
+$$
+
+Przybliżając 
+$$
+x'' \approx \delta_h \overline{\delta}_h x.
+$$
+
+# Kod eksperymentu
+
+```{r}
+schemat_brzegowy = function(f, c , t0 , tN, x0, xN , N)
+{
+  h = (tN-t0)/N
+  t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+  A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+  A[row(A) - col(A) == -1] = 1
+  A[row(A) - col(A) == 1] = 1
+  b = -1 * f(t) * h
+  b[1] = b[1] - x0
+  b[N-1] = b[N-1] - xN
+  x = solve(A, b)
+  result = list(time=c(t0, t, tN), values = c(x0, x, xN))
+  return(result)
+}
+```
+
+ 
+ 
+```{r}
+f = function(t){
+  return(rep(0,times = length(t)))
+}
+c = -1
+t0 = 0
+tN = 5*pi/2
+x0 = 0
+xN = 1
+N =100
+
+solution = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
+
+```
+
+Obejrzyjmy wykres
+
+```{r}
+t = seq(0,to=4*pi, length.out = 1000)
+plot(t, sin(t),type = 'l')
+lines(solution$time, solution$values,col='red')
+```
+
+
+
+Sprawdźmy dalej równanie drugiego rzedu postaci
+$$
+x'' = -x \quad x(0)=0, x'(0) = 1.
+$$
+
+Jego rozwiązaniem jest oczywiście funkcja $\sin(t)$
+
+```{r}
+rownanie = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = 0
+xN = 1
+t0 = 0
+t_end = pi/2*5 
+N = 100
+c = -1
+
+h = (t_end-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] -  x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   solution = list(time=c(t0, t, tN), values = c(x0, x, xN))
+
+#solution = schemat_brzegowy(rownanie, c, t0,t_end,x0,xN, N)
+```
+
+```{r}
+t = seq(0,to=4*pi, length.out = 1000)
+plot(t, sin(t),type = 'l')
+lines(solution$time, solution$values,col='red')
+```
+ 
+
+```{r}
+rownanie = function(t ,x) {
+  y = rep(0, times =2)
+  y[1] = x[2]
+  y[2] = -x[1]
+  return(y)
+}
+
+x0 = 0
+xN = 1
+t0 = 0
+t_end = 10 
+N = 100
+c = -1
+
+
+h = (t_end-t0)/N
+   t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
+   A[row(A) - col(A) == -1] = 1
+   A[row(A) - col(A) == 1] = 1
+   b = -1 * f(t) * h^2
+   b[1] = b[1] -  x0
+   b[N-1] = b[N-1] - xN
+   x = solve(A, b)
+   solution = list(time=c(t0, t, tN), values = c(x0, x, xN))
+```
+
+```{r}
+t = seq (t0, to= 100, by=0.001)
+plot(t, t^2 + t + 1/2, type = 'l', col = 'black')
+lines(solution$time, solution$values,col='red')
+```
+
