@@ -77,6 +77,29 @@ schemat_eliptyczny = function(f, c , g , x0, xn, y0, yn , N)
 ```
 
 ```{r}
+f = function(t){
+  return(rep(0,times = length(t)))
+}
+g = function(x,y){
+  return(0);
+}
+c = -1
+x0 = 0
+xN = 1
+y0 = 0
+yN = 1
+N =100
 
+solution = schemat_eliptyczny(f,c, t0, tN, x0, xN, N)
+```
+```{r}
+x = seq(-1,1,by=0.01)
+y = seq(-1,1,by=0.01)
+
+M = mesh(x,y)
+
+Z = X^2+Y^2
+#contour(x,y,Z)
+surf3D(M$x,M$y, M$x^2+M$y^2 )
 ```
 
