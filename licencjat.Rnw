@@ -607,6 +607,21 @@ $$
 $$
 Gdy $ N \to \infty $ to $ h \to 0 $ oraz $ E_N \to 0$. Zatem schemat jest zbieżny z rzędem $p$.
 \end{proof}
+
+
+\section{Przykłady numeryczne}
+
+<<>>=
+x = c(1,2)
+x
+@
+
+<<>>=
+
+@
+
+
+
 \chapter{Numeryczne zagadnienia brzegowe}
 W tym rozdziale będziemy posługiwali się funkcją szukaną $u$, zamiast $x$ i zmienną $x$ zamiast $t$. Wprowadzimy również nowe oznaczenie na :
 \begin{itemize}
