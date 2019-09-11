@@ -250,7 +250,7 @@ $$
 $$ 
 gdzie $(a,b) \subset \setR$ jest dowolnym nietrywialnym i ograniczonym przedziałem w $\setR$, oraz $ f \colon (a,b) \times G \subset \setR \times \setR^m \to \setR^m$ będące funkcją ciągłą. $G$ jest tu pewnym zbiorem otwartym w $\setR^m$. 
 
-Interesować nas będzie między innymi następująca klasa problemów nazywana zagadnieniami początkowymi lub zagadnienia Cauchy'ego.
+Interesować nas będzie między innymi następująca klasa problemów nazywana zagadnieniami początkowymi lub zagadnieniami Cauchy'ego.
 
 \begin{problem}[Zagadnienie Cauchy'ego pierwszego rzędu \citep{marcinkowski2011numeryczne}] \label{prob-zagadnienie-cauchy}
 Zagadnienie Cauchy'ego pierwszego rzędu nazywamy równanie różniczkowe zwyczajne z warunkiem początkowym nazywamy problem postaci:
@@ -394,7 +394,7 @@ Istnieją również równania hiperboliczne pierwszego i drugiego rzędu oraz r�
 
 \section{Ogólna teoria numerycznego rozwiązywania równań różniczkowych}
 
-Teoria równań różniczkowych dostarcza nam wielu narzędzi do rozwiązywania swoich równań. Nie pozwala jednak na rozwiązywanie znacznej ilości problemów napotykanych w zadaniach inżynierskich. Problemem są tutaj często skomplikowane postacie funkcji, ilość zmiennych definiowanych w problemie, czy też nieprzychylne obliczeniom wartości współczynników w równaniu. Spotyka się również sytuacje w których równania różniczkowe określają brak istnienia rozwiązania, tymczasem symulacje inżynierskie zdarzają się przeczyć temu faktowi. W takich sytuacjach cenione są metody przybliżonego rozwiązywania równań różniczkowych, obecnie głównie z wykorzystaniem komputerów. 
+Teoria równań różniczkowych dostarcza nam wielu narzędzi do rozwiązywania swoich równań. Nie pozwala jednak na rozwiązywanie znacznej ilości problemów napotykanych w zadaniach inżynierskich. Problemem są tutaj często skomplikowane postacie funkcji, ilość zmiennych definiowanych w problemie, czy też nieprzychylne obliczeniom wartości współczynników w równaniu. Spotyka się również sytuacje, w których równania różniczkowe określają brak istnienia rozwiązania, tymczasem symulacje inżynierskie zdarzają się przeczyć temu faktowi. W takich sytuacjach cenione są metody przybliżonego rozwiązywania równań różniczkowych, obecnie głównie z wykorzystaniem komputerów. 
 
 Aby umożliwić komputerowi rozwiązanie wybranego równania różniczkowego należy jednak pokonać kilka przeszkód. Zauważmy, że równania różniczkowe definiowane są niemal wyłącznie na ciągłych przedziałach dziedziny. Ponadto same przestrzenie naszych rozwiązań (przestrzenie funkcyjne) posiadają nieskończenie (nieprzeliczalnie wiele) różnych funkcji. Stąd aby uzyskać przybliżone rozwiązanie wybranego równania różniczkowego, należy rozważyć podobny do niego model dyskretny - nazywany często dyskretyzacją modelu nieskończonego. 
 
@@ -1029,11 +1029,11 @@ u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j}) + u(x_{i,j-1}) + u(x_{i,j+1}) - ch^2u(
 dla $i,j \in \set{1,\cdots,N-1}$. Zatem nasz problem będzie postaci
 \begin{equation}
 \left\{ \begin{array}{ll}
--\left(\frac{u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j})+u(x_{i,j-1})+u(x_{i,j+1})}{h^2}\right) + cu(x_{i,j}) = f(x_{ij}) & i,j \in \set{1,\cdots, N-1} ,\\
+-\left(\frac{u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j})+u(x_{i,j-1})+u(x_{i,j+1})}{h^2}\right) + cu(x_{i,j}) = f(x_{i,j}) & i,j \in \set{1,\cdots, N-1} ,\\
 u(x_{i,j}) = g(x_{i,j})  & i,j \in \set{0,\cdots,N} .
 \end{array} \right.
 \end{equation}
-Zapis tego problemu dla sitaki $i,j = \set{0,\cdots,N-1} $ jest zadaniem trudnym, dlatego algorytm ten zaprezentujemy na konkretnym przykładzie.
+Zapis tego problemu dla siatki $i,j = \set{0,\cdots,N-1} $ jest zadaniem trudnym, dlatego algorytm ten zaprezentujemy na konkretnym przykładzie.
 \begin{example}
 Zacznijmy od stworzenia siatki, która będzie składała się z punktów postaci $x_{i,j} \in \Omega = [0,1]^2$ dla $i,j = \set{0,1,\cdots,5}$.
 \begin{align*}
@@ -1051,11 +1051,11 @@ Punkty znajdujące się na brzegu naszej siatki są znane, ponieważ mamy dany w
 $$
 u(x_{1,2}) - 4u(x_{2,2}) + u(x_{3,2}) + u(x_{2,1}) + u(x_{2,3}) - ch^2u(x_{2,2}) = -h^2f(x_{2,2}).
 $$
-Z założenia brzegowego znane są wartości brzegowe, wstawmy je do wzoru:
+Z warunku brzegowego znane są wartości brzegowe, wstawmy je do wzoru:
 $$
 a_3 - 4u(x_{2,2}) + u(x_{3,2}) + a_2 + u(x_{2,3}) - ch^2u(x_{2,2}) = -h^2f(x_{2,2}).
 $$
-Algorytm ten również stworzy nam układ równań liniowych tak jak w przypadku schematu brzegowego jednowymiarowego, ale o wiele bardziej skomplikowany z racji tego, że poruszamy się w zbiorze dwuwymiarowym. Zapiszemy nasz problem w postaci macierzowej. Dla uproszczenia zapisu przyjmijmy $u(x_{1,2}) = u_{1,2}, F= -4-ch^2$.
+Algorytm ten również stworzy nam układ równań liniowych tak jak w przypadku schematu brzegowego jednowymiarowego. Będzie on jednak o wiele bardziej skomplikowany z racji tego, że poruszamy się w zbiorze dwuwymiarowym. Zapiszemy nasz problem w postaci macierzowej. Dla uproszczenia zapisu przyjmijmy $u(x_{i,j}) = u_{i,j}, F= -4-ch^2$.
 $$
 \left[ \begin{array}{ccccccccc}
 F & 1 & 1 & 0 & 0 & 0& 0 & 0 & 0\\
@@ -1099,12 +1099,12 @@ $$
 \section{Przykładowe rozwiązanie równania eliptycznego przy użyciu schematu brzegowego dwuwymiarowego}
 W tej części zajmiemy się zagadnieniem eliptycznym w przestrzeni dwuwymiarowej $\mathbb{R}^2$ postaci
 $$
-- \Delta u(x) + c u(x) = f(x), \\
-u(s) = g(s).
-$$
-Równanie to wyprowadza postać rekurencyjną:
-$$
--u_{i-1,j} + 4 u_{ij} - u_{i+1,j} - u_{i,j-1} - u_{i,j+1} + ch^2 u_{ij} = h^2 f(x_{ij}).
+\left\lbrace
+\begin{array}{c}
+- \Delta u(x) + c u(x) = f(x),\quad x \in \Omega \\
+u(s) = g(s), \quad s \in \delta \Omega.
+\end{array}
+\right.
 $$
 \begin{example}
 Weźmy równanie róznicowe liniowe drugiego rzędu z warunkami brzegowymi postaci:
@@ -1204,6 +1204,7 @@ schemat_eliptyczny = function(f, c , g , x0, xn, y0, yn , N)
 }
 @
 
+Zdefiniujmy funckję użytą w naszym algorytmie:
 <<>>=
 f = function(x,y){
   n = length(x)
@@ -1225,7 +1226,7 @@ g = function(x, y)
 solution = schemat_eliptyczny(f, c , g , x0, xn, y0, yn , N)
 @
 
-Wygereujmy wykres pokzujący nasze bliżenie otrzymane dzięki naszemu algorytmowi:
+Wygereujmy wykres pokazujący przybliżenie uzyskane po zastosowaniu naszego schematu.
 <<fig=TRUE>>=
 library(plot3D)
 x = solution$x
@@ -1240,7 +1241,7 @@ surf3D(M$x,M$y, solution$u )
 
 
 \chapter{Podsumowanie}
-W pracy tej zajmowaliśmy się metodami numerycznymi do rozwiązywania równań różniczkowych. W obszarze naszych zainteresowań znalazły się zarówno równania zwyczajne, jak i pewne przypadki równań cząstkowych. W rozdziale trzecim rozpoczeliśmy omawianie metod numerycznego rozwiązywania równań różniczkowych, od ich zastosowania, do rozwiązywania zagadnień Cauchy'ego. W pracy prezentujemy uzupełniony o luki dowodowe, dowód faktu zbieżności schematów jednokrokowych otwartych. W części tej prezentujemy schemat otwarty Eulera oraz schemat Rungego-Kutty rzędu 4. Rozdział ten zakończony jest prezentacją własnych implemntacji tych dwóch schematów, napisamy w języku R. Skuteczność działania tych implrementacji została zaprezentowana na wybranym przykładzie w kilku wariantach. W kolejnym rozdziale przglądamy się już zagadnieniom brzegowym. Swoje rozważania ograniczamy do problemów liniowych rzędu drugiego. Za ich pomocą staramy się przekazać czytelnikowi,jaka jest jakościowa różnica w rozwiązywaniu zagadnień początkowych i zagadnień brzegowych. Pierwszym z rozważanych problemów, omówionych w sekcji 4.1, jest zagadnienie jednowymiarowe. Czytelnik w sekcji 4.2 odnajdzie samodzielnie opracowaną implementacje omówionego algorytmu. Jak również tam znajduje się prezentacja jego zastosowania do zagadnienia w omawianym typie. Dalszą część pracy poświęciliśmy rozwiązywaniu równań cząstkowych. W sekcji 4.3 prezentujemy schemat mający zastosowanie do zagadnień brzegowych z równaniem Laplace'a, Poissona lub bardzo podobnych. Prezentujemy ze szczegółami sposób wypracowania formuł rekurencyjnych schematu, opisujemy sposób transformacji do postaci układu równań oraz wskazujemy potencjalne przeszkody w działaniu algorytmu. Następnie w sekcji 4.4 prezentujemy najbardziej rozbudowane z opracowanych algorytmów, na potrzeby rozwiązania zagadnienia brzegowego z operatorem Laplace'a. 
+W pracy tej zajmowaliśmy się metodami numerycznymi do rozwiązywania równań różniczkowych. W obszarze naszych zainteresowań znalazły się zarówno równania zwyczajne, jak i pewne przypadki równań cząstkowych. W rozdziale trzecim rozpoczeliśmy omawianie metod numerycznego rozwiązywania równań różniczkowych, od ich zastosowania, do rozwiązywania zagadnień Cauchy'ego. W pracy prezentujemy uzupełniony o luki dowodowe, dowód faktu zbieżności schematów jednokrokowych otwartych. W części tej prezentujemy schemat otwarty Eulera oraz schemat Rungego-Kutty rzędu 4. Rozdział ten zakończony jest prezentacją własnych implemntacji tych dwóch schematów, napisamy w języku R. Skuteczność działania tych implrementacji została zaprezentowana na wybranym przykładzie w kilku wariantach. W kolejnym rozdziale przglądamy się już zagadnieniom brzegowym. Swoje rozważania ograniczamy do problemów liniowych rzędu drugiego. Za ich pomocą staramy się przekazać czytelnikowi, jaka jest jakościowa różnica w rozwiązywaniu zagadnień początkowych i zagadnień brzegowych. Pierwszym z rozważanych problemów, omówionych w sekcji 4.1 jest zagadnienie jednowymiarowe. Czytelnik w sekcji 4.2 odnajdzie samodzielnie opracowaną implementacje omówionego algorytmu. Jak również tam znajduje się prezentacja jego zastosowania do zagadnienia w omawianym typie. Dalszą część pracy poświęciliśmy rozwiązywaniu równań cząstkowych. W sekcji 4.3 prezentujemy schemat mający zastosowanie do zagadnień brzegowych z równaniem Laplace'a, Poissona lub bardzo podobnych. Prezentujemy ze szczegółami sposób wypracowania formuł rekurencyjnych schematu, opisujemy sposób transformacji do postaci układu równań oraz wskazujemy potencjalne przeszkody w działaniu algorytmu. Następnie w sekcji 4.4 prezentujemy najbardziej rozbudowane z opracowanych algorytmów, na potrzeby rozwiązania zagadnienia brzegowego z operatorem Laplace'a. 
 
 Czytelnik w pracy tej odnajdzie wyważone wprowadzenie do kolejnych coraz trudniejszych schematów numerycznego rozwiązywania równań różniczkowych. Jednym z celów pracy było pokazanie przyrostów stopnia skomplikowania, uzależnionego od warunków równania. Dla rozwiązywania zagadnień początkowych obserwujemy, iż sprowadza się ono do iteracyjnego wyznaczania przybliżeń kolejnych punktów. Rozwiązywanie zagadnień brzegowych okazuje się być na ich tle wyraźnie trudniejszym zadaniem.  Schematy służące takiemu rozwiązywaniu zastosowanie mają jedynie do równań liniowych. Wystąpienie w równaniu nieliniowości wykluczyłoby możliwość zastosowania technik algebry liniowej. Po za tym, w odróżnieniu od zagadnień począkowych, w zależności od wartości w warunku brzegowym, problem może posiadać niejednoznaczne rozwiązanie. Ponadto zauważmy, że choć techniki te można przenieść do rozwiązywania równań cząstkowych (tylko równań liniowych), to w efekcie dostajemy do rozwikłania problemy liniowe o znacznie większej liczbie wymiarów. Dodatkowo dzięki tej pracy demonstrujemy iż język R może być wykorzystany jako doskonałe narzędzie wspierające w kursie równań różniczkowych
 
