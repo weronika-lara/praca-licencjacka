@@ -1016,7 +1016,7 @@ $$
 
 \end{example}
 \end{problem}
-\chapter{Przykładowe rozwiązanie schematu brzegowego jednowymiarowego}
+\section{Przykładowe rozwiązanie schematu brzegowego jednowymiarowego}
 W tym rozdziale zaprezentujemy przykładowe rozwiązanie otrzymane przy wykorzystaniu schematu brzegowego jednowymiarowego. Przyjrzymy się liniowemu równaniu drugiego stopnia niejednorodnemu z warunkami brzegowymi w przypadku jednowymiarowym. Interesuje nas równanie postaci
 $$
 \left\lbrace
