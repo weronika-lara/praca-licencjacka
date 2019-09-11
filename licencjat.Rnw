@@ -87,6 +87,7 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 \item $\delta \Omega $ domknięcie zbioru.
 \item $J$ dowolny przedział.
 \item $\operatorname{IntB}$ wnętrze zbioru.
+\item $\ball{(t_0,x_0)}{\delta}$ kula o pomieniu $\delta$ w punkcie $(t_0,x_0)$.
 \item $C^k(U) = \set{u: U \to \setR} $ funkcja $u$ jest k-krotnie różniczkowalna w sposób ciągły na przedziale $U$ \citep{evans2012rownania}.
 \item $\ddx{t} f(t)$ - oznaczać będzie pochodna funkcji $f$ po zmiennej $t$. W szczególności $\ddx[^n]{t^n}$ oznaczać będzie $n$-tą pochodną po tejże zmiennej.
 \item $t, x, y, u$ - W przekroju pracy rozważane są równania zwyczajne oraz cząstkowe. W przypadku równań zwyczajnych najczęściej symbolem $t$ oznaczać będziemy zmienną, natomiast $x$ będzie używane do oznaczania poszukiwanej funkcji. W przypadku równań cząstkowych natomiast symbolami $t,x,y$ oznaczać będziemy zmienne (czasami również $x_1,\ldots,x_n$) natomiast $u$ oznaczać będzie naszą nieznaną i poszukiwaną funkcję.
@@ -226,14 +227,14 @@ którego rozwiązaniem jest funkcja $x \in \Ck{k}{(a,b), \setR^n}$.
 Jeśli dane jest równanie różniczkowe rzędu $n$ w przestrzeni $\setR^m$, to zagadnienie początkowe dla tego równania przyjmuje postać 
 \begin{equation} 
 \left\{\begin{array}{ll}
-\ddx[^n]{t^n} x(t) = f(t,x(t), \ddx{t}x(t), \cdots, \ddx[^{n-1}]{t^{n-1}}x(t),) &   \\
+\ddx[^n]{t^n} x(t) = f(t,x(t), \ddx{t}x(t), \cdots, \ddx[^{n-1}]{t^{n-1}}x(t),) & t \in (t_0,b),   \\
 x(t_0) = x_0, & \\
 \ddx{t}x(t_0) = x_1, & \\
 \vdots & \\
 \ddx[^{n-1}]{t^{n-1}}x(t_0) = x_{n-1}, &
 \end{array} \right.
 \end{equation}
-gdzie $ \set{x_0,\cdots,x_{n-1}}$ są wektorami m-wymiarowymi. 
+gdzie $ \set{x_0,\cdots,x_{n-1}}$ są wektorami m-wymiarowymi, dla $t_0 \in (a,b)$. 
 \end{definition}
 
 
@@ -289,7 +290,7 @@ gdzie $ s$ i $v$ to ustalone wartości.
 \end{problem}
 
 \begin{problem}[Zagadnienie brzegowe]
-Zagadnieniem brzegowym liniowego problemu drugiego rzędu dla $ x \in (a,b) $ będziemy nazywać:
+Zagadnieniem brzegowym liniowego problemu drugiego rzędu dla $ t \in (a,b) $ będziemy nazywać:
 \begin{equation}
 \left\{\begin{array}{ll}
 \ddx [^2]{t} x(t) + c_1\ddx{t} x(t) + c_2x(t) = f(t), t \in (a,b), & \\
@@ -330,21 +331,22 @@ nazywamy równaniem Laplace'a.
 \end{problem}
 Dokładając niejednorodność i warunek brzegowy otrzymamy inny przypadek zwany równaniem Poissona.
 \begin{problem}[Równanie Poissona]
-Niech $u \in C^2(\Omega) \cap C(\overline{\Omega})$ wówczas:  
+Niech $u \in C^2(\Omega) \cap C(\overline{\Omega})$ wówczas równanie eliptyczne postaci: 
 \begin{equation}
 \left\{\begin{array}{ll}
 \Delta u(x) = f(x), & x \in \Omega \\
 u(s) = g(s),& s \in \delta \Omega.
 \end{array} \right. 
 \end{equation}
+nazywamy równaniem Poissona.
 \end{problem}
-Możemy również wyróżnić ogólniejszą definicję równania eliptycznego drugiego rzędu. Rozważmy równanie różniczkowe liniowe drugiego rzędu dla ogólnego operatora liniowego drugiego rzędu $L$ \label{line operator}, określonego dla $ u \in C^2(G)$ dla $G \subset \setR^{n}$ : 
-$$
+Możemy również wyróżnić ogólniejszą definicję równania eliptycznego drugiego rzędu. Rozważmy równanie różniczkowe liniowe drugiego rzędu dla ogólnego operatora liniowego drugiego rzędu $L$, określonego dla $ u \in C^2(G)$ dla $G \subset \setR^{n}$ : 
+\begin{equation}\label{line operator}
 Lu = -\sum_{k,l =1}^{n} a_kl(x) \ddx[u^2]{x^k} (x) + c(x)u(x) = f(x) 
-$$
+\end{equation}
 gdzie $ a_{kl}, b_{k}, c, f, $ są danymi funkcjami określonymi na $G \subset \setR^N$ .
 \begin{definition}
-Mówimy, że równanie  \ref{line operator} jest eliptyczne w punkcie $x$ gdy macierz $A(x) = (a_{kl}(x))_{kl=1,\cdots,n}$ jest dodatnio określona tzn dla dowolnego $ \xi \in \setR^{n}$ zachodzi :
+Mówimy, że równanie  \eqref{line operator} jest eliptyczne w punkcie $x$ gdy macierz $A(x) = (a_{kl}(x))_{kl=1,\cdots,n}$ jest dodatnio określona tzn dla dowolnego $ \xi \in \setR^{n}$ zachodzi :
 $$
 \xi^{T} A(x) \xi \geq 0
 $$
@@ -440,7 +442,7 @@ Schemat Eulera otwarty jest najprostszym sposobem rozwiązywania równań różn
 \subsection{Schemat otwarty Rungego-Kutty rzędu 4}
 W przypadku schematu otwartego Rungego - Kutty rzędu 4 punkty $ (1) - (4) $ z algorytmu \ref{Euler_algoritm} są takie same. Różnica następuje w punkcie $(5)$ czyli we wzorze, dzięki któremu wyznaczamy wartości $x(t_n)$. Metoda ta jest dokładniejsza od wspomnianej wcześniej metody Eulera.
 \begin{algorithm}
-Dla zagadnienia początkowego \ref{prob-zagadnienie-cauchy} następujące postępowanie nazywamy schematem Rungego-Kutty rzędu 4 
+Dla problemu \ref{prob-zagadnienie-cauchy} następujące postępowanie nazywamy schematem Rungego-Kutty rzędu 4 
 \begin{enumerate}
 \item Ustalamy $N$ ilość punktów w dziedzinie równania. 
 \item Dla ustalonego $N$ wyznaczamy krok $h>0$ według wzoru $h=\frac{T_N-t_0}{N}$. 
@@ -475,7 +477,7 @@ dla $ n \geq k$ z warunkami startowymi $x_0,\cdots, x_{k-1}$ gdzie $t_n = t_0 + 
 Łatwo zaobserwować, że schemat Eulera oraz Rungego-Kutty rzędu 4 pasują do powyższej definicji. 
 
 \begin{definition}[Błąd schematu jednokrokowego \citep{marcinkowski2011numeryczne}]
-Niech $ x \in C^{1}([t_0,T])$ dla problemu \ref{prob-zagadnienie-cauchy} oraz $t=t_0 +nh \in [t_0,T]$. Błąd schematu $k$ krokowego postaci \eqref{k-steps-scheme} jest postaci 
+Niech $ x \in C^{1}([t_0,T])$ będzie rozwiązaniem problemu \ref{prob-zagadnienie-cauchy} oraz $t=t_0 +nh \in [t_0,T]$. Błąd schematu $k$ krokowego postaci \eqref{k-steps-scheme} jest postaci 
 $$
 E_h(t) = |x^{h}_{n} - x(t)|,
 $$ 
@@ -540,7 +542,7 @@ Jeśli rozwiązanie problemu \ref{prob-zagadnienie-cauchy} $x \in C^{p+1}([t_0,T
 Niech $ x \in C^{p+1}([t_0,T]) $ będzie rozwiązaniem problemu \ref{prob-zagadnienie-cauchy}. Niech $ N \in \setN $ i $ h = \frac{T-t_0}{N} $. Niech $g$ będzie funkcją ze schematu jednokrokowego otwartego dla problemu \ref{prob-zagadnienie-cauchy}. Załóżmy, że schemat ten jest zgodny tzn. 
 \begin{itemize}
 \item $g$ jest ciągła ze względu na wszystkie zmienne 
-\item $ g(0,t,x) = f(t,x)$ dla wszystkich $ (t,x) $
+\item $ g(0,t,x) = f(t,x)$ dla wszystkich $ (t,x) \in (a,b) \times \setR $
 \item $ \exists_{L>0} $ takie, że dla wszystkich $x_1 , x_2 \in U_{x_{0}} $, $L$ niezależne od $h$ zachodzi
 $$
 \abs{g(h,t,x_1) - g(h,t,x_2)} \leq L  \abs{x_1 - x_2} ,
@@ -674,6 +676,8 @@ RK4_otwarty= function(rownanie2, x0 , t0, h, N){
  return(result2)
 }
 @
+
+Równania wykorzystane w schemacie Eulera i RK4 są postaci odpowiednio:
 <<>>=
 rownanie1 = function(t ,x) {
   y = rep(0, times =2)
