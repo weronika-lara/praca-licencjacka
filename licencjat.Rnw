@@ -929,8 +929,8 @@ u_{N-1}
 $$
 Rozwiązując powyższy układ otrzymamy taką wartość $u(x_1)$, że $u(x_N) = \beta$. Powyższy algorytm nazywać będziemy schematem brzegowym dla równań liniowych rzędu drugiego. 
 
-\section{Przykładowe rozwiązanie schematu brzegowego jednowymiarowego}
-W tym rozdziale zaprezentujemy przykładowe rozwiązanie otrzymane przy wykorzystaniu schematu brzegowego jednowymiarowego. Przyjrzymy się liniowemu równaniu drugiego stopnia niejednorodnemu z warunkami brzegowymi w przypadku jednowymiarowym. Interesuje nas równanie postaci
+\section{Przykładowe rozwiązanie przy użyciu schematu brzegowego jednowymiarowego}
+W tej części zaprezentujemy przykładowe rozwiązanie otrzymane przy wykorzystaniu schematu brzegowego jednowymiarowego. Przyjrzymy się liniowemu równaniu drugiego stopnia niejednorodnemu z warunkami brzegowymi w przypadku jednowymiarowym. Interesuje nas równanie postaci
 $$
 \left\lbrace
 \begin{array}{c}
@@ -1014,7 +1014,7 @@ Rozważmy modelowe zadanie eliptyczne na kwadracie jednostkowym $ \overline{\Ome
 u(s) = g(s) & s \in \overline{\Omega}
 \end{array} \right.
 \end{equation}
-dla $ x \in \Omega $ , gdzie $\Delta u = x_{xx} + u_{yy}$, a $c$ jest ustaloną nieujemną stałą. Funkcja $f$ jest ciągła na $\Omega$, natomiast funkcja $g$ jest ciągła na $\delta \Omega$. Zakładamy, że istnieje jednoznaczne rozwiązanie \eqref{eliptical_equation}. Dla $h>0$ korzystając z różnicy skończonej wprzód i w tył z \eqref{finite_diff} zastosujemy następującą aproksymację drugiej pochodnej cząstkowej :
+gdzie $\Delta u = x_{xx} + u_{yy}$, a $c$ jest ustaloną nieujemną stałą. Funkcja $f$ jest ciągła na $\Omega$, natomiast funkcja $g$ jest ciągła na $\delta \Omega$. Zakładamy, że istnieje jednoznaczne rozwiązanie \eqref{eliptical_equation}. Dla $h>0$ korzystając z różnicy skończonej wprzód i w tył z \eqref{finite_diff} zastosujemy następującą aproksymację drugiej pochodnej cząstkowej :
 \begin{equation}
 -(u_{xx} + u_{yy})= -\left(\frac{u(x-he_{k}) - 2u(x) + u(x+he_k)}{h^2}\right),
 \end{equation}
@@ -1024,7 +1024,7 @@ $$
 $$
 mnożąc przez $-h^2$ otrzymujemy 
 \begin{equation}\label{schemat_brzeg_II}
-u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j}) + u(x_{i,j-1}) + u(x_{i,j+1}) - ch^2u(x_{i,j}) = -h^2f(x_{ij})
+u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j}) + u(x_{i,j-1}) + u(x_{i,j+1}) - ch^2u(x_{i,j}) = -h^2f(x_{i,j})
 \end{equation}
 dla $i,j \in \set{1,\cdots,N-1}$. Zatem nasz problem będzie postaci
 \begin{equation}
