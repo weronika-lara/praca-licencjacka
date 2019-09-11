@@ -822,16 +822,17 @@ Eksperyment ten pokazuje nam jak istotną role odgrywa odpowiedni dobór paramet
 
 \end{example}
 \chapter{Numeryczne zagadnienia brzegowe}
-W tym rozdziale będziemy posługiwali się funkcją szukaną $u$, zamiast $x$ i zmienną $x$ zamiast $t$. Wprowadzimy również nowe oznaczenie na :
+W tym rozdziale odmiennie niż w rozdziałach poprzednich posługiwać się  będziemy literą $u$ do oznaczania poszukiwanej funkcji. Zmienne w równaniu oznaczać natomiast będziemy $x$,$y$. Ponadto zastosujemy następujące oznaczenie dla pochodnych w równaniu:
 \begin{itemize}
 \item pierwszą pochodną danej funkcji zamiast $\ddx{x} u(x) $ będziemy oznaczali przez $u_{x}$,
-\item drugą pochodną danej funkcji zamiast $\ddx[^2]{x} u(x)$ będziemy oznaczali przez $u_{xx}$,
+\item drugą pochodną danej funkcji zamiast $\ddx[^2]{x} u(x)$ będziemy oznaczali przez $u_{xx}$.
 \end{itemize}
+Oznaczenia przyjęte w tej części są typowe w teorii równań cząstkowych. 
 \section{Schemat brzegowy dla problemu jednowymiarowego}
 Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
 \begin{equation} \label{boundary_diff_equa}
 \left\{ \begin{array}{ll}
--u_{xx}(x) + cu(x) =f, & \\
+-u_{xx}(x) + cu(x) =f(x), & x \in \Omega,\\
 u(a) = \alpha, & \\
 u(b) = \beta. & 
 \end{array} \right.
@@ -843,11 +844,11 @@ gdzie stała $c$ jest nieujemna, odcinek $ [a,b]$ jest ustalony i znane są wart
 \overline{\delta_h} u(x) = \frac{u(x)-u(x-h)}{h} . 
 \end{array}
 \end{equation}
-Jeżeli $h$ będzie miało ustaloną wartość to indeks dolny $h$ będziemy opuszczali. Przyjmijmy następujące przybliżenie drugiej pochodnej
+Jeżeli $h$ będzie miało ustaloną wartość to będziemy opuszczali indeks dolny. Przyjmijmy następujące przybliżenie drugiej pochodnej:
 $$
 -u_{xx}(x) \approx -\delta \overline{\delta} u(x).
 $$
-Podstawmy \eqref{finite_diff} do \eqref{boundary_diff_equa}. Wówczas dla ustalonego $h>0$ otrzymujemy: 
+Podstawmy \eqref{finite_diff} do \eqref{boundary_diff_equa}. Wówczas dla ustalonego $h>0$ mamy: 
 \begin{equation}
 \begin{array}{rl}
 -\delta (\frac{u(x)-u(x-h}{h}) + cu(x) &= f(x),  \\
@@ -857,15 +858,15 @@ Podstawmy \eqref{finite_diff} do \eqref{boundary_diff_equa}. Wówczas dla ustalo
 -\frac{u(x+h)}{h^2} + 2\frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x) &= f(x) .
 \end{array}
 \end{equation}
-Mnożąc obie strony przez $-h^2$ otrzymujemy:  otrzymujemy :
+Mnożąc obie strony przez $-h^2$ otrzymujemy:
 \begin{equation}
 u(x+h) - 2u(x) + u(x-h) - cu(x)h^2 = -f(x)h^2,
 \end{equation}
-wprowadźmy siatkę, czyli zbiór dyskretny dla $ h= \frac{b-a}{N}$ , $k \in \set{1,\cdots,N-1}$  mamy: 
+wprowadźmy siatkę, czyli zbiór dyskretny dla $ h= \frac{b-a}{N}$ , $k \in \set{1,\cdots,N-1}$. Mamy: 
 \begin{equation} \label{boundary_model}
 u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) + cu(x_k)h^2 + f(x_k)h^2.
 \end{equation}
-W zagadnieniach brzegowych nie jest znana wartość $u(x_1)$. Zauważmy, że gdy rozważymy jej wartość $u(x_1) = s \in \setR$ , to stosując nasz schemat możemy obliczyć wszystkie kolejne iteracje . Zatem nasze zadanie wymagać będzie rozwiązania problemu odnalezienia takiego $s$, że $u(x_1) = s$ i $u(x_k) = \beta$. Przyjmując oznaczenie $ x_k = x_0 + kh$ ,dla $ k \in \set{1, \cdots,N-1} $ otrzymujemy układ równań liniowych postaci:
+W zagadnieniach brzegowych nie jest znana wartość $u(x_1)$. Zauważmy, że gdy rozważymy jej wartość $u(x_1) = s \in \setR$, to stosując nasz schemat możemy obliczyć wszystkie kolejne iteracje. Zatem nasze zadanie wymagać będzie rozwiązania problemu odnalezienia takiego $s$, że $u(x_1) = s$ i $u(x_k) = \beta$. Przyjmując oznaczenie $ x_k = x_0 + kh$, dla $ k \in \set{1, \cdots,N-1} $ otrzymujemy układ równań liniowych postaci:
 \begin{equation}
 \left\{ \begin{array}{ll}
 u(x_0) = \alpha ,& \\
@@ -902,7 +903,7 @@ u_{N}
 \beta   
 \end{array} \right] .
 $$
-Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz z otrzymując  wtedy :
+Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz otrzymując  wtedy :
 $$
 \left[ \begin{array}{ccccc}
 -2-ch^2 & 1 & 0 & \cdots & 0 \\
@@ -919,9 +920,9 @@ u_3 \\
 u_{N-1} 
 \end{array} \right] =
 \left[ \begin{array}{c}
--f(x_0)-\alpha \\
--f(x_1)h^2 \\
--f(x_2)h^2\\
+-f(x_1)-\alpha \\
+-f(x_2)h^2 \\
+-f(x_3)h^2\\
 \vdots \\
 -f(x_{N-1})h^2 -\beta    
 \end{array} \right] . 
@@ -933,30 +934,28 @@ W tym rozdziale zaprezentujemy przykładowe rozwiązanie otrzymane przy wykorzys
 $$
 \left\lbrace
 \begin{array}{c}
--x''(t) + c x(t) = f(t), \quad t \in (a,b), \\
-x(a) = \alpha \\
-x(b) = \beta
+-u''(x) + c u(x) = f(x), \quad x \in (a,b), \\
+u(a) = \alpha \\
+u(b) = \beta
 \end{array}
 \right.
 $$
 Do rozwiązania tego zagadnienia wykorzystamy nietypowy bo mieszane przybliżenie operatora drugiej pochodnej. Dokładnie skorzystamy z operatorów 
 $$
-\delta_h \colon x \mapsto \frac{x(t+h) - x(t)}{h}
+\delta_h \colon u \mapsto \frac{u(x+h) - u(x)}{h}
 $$
 oraz
-
 $$
-\overline{\delta}_h \colon x \mapsto \frac{x(t) - x(t-h)}{h}
+\overline{\delta}_h \colon u \mapsto \frac{u(x) - u(x-h)}{h}
 $$
-
-Przybliżając 
+Do aproksymacji drugiej pochodnej użyjemy następującego operatora:
 $$
-x'' \approx \delta_h \overline{\delta}_h x.
+u'' \approx \delta_h \overline{\delta}_h u.
 $$
 \begin{example}
 W tym przykładzie konkretnie omówimy równanie drugiego rzędu postaci
 $$
-x'' = -x \quad x(0)=0, x'(0) = 1.
+u'' = -u \quad u(0)=0, u'(0) = 1.
 $$
 Jego rozwiązaniem jest funkcja $\sin(t)$. Zdefiniujmy kod dla naszego schematu. Potrzebne będzie 7 paramterów:
 \begin{itemize}
@@ -970,7 +969,7 @@ Krok $h$ wyliczamy według formuły $\frac{tN-t0}{N}$.
 schemat_brzegowy = function(f, c , t0 , tN, x0, xN , N)
 {
   h = (tN-t0)/N
-  t = seq(from=t0, to=t0+(N-2)*h,length.out = N-1)
+  t = seq(from=t0+h, to=t0+(N-1)*h,length.out = N-1)
   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
   A[row(A) - col(A) == -1] = 1
   A[row(A) - col(A) == 1] = 1
@@ -1011,8 +1010,8 @@ lines(solution$time, solution$values,col='red')
 Rozważmy modelowe zadanie eliptyczne na kwadracie jednostkowym $ \overline{\Omega} = [0,1]^2 $ postaci 
 \begin{equation} \label{eliptical_equation}
 \left\{ \begin{array}{ll}
--\Delta u(x) + cu(x) = f(x) & \\
-u(s) = g(s) &
+-\Delta u(x) + cu(x) = f(x) & x \in \Omega\\
+u(s) = g(s) & s \in \overline{\Omega}
 \end{array} \right.
 \end{equation}
 dla $ x \in \Omega $ , gdzie $\Delta u = x_{xx} + u_{yy}$, a $c$ jest ustaloną nieujemną stałą. Funkcja $f$ jest ciągła na $\Omega$, natomiast funkcja $g$ jest ciągła na $\delta \Omega$. Zakładamy, że istnieje jednoznaczne rozwiązanie \eqref{eliptical_equation}. Dla $h>0$ korzystając z różnicy skończonej wprzód i w tył z \eqref{finite_diff} zastosujemy następującą aproksymację drugiej pochodnej cząstkowej :
