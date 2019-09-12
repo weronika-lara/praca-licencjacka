@@ -84,7 +84,7 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 \item $\setN$ zbiór liczb naturalnych.
 \item $\setR$ zbiór liczb rzeczywistych.
 \item $K$ ciało nad zbiorem liczbowym.
-\item $\delta \Omega $ domknięcie zbioru.
+\item $\delta \Omega $ brzeg zbioru.
 \item $J$ dowolny przedział.
 %\item $\operatorname{IntB}$ wnętrze zbioru.
 \item $\ball{(t_0,x_0)}{\delta}$ kula o pomieniu $\delta$ w punkcie $(t_0,x_0)$.
@@ -241,7 +241,7 @@ Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$, to istnieje roz
 
 \begin{theorem}[Picarda - Lindelfa \citep{marcinkowski2011numeryczne}]
 Jeśli $f$ jest funkcją ciągłą na otoczeniu $(t_{0},x_{0})$ oraz $f$ jest funkcją lipschtizowską względem $x$ w pewnej kuli $\ball{(t_0,x_0)}{\delta}$. Tzn.
- istnieje taka $L\geq 0$, że dla każdych $((t,x),(t,y) \in \ball{(t_0,x_0)}{\delta} $ zachodzi
+ istnieje taka $L\geq 0$, że dla każdych $(t,x),(t,y) \in \ball{(t_0,x_0)}{\delta} $ zachodzi
 $$
   \norm{f(t,x) - f(t,y)} \leq L \norm{ x-y} 
 $$
@@ -659,7 +659,7 @@ rownanie1 = function(t ,x) {
 
 x0 = c(0, 1)
 t0 = 0
-t_end = 80
+t_end = 14
 N = 100
 h = (t_end - t0) / N
 
@@ -676,7 +676,7 @@ rownanie2 = function(t ,x) {
 
 x0 = c(0, 1)
 t0 = 0
-t_end = 80
+t_end = 14
 N = 100
 h = (t_end - t0) / N
 
@@ -686,7 +686,7 @@ solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
 
 Przedstawimy wspólny wykres funkcji $\sin(t)$ porównujący te dwa schematy. Kolor czerowny odpowiada przybliżeniu otrzymanego przez schemat Eulera, zielony obrazuje przybliżenie otrzymane z RK4.
 <<fig=TRUE>>=
-t = seq (t0, to= 20*pi, by=0.01)
+t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution1$time, solution1$values[1,], col='red')
 lines(solution2$time, solution2$values[1,], col='green')
@@ -703,86 +703,57 @@ W teh częsci pokażemy jak istotny jest dobór odpowiedniego $N$. Różnice zap
 \end{itemize}
 Zatem weźmy $N=10000$:
 <<>>=
-rownanie2_1 = function(t ,x) {
+rownanie22 = function(t ,x) {
   y = rep(0, times =2)
   y[1] = x[2]
   y[2] = -x[1]
   return(y)
 }
+@
 
-x0 = c(0, 1)
-t0 = 0
-t_end = 80 
+
+<<>>=
 N = 10000
-h = (t_end - t0) / N
-
-
-solution2_1 = RK4_otwarty(rownanie2_1, x0, t0, h , N)
+solution2_1 = RK4_otwarty(rownanie22, x0, t0, h , N)
 @
 
 Prezentujemy wspólny wykres. Kolor czerowny odpowiada przybliżeniu uzyskanemu ze schematu RK4 dla $N=10000$.
 
 <<fig=TRUE>>=
-t = seq (t0, to= 20*pi, by=0.01)
+t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_1$time, solution2_1$values[1,], col='red')
 @
 
 Dla $N=1000$
 <<>>=
-rownanie2_2 = function(t ,x) {
-  y = rep(0, times =2)
-  y[1] = x[2]
-  y[2] = -x[1]
-  return(y)
-}
-
-x0 = c(0, 1)
-t0 = 0
-t_end = 80 
 N = 1000
-h = (t_end - t0) / N
-
-
-solution2_2 = RK4_otwarty(rownanie2_2, x0, t0, h , N)
+solution2_2 = RK4_otwarty(rownanie22, x0, t0, h , N)
 @
 
 Generujemy wykres. Kolor zielony odpowiada przybliżeniu uzyskanemu ze schematu RK4, dla $N=1000$.
 <<fig=TRUE>>=
-t = seq (t0, to= 20*pi, by=0.01)
+t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_2$time, solution2_2$values[1,], col='green')
 @
 
 Dla $N=100$
 <<>>=
-rownanie2_3 = function(t ,x) {
-  y = rep(0, times =2)
-  y[1] = x[2]
-  y[2] = -x[1]
-  return(y)
-}
-
-x0 = c(0, 1)
-t0 = 0
-t_end = 80
 N = 100
-h = (t_end - t0) / N
-
-
-solution2_3 = RK4_otwarty(rownanie2_3, x0, t0, h , N)
+solution2_3 = RK4_otwarty(rownanie22, x0, t0, h , N)
 @
 
 Ponownie obejrzyjmy wykres. Tym razem przybliżenie otrzymane dla $N=100$ oznaczone jest kolorem fioletowym.
 <<fig=TRUE>>=
-t = seq (t0, to= 20*pi, by=0.01)
+t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_3$time, solution2_3$values[1,], col='purple')
 @
 
 Zaprezentujemy teraz wykres wspólny dla $N=10000$, $N=1000$, $N=100$.
 <<fig=TRUE>>=
-t = seq (t0, to= 20*pi, by=0.01)
+t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_1$time, solution2_1$values[1,], col='red')
 lines(solution2_2$time, solution2_2$values[1,], col='green')
@@ -1087,9 +1058,9 @@ u(x,y) = g(x,y), \quad (x,y) \in \delta \Omega.\\
 \end{array}
 \right.
 $$
-Rozwiązaniem tego równanie będzię funkcja $u$ postaci:
+Dla funkcji $g$ oraz $f$ takich,że
 $$
-u(x,y) = \sin(\frac{\pi}{2}x) \cdot \sin(\frac{\pi}{2}y)
+g(x,y) = \sin(\frac{\pi}{2}x) \cdot \sin(\frac{\pi}{2}y), \quad f(x,y)=0
 $$
 Zdefiniujmy teraz kod naszego algorytmu. Potrzebne będzie nam 8 zmiennych:
 \begin{itemize}
@@ -1175,7 +1146,7 @@ schemat_eliptyczny = function(f, c , g , x0, xn, y0, yn , N)
 }
 @
 
-Zdefiniujmy funckję użytą w naszym algorytmie:
+Zdefiniujmy funkcję użytą w naszym algorytmie:
 <<>>=
 f = function(x,y){
   n = length(x)
@@ -1197,7 +1168,7 @@ g = function(x, y)
 solution = schemat_eliptyczny(f, c , g , x0, xn, y0, yn , N)
 @
 
-Wygereujmy wykres pokazujący przybliżenie uzyskane po zastosowaniu naszego schematu.
+Wygenerujmy wykres pokazujący przybliżenie uzyskane po zastosowaniu naszego schematu.
 <<fig=TRUE>>=
 library(plot3D)
 x = solution$x
