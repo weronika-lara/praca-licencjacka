@@ -86,7 +86,7 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 \item $K$ ciało nad zbiorem liczbowym.
 \item $\delta \Omega $ domknięcie zbioru.
 \item $J$ dowolny przedział.
-\item $\operatorname{IntB}$ wnętrze zbioru.
+%\item $\operatorname{IntB}$ wnętrze zbioru.
 \item $\ball{(t_0,x_0)}{\delta}$ kula o pomieniu $\delta$ w punkcie $(t_0,x_0)$.
 \item $C^k(U) = \set{u: U \to \setR} $ funkcja $u$ jest k-krotnie różniczkowalna w sposób ciągły na przedziale $U$ \citep{evans2012rownania}.
 \item $\ddx{t} f(t)$ - oznaczać będzie pochodna funkcji $f$ po zmiennej $t$. W szczególności $\ddx[^n]{t^n}$ oznaczać będzie $n$-tą pochodną po tejże zmiennej.
@@ -409,7 +409,7 @@ x(t_{n}) = x(t_{n-1}) + h f(t_{n-1}, x(t_{n-1})).
 $$
 \end{enumerate}
 \end{algorithm}
-Schemat Eulera otwarty jest najprostszym sposobem rozwiązywania równań różniczkowych. Przez to najmniej dokładnym co zaobserwujemy na przykładzie \ref{example-otwarty-euler}. 
+Schemat Eulera otwarty jest najprostszym sposobem rozwiązywania równań różniczkowych.  
 \subsection{Schemat otwarty Rungego-Kutty rzędu 4}
 W przypadku schematu otwartego Rungego - Kutty rzędu 4 punkty $ (1) - (4) $ z algorytmu \ref{Euler_algoritm} są takie same. Różnica następuje w punkcie $(5)$ czyli we wzorze, dzięki któremu wyznaczamy wartości $x(t_n)$. Metoda ta jest dokładniejsza od wspomnianej wcześniej metody Eulera.
 \begin{algorithm}
@@ -595,7 +595,7 @@ Jego rozwiązaniem jest funkcja $\sin(t)$. Zdefiniujmy teraz kody odpowiadające
 \item chwili $t_0$
 \item oraz ilości kroków $N$.
 \end{itemize}
-\begin{example}
+\begin{example}\;abel{example-otwarty-euler}
 Zacznijmy od schematu Eulera. Przypomnijmy wzór dla tego algorytmu:
 $$
 x(t_n) = x(t_{n-1}) + hf(t_{n-1},x(t_{n-1})) \quad n \in \set{1,\cdots,N-1}.
