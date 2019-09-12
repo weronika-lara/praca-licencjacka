@@ -174,34 +174,6 @@ $$
 
 %TODO co to jest równanie różnicowe
 
-\section{Inne elementy analizy matematycznej}
-
-\begin{definition}[Punkt wewnętrzny zbioru \citep{janich1984topology}]
-Niech $X$ będzie przestrzenią topologiczną, $B \subset X $ będzie dowolnym podzbiorem. Punkt $x \in X$ nazywamy wewnętrznym punktem zbioru $B$ jeżeli $x \in B$. Zbiór $\operatorname{IntB}$ punktów wewnętrznych zbioru $B$ nazywamy wnętrzem zbioru $B$. 
-\end{definition}
-%TODO def kuli
-\begin{definition}[Zbiór otwarty \citep{andrzejczak2019analiza1}] 
-Zbiór $A$ nazywamy otwartym, gdy każdy punkt zbioru $A$ jest punktem wewnętrznym zbioru $A$. 
-\end{definition}
-
-\begin{definition}[Norma \citep{janich1984topology}]
-Niech $X$ będzie przestrzenią wektorową nad ciałem $K =\setR $ lub $ K = \setC $. Odwzorowanie $\norm{\cdot}: X \to \setR$ nazywamy normą jeśli spełnione są następujące warunki 
-\begin{enumerate}
-\item Dla dowolnego $x\in X$ przy czym  $  \norm{x} = 0 \implies x = \theta$
-$$
-\norm{x} \geq 0 ,
-$$
-\item Dla dowolnego $\alpha \in K$ oraz dowolnego $x \in X$ 
-$$
-\norm{\alpha x}  = \abs{\alpha}  \norm{x},
-$$
-\item Dla dowolnych $x,y\in X$
-$$
- \norm{x+y} \leq \norm{x} + \norm{y}.
-$$
-\end{enumerate}
-Parę $ (X, \norm{\cdot})$ złożoną z przestrzeni wektorowej i zadanej dla niej normy, nazywamy przestrzenią unormowaną. 
-\end{definition}
 
 \section{Równania różniczkowe zwyczajne}
 
@@ -317,7 +289,7 @@ Operatorem Laplace'a (laplasjanem) szukanej funkcji $u: \Omega \to \setR$ nazywa
 $$
 \Delta u  = \sum_{i=1}^{n} u_{x_{i} x_{i}}  
 $$
-dla $ x \in \Omega \subset \setR^{n} $ gdzie $\Omega$ jest obszarem \footnote{definicje obszaru znajdziemy w}. 
+dla $ x \in \Omega \subset \setR^{n} $.
 \end{definition}
 
 \subsection{Równania Eliptyczne}
@@ -350,7 +322,6 @@ Mówimy, że równanie  \eqref{line operator} jest eliptyczne w punkcie $x$ gdy 
 $$
 \xi^{T} A(x) \xi \geq 0
 $$
-Operator L jest eliptyczny w obszarze $\Omega$ jesli $L$ jest eliptyczny w każdym punkcie obszaru $\Omega$.
 \end{definition}
 Istnieją również równania hiperboliczne pierwszego i drugiego rzędu oraz równania paraboliczne, ale nie będą one omawiane w naszej pracy. 
 %\subsection{Równania hiperboliczne pierwszego rzędu}
@@ -612,7 +583,7 @@ Gdy $ N \to \infty $ to $ h \to 0 $ oraz $ E_N \to 0$. Zatem schemat jest zbież
 
 
 \section{Przykłady rozwiązywania równań za pomocą schematów dla problemów początkowych}
-W sekcji tej zaprezentujemy przykłady wykorzytsujące schemat Eulera otwarty(w skrócie będziemy pisali schemat Eulera) oraz Rungego-Kutty rzędu 4 (w skórcie będziemy oznaczali RK4). Weźmy równanie różniczkowe postaci:
+W sekcji tej zaprezentujemy przykłady wykorzystujące schemat Eulera otwarty(w skrócie będziemy pisali schemat Eulera) oraz Rungego-Kutty rzędu 4 (w skórcie będziemy oznaczali RK4). Weźmy równanie różniczkowe postaci:
 $$
 x'' = -x \quad x(0)=0, x'(0) = 1.
 $$
@@ -627,7 +598,7 @@ Jego rozwiązaniem jest funkcja $\sin(t)$. Zdefiniujmy teraz kody odpowiadające
 \begin{example}
 Zacznijmy od schematu Eulera. Przypomnijmy wzór dla tego algorytmu:
 $$
-x(t_n) = x(t_{n-1}) + hf(t_{n-1},x(t_{n-1}))
+x(t_n) = x(t_{n-1}) + hf(t_{n-1},x(t_{n-1})) \quad n \in \set{1,\cdots,N-1}.
 $$
 Kod dla schematu Eulera:
 <<>>=
@@ -646,7 +617,7 @@ schemat_otwarty = function(rownanie1, x0 , t0, h, N){
 @
 Przypomnijmy wzór na schemat otwarty RK4
 $$
-x(t_{n}) = x(t_{n-1}) + \frac{h}{6} ( K_1 + 2K_2 + 2K_3 + K_4 )
+x(t_{n}) = x(t_{n-1}) + \frac{h}{6} ( K_1 + 2K_2 + 2K_3 + K_4 ) \quad n \in \set{1,\cdots,N-1}
 $$
 gdzie 
 $$
@@ -688,7 +659,7 @@ rownanie1 = function(t ,x) {
 
 x0 = c(0, 1)
 t0 = 0
-t_end = 10 
+t_end = 80
 N = 100
 h = (t_end - t0) / N
 
@@ -705,7 +676,7 @@ rownanie2 = function(t ,x) {
 
 x0 = c(0, 1)
 t0 = 0
-t_end = 100 
+t_end = 80
 N = 100
 h = (t_end - t0) / N
 
@@ -715,7 +686,7 @@ solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
 
 Przedstawimy wspólny wykres funkcji $\sin(t)$ porównujący te dwa schematy. Kolor czerowny odpowiada przybliżeniu otrzymanego przez schemat Eulera, zielony obrazuje przybliżenie otrzymane z RK4.
 <<fig=TRUE>>=
-t = seq (t0, to= 4*pi, by=0.01)
+t = seq (t0, to= 20*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution1$time, solution1$values[1,], col='red')
 lines(solution2$time, solution2$values[1,], col='green')
@@ -741,7 +712,7 @@ rownanie2_1 = function(t ,x) {
 
 x0 = c(0, 1)
 t0 = 0
-t_end = 100 
+t_end = 80 
 N = 10000
 h = (t_end - t0) / N
 
@@ -752,7 +723,7 @@ solution2_1 = RK4_otwarty(rownanie2_1, x0, t0, h , N)
 Prezentujemy wspólny wykres. Kolor czerowny odpowiada przybliżeniu uzyskanemu ze schematu RK4 dla $N=10000$.
 
 <<fig=TRUE>>=
-t = seq (t0, to= 4*pi, by=0.01)
+t = seq (t0, to= 20*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_1$time, solution2_1$values[1,], col='red')
 @
@@ -768,7 +739,7 @@ rownanie2_2 = function(t ,x) {
 
 x0 = c(0, 1)
 t0 = 0
-t_end = 100 
+t_end = 80 
 N = 1000
 h = (t_end - t0) / N
 
@@ -778,7 +749,7 @@ solution2_2 = RK4_otwarty(rownanie2_2, x0, t0, h , N)
 
 Generujemy wykres. Kolor zielony odpowiada przybliżeniu uzyskanemu ze schematu RK4, dla $N=1000$.
 <<fig=TRUE>>=
-t = seq (t0, to= 4*pi, by=0.01)
+t = seq (t0, to= 20*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_2$time, solution2_2$values[1,], col='green')
 @
@@ -794,7 +765,7 @@ rownanie2_3 = function(t ,x) {
 
 x0 = c(0, 1)
 t0 = 0
-t_end = 100 
+t_end = 80
 N = 100
 h = (t_end - t0) / N
 
@@ -804,14 +775,14 @@ solution2_3 = RK4_otwarty(rownanie2_3, x0, t0, h , N)
 
 Ponownie obejrzyjmy wykres. Tym razem przybliżenie otrzymane dla $N=100$ oznaczone jest kolorem fioletowym.
 <<fig=TRUE>>=
-t = seq (t0, to= 4*pi, by=0.01)
+t = seq (t0, to= 20*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_3$time, solution2_3$values[1,], col='purple')
 @
 
 Zaprezentujemy teraz wykres wspólny dla $N=10000$, $N=1000$, $N=100$.
 <<fig=TRUE>>=
-t = seq (t0, to= 4*pi, by=0.01)
+t = seq (t0, to= 20*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_1$time, solution2_1$values[1,], col='red')
 lines(solution2_2$time, solution2_2$values[1,], col='green')
