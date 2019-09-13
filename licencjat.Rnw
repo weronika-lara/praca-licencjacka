@@ -684,20 +684,18 @@ Patrząc na zaprezentowane przez nas wyżej wzory definiujące odpowiednie schem
 \begin{example}
 W teh częsci pokażemy jak istotny jest dobór odpowiedniego $N$. Różnice zaprezentujemy dla funkcji $sin(t)$ przybliżając ją schematem RK4. 
 \begin{itemize}
-\item $N=10000$,
-\item $N=1000$,
+\item $N=25$,
+\item $N=50$,
 \item $N=100$.
 \end{itemize}
-Zatem weźmy $N=10000$:
-
-
+Zatem weźmy $N=25$:
 <<>>=
 N = 25
 h = (t_end - t0) / N
 solution2_1 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
-Prezentujemy wspólny wykres. Kolor czerowny odpowiada przybliżeniu uzyskanemu ze schematu RK4 dla $N=10000$.
+Prezentujemy wspólny wykres. Kolor czerowny odpowiada przybliżeniu uzyskanemu ze schematu RK4 dla $N=25$.
 
 <<fig=TRUE>>=
 t = seq (t0, to= 4*pi, by=0.01)
@@ -705,14 +703,14 @@ plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_1$time, solution2_1$values[1,], col='red')
 @
 
-Dla $N=25$
+Dla $N=50$
 <<>>=
 N = 50
 h = (t_end - t0) / N
 solution2_2 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
-Generujemy wykres. Kolor zielony odpowiada przybliżeniu uzyskanemu ze schematu RK4, dla $N=1000$.
+Generujemy wykres. Kolor zielony odpowiada przybliżeniu uzyskanemu ze schematu RK4, dla $N=50$.
 <<fig=TRUE>>=
 t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
@@ -733,7 +731,7 @@ plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_3$time, solution2_3$values[1,], col='purple')
 @
 
-Zaprezentujemy teraz wykres wspólny dla $N=10000$, $N=1000$, $N=100$.
+Zaprezentujemy teraz fragment wykresu pokazujący róznice uzyskane przez przybliżenia dla $N=25$, $N=50$, $N=100$. 
 <<fig=TRUE>>=
 t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black', ylim=c(0.95,1.0001), xlim=c(7.5,8.5))
