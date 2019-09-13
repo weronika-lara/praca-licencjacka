@@ -666,22 +666,9 @@ h = (t_end - t0) / N
 
 solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
 @
+
 <<>>=
-rownanie2 = function(t ,x) {
-  y = rep(0, times =2)
-  y[1] = x[2]
-  y[2] = -x[1]
-  return(y)
-}
-
-x0 = c(0, 1)
-t0 = 0
-t_end = 14
-N = 100
-h = (t_end - t0) / N
-
-
-solution2 = RK4_otwarty(rownanie2, x0, t0, h , N)
+solution2 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
 Przedstawimy wspólny wykres funkcji $\sin(t)$ porównujący te dwa schematy. Kolor czerowny odpowiada przybliżeniu otrzymanego przez schemat Eulera, zielony obrazuje przybliżenie otrzymane z RK4.
@@ -702,19 +689,12 @@ W teh częsci pokażemy jak istotny jest dobór odpowiedniego $N$. Różnice zap
 \item $N=100$.
 \end{itemize}
 Zatem weźmy $N=10000$:
-<<>>=
-rownanie22 = function(t ,x) {
-  y = rep(0, times =2)
-  y[1] = x[2]
-  y[2] = -x[1]
-  return(y)
-}
-@
 
 
 <<>>=
-N = 10000
-solution2_1 = RK4_otwarty(rownanie22, x0, t0, h , N)
+N = 25
+h = (t_end - t0) / N
+solution2_1 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
 Prezentujemy wspólny wykres. Kolor czerowny odpowiada przybliżeniu uzyskanemu ze schematu RK4 dla $N=10000$.
@@ -725,10 +705,11 @@ plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_1$time, solution2_1$values[1,], col='red')
 @
 
-Dla $N=1000$
+Dla $N=25$
 <<>>=
-N = 1000
-solution2_2 = RK4_otwarty(rownanie22, x0, t0, h , N)
+N = 50
+h = (t_end - t0) / N
+solution2_2 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
 Generujemy wykres. Kolor zielony odpowiada przybliżeniu uzyskanemu ze schematu RK4, dla $N=1000$.
@@ -741,7 +722,8 @@ lines(solution2_2$time, solution2_2$values[1,], col='green')
 Dla $N=100$
 <<>>=
 N = 100
-solution2_3 = RK4_otwarty(rownanie22, x0, t0, h , N)
+h = (t_end - t0) / N
+solution2_3 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
 Ponownie obejrzyjmy wykres. Tym razem przybliżenie otrzymane dla $N=100$ oznaczone jest kolorem fioletowym.
@@ -754,7 +736,7 @@ lines(solution2_3$time, solution2_3$values[1,], col='purple')
 Zaprezentujemy teraz wykres wspólny dla $N=10000$, $N=1000$, $N=100$.
 <<fig=TRUE>>=
 t = seq (t0, to= 4*pi, by=0.01)
-plot(t, sin(t), type = 'l', col = 'black')
+plot(t, sin(t), type = 'l', col = 'black', ylim=c(0.95,1.0001), xlim=c(7.5,8.5))
 lines(solution2_1$time, solution2_1$values[1,], col='red')
 lines(solution2_2$time, solution2_2$values[1,], col='green')
 lines(solution2_3$time, solution2_3$values[1,], col='purple')
