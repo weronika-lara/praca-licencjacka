@@ -840,6 +840,49 @@ $$
 $$
 to zagadnienie brzegowe postaci \eqref{zagad_brzeg} posiada jednoznaczne rozwiązanie ciągłe w $[0,1]$. 
 \end{theorem}
+\begin{proof}
+szkic dowodu
+\end{proof}
+
+\subsection{Metoda strzału}
+W tej częsci przedstawimy jeden ze schematów rozwiązywania problemu brzegowego postaci:
+\begin{equation}\label{metoda_strzalu}
+\left\{\begin{array}{ll}
+u''(t)=h(t,u(t),u'(t)), & \\
+u(a)= \alpha, & \\
+u(b)= \beta.
+\end{array}\right.
+\end{equation}
+Schemat ten będziemy nazywali metodą strzału. 
+\begin{algorithm}[Metoda Strzału]
+Problem brzegowy postaci \eqref{metoda_strzalu} rozwiązujemy w następujący sposób:
+\begin{enumerate}
+\item Zamieniamy problem brzegowy, na zagadnienie początkowe dowolnie dobierając wartość $u'(a)$. 
+\item Rozwiązujemy powstałe zagadnienie początkowe uzyskując wartość $u(b)$.
+\item Jeśli dobór wartośći $u'(a)$ z punktu (1) był odpowiedni to $u(b) = \beta$, co kończy obliczenia. Jeżeli $u(b) \neq \beta$ należy wrócić do punktu (1), ponownie wybrać (tym razem oczywiście inne u'(a)) i przejść do punktu (2) oraz (3). 
+\end{enumerate}
+\end{algorithm}
+\subsection{Metoda różnic skończonych}
+Inny sposób rozwiązywania problemów brzegowych polega na zastąpieniu pochodnych wyrażeniami przybliżonymi i dyskretyzacji dziedziny. Posługiwać będziemy się wzorami:
+\begin{equation}
+u'(t) = \frac{1}{2h}[u(t+h) - u(t-h)] - \frac{1}{6}h^2u'''(\xi),
+\end{equation}
+\begin{equation}
+u''(t) = \frac{1}{h^2}[u(t+h) - 2u(t) + u(t+h)] - \frac{1}{12}h^2x^{(4)}(\tau).
+\end{equation}
+Jak przedtem zajmujemy się problemem brzegowym postaci \eqref{metoda_strzalu}. Podzielmy przedział $[a,b]$ punktami $ a=t_0<t_1<\cdots<t_n<t_{N+1}=b $. W praktyce przyjmuje się, że są one równoodległe $t_n = a + nh$ dla $n \in \set{0,\cdots,N+1}$. Niech $y_n$ oznacza przybliżoną wartość $u(t_n)$. Wersja dyskretna zadania oparta na wspomnianych wzorach jest następująca:
+$$
+\left\{\begin{array}{ll}
+y_0 = \alpha, & \\
+\frac{1}{h^2}(y_{n-1}-2y_n + y_{n+1} = f\left(t_n,y_n,\frac{1}{2h}(y_{n+1} - y_n)\right)& \\
+y_{n+1} = \beta.
+\end{array}\right. 
+$$
+\subsection{Zagadnienia liniowe}
+
+
+
+
 
 \section{Schemat brzegowy dla problemu jednowymiarowego}
 Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
