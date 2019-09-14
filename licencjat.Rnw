@@ -750,6 +750,97 @@ W tym rozdziale odmiennie niż w rozdziałach poprzednich posługiwać się  bę
 \item drugą pochodną danej funkcji zamiast $\ddx[^2]{x} u(x)$ będziemy oznaczali przez $u_{xx}$.
 \end{itemize}
 Oznaczenia przyjęte w tej części są typowe w teorii równań cząstkowych. 
+\section{Problemy brzegowe}
+\begin{theorem}[O istenienu rozwiązania \citep{cheney2006analiza}]
+Jeśli funckja $u'(x)$ jest ciągła, nieujemna i ograniczona w obszarze określonym nierównościami $0\leq t \leq 1$, $-\infty < x < +\infty$ to problem brzegowy postaci:
+\begin{equation}\label{zagad_brzeg}
+\left\{\begin{array}{ll}
+u''(t)=f(t,x), & \\
+u(0)=0, & \\
+u(1)=0,
+\end{array}\right.
+\end{equation}
+posiada jednoznaczne rozwiązanie w przedziale $[0,1]$.
+\end{theorem}
+
+\begin{theorem}\citep{kincaid1991numerical}
+Rozważmy następujące problemy brzegowe:
+\begin{equation}\label{pierwszy_problem_brzegowy}
+\left\{\begin{array}{ll}
+u''(t)=f(t,u(t)), & \\
+u(a)=\alpha, & \\
+u(b)=\beta,
+\end{array}\right.
+\end{equation}
+\begin{equation}\label{drugi_problem_brzegowy}
+\left\{\begin{array}{ll}
+y''(t)=g(t,y(t)), & \\
+y(0)= \alpha, & \\
+y(1)= \beta,
+\end{array}\right.
+\end{equation}
+gdzie 
+$$
+g(p,q) = (b-a)^2f(a+(b-a)p,q).
+$$
+Jeśli $y$ jest rozwiązaniem \eqref{drugi_problem_brzegowy}, wówczas funkcja $u$ postaci $u(t)=y\left(\frac{t-a}{b-a}\right)$ jest rozwiązaniem problemu \eqref{pierwszy_problem_brzegowy}. Ponadto, jeśli $u$ jest rozwiązaniem \eqref{pierwszy_problem_brzegowy}, wówczas $y(a+(b-a)t)$ jest rozwiązaniem problemu \eqref{drugi_problem_brzegowy}.
+\end{theorem}
+\begin{proof}\citep{kincaid1991numerical}
+Dowód powyższego twierdzenia wygląda w następujący sposób:
+$$
+\begin{array}{rl}
+u(a) &= y\left(\frac{a-a}{b-a}\right)= y(0) = \alpha \\
+u(b) &= y\left(\frac{b-a}{b-a}\right)= y(1) = \beta \\
+u'(t) &= y'\left(\frac{t-a}{b-a}\right)\frac{1}{b-a} \\
+u''(t) &= y\left(\frac{t-a}{b-a}\right)\frac{1}{(b-a)^2} \\
+&= g\left(\frac{t-a}{b-a},y\left(\frac{t-a}{b-a})\right)\right) \frac{1}{(b-a)^2}\\
+&= (b-a)^2f\left(a+(b-a)\frac{t-a}{b-a},y\left(\frac{t-a}{b-a}\right)\right)\frac{1}{(b-a)^2} \\
+&= f(t,u(t)).
+\end{array}
+$$
+\end{proof}
+\begin{theorem}\citep{kincaid1991numerical}
+Rozważmy problemy brzegowe postaci:
+\begin{equation}\label{trzeci_problem_brzegowy}
+\left\{\begin{array}{ll}
+y''(t)=g(t,y(t)), & \\
+y(0)=\alpha, & \\
+y(1)=\beta,
+\end{array}\right.
+\end{equation}
+\begin{equation}\label{czwarty_problem_brzegowy}
+\left\{\begin{array}{ll}
+z''(t)=h(t,z(t)), & \\
+z(0)= 0, & \\
+z(1)= 0,
+\end{array}\right.
+\end{equation}
+gdzie 
+$$
+h(p,q)= g(p,q+\alpha + (\beta - \alpha)p).
+$$
+Jeśli $z$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}, to funkcja $y(t) = z(t) + \alpha + (\beta - \alpha)t$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}. Co więcej jeżeli $y$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}, to $z(t) = y(t) - [\alpha + (\beta - \alpha)t]$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}.
+\end{theorem}
+\begin{proof}
+Dowód tego twierdzenia wynika bezpośrednio z:
+$$
+\begin{array}{rl}
+y(0)&= z(0) + \alpha + (\beta - \alpha)0 = \alpha \\
+y(1)&= z(1) + \alpha + (\beta - \alpha)1 = \beta \\
+y''(t)&= z''(t) = h(t,z(t)) = g(t,z(t) + \alpha + (\beta - \alpha)t) \\
+&= g(t,y(t)).
+\end{array}
+$$
+\end{proof}
+
+\begin{theorem}\citep{kincaid1991numerical}
+Jeżeli $f(t,s(t))$ jest funkcją ciągłą, gdzie $t \in [0,1]$ i $(-\infty,+\infty)$ spełniającą warunek taki, że
+$$
+|f(t,s_1) - f(t,s_2)| \leq k|s_1 - s_2|, \quad k<8,
+$$
+to zagadnienie brzegowe postaci \eqref{zagad_brzeg} posiada jednoznaczne rozwiązanie ciągłe w $[0,1]$. 
+\end{theorem}
+
 \section{Schemat brzegowy dla problemu jednowymiarowego}
 Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
 \begin{equation} \label{boundary_diff_equa}
