@@ -1,0 +1,282 @@
+Techniki omówione w poprzednim rozdziale doskonale sprawdzają się dla równań z zadanymi warunkami początkowymi. W tej części zajmiemy się jednak problemami opisanymi poprzez warunki brzegowe. Do tej klasy problemów stosowane są inne - lepiej dopasowane techniki. Część z nich rozszerza omówione wcześniej algorytmy. W tej części omówimy ogólną postać problemu z warunkami brzegowymi, jak i sposoby ich rozwiązywania za pomocą technik numerycznych. 
+
+
+\begin{theorem}[O istnieniu rozwiązania \citep{kincaid1991numerical}]
+Jeśli funkcja $\frac{df}{du}(t,u)$ jest ciągła, nieujemna i ograniczona w obszarze określonym nierównościami $0\leq t \leq 1$, $-\infty < u < +\infty$ to problem brzegowy postaci:
+\begin{equation}\label{zagad_brzeg}
+\left\{\begin{array}{ll}
+u''(t)=f(t,u), & t \in (0,1) \\
+u(0)=0, & \\
+u(1)=0,
+\end{array}\right.
+\end{equation}
+posiada jednoznaczne rozwiązanie w przedziale $[0,1]$.
+\end{theorem}
+Powyższe twierdzenie pokazuje, że istnienie rozwiązania problemu brzegowego może być rozstrzygnięte za pomocą odpowiednich warunków nałożonych na funkcję prawej strony równania. Nie wszystkie jednak problemy brzegowowe posiadają - najprostszy - zerowy warunek brzegowy oraz dziedzinę jaką jest przedział $(0,1)$. 
+
+\begin{theorem}[{\citep{kincaid1991numerical}}]
+Rozważmy następujące dwa problemy brzegowe:
+\begin{equation}\label{pierwszy_problem_brzegowy}
+\left\{\begin{array}{ll}
+u''(t)=f(t,u(t)), & t \in (a,b) \\
+u(a)=\alpha, & \\
+u(b)=\beta,
+\end{array}\right.
+\end{equation}
+\begin{equation}\label{drugi_problem_brzegowy}
+\left\{\begin{array}{ll}
+y''(t)=g(t,y(t)), &  t \in (0,1)\\
+y(0)= \alpha, & \\
+y(1)= \beta,
+\end{array}\right.
+\end{equation}
+gdzie 
+$$
+g(p,q) = (b-a)^2f(a+(b-a)p,q).
+$$
+Wtedy jeśli $y$ jest rozwiązaniem \eqref{drugi_problem_brzegowy}, wówczas funkcja $u: t \mapsto y\left(\frac{t-a}{b-a}\right)$ jest rozwiązaniem problemu \eqref{pierwszy_problem_brzegowy}. Ponadto, jeśli $u$ jest rozwiązaniem \eqref{pierwszy_problem_brzegowy}, wówczas $y: t \mapsto u(a+(b-a)t)$ jest rozwiązaniem problemu \eqref{drugi_problem_brzegowy}.
+\end{theorem}
+\begin{proof}
+Załóżmy, że $y$ jest rozwiązaniem \eqref{drugi_problem_brzegowy}. Wtedy funkcja $u$ postaci $u: t \mapsto y\left(\frac{t-a}{b-a}\right)$ spełnia warunki
+\begin{align*}
+u(a) &= y\left(\frac{a-a}{b-a}\right)= y(0) = \alpha, \\
+u(b) &= y\left(\frac{b-a}{b-a}\right)= y(1) = \beta, \\
+u'(t) &= y'\left(\frac{t-a}{b-a}\right)\frac{1}{b-a}, \\
+u''(t) &= y''\left(\frac{t-a}{b-a}\right)\frac{1}{(b-a)^2} \\
+&= g\left(\frac{t-a}{b-a},y\left(\frac{t-a}{b-a}\right)\right) \frac{1}{(b-a)^2}\\
+&= (b-a)^2f\left(a+(b-a)\frac{t-a}{b-a},y\left(\frac{t-a}{b-a}\right)\right)\frac{1}{(b-a)^2}. \\
+&= f(t,u(t)).
+\end{align*}
+{\color{red} Brak dowodu w drugą stronę - dokończyć.}
+Niech dalej $u$ będzie rozwiązaniem \eqref{pierwszy_problem_brzegowy}. Wtedy funkcja $y = u(a+(b-a)t)$ spełnia warunki
+\begin{align*}
+y(0) &= \\
+y(1) &= \\
+y'(t) &= \\
+y''(t) &= 
+\end{align*}
+\end{proof}
+
+Okazuje się, że istnieje również odpowiedniość w zakresie wartości na brzegu warunku - następującej postaci:
+\begin{theorem}[{\citep{kincaid1991numerical}}]
+Rozważmy problemy brzegowe postaci:
+\begin{equation}\label{trzeci_problem_brzegowy}
+\left\{\begin{array}{ll}
+y''(t)=g(t,y(t)), t \in(0,1)& \\
+y(0)=\alpha, & \\
+y(1)=\beta,
+\end{array}\right.
+\end{equation}
+\begin{equation}\label{czwarty_problem_brzegowy}
+\left\{\begin{array}{ll}
+z''(t)=h(t,z(t)), & t \in (0,1)\\
+z(0)= 0, & \\
+z(1)= 0,
+\end{array}\right.
+\end{equation}
+gdzie 
+$$
+h(p,q)= g(p,q+\alpha + (\beta - \alpha)p).
+$$
+Jeśli $z$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}, to funkcja $y: t \mapsto z(t) + \alpha + (\beta - \alpha)t$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}. Co więcej jeżeli $y$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}, to $z: t \mapsto y(t) - [\alpha + (\beta - \alpha)t]$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}.
+\end{theorem}
+\begin{proof}
+Niech $z$ będzie rozwiązaniem \eqref{czwarty_problem_brzegowy}. Wtedy funkcja $y: t \mapsto z(t) + \alpha + (\beta - \alpha)t$ spełnia warunki
+\begin{align*}
+y(0)&= z(0) + \alpha + (\beta - \alpha)0 = \alpha \\
+y(1)&= z(1) + \alpha + (\beta - \alpha)1 = \beta \\
+y''(t)&= z''(t) = h(t,z(t)) = g(t,z(t) + \alpha + (\beta - \alpha)t) \\
+&= g(t,y(t)).
+\end{align*}
+{\color{red} Brak dowodu w drugą stronę - dokończyć.}
+\end{proof}
+
+Powyższe twierdzenia dają nam narzędzia do weryfikacji istnienia rozwiązania. Pokazują one, że dla dowolnego problemu brzegowego w typie \eqref{pierwszy_problem_brzegowy} istnieje zagadnienie w typie \eqref{czwarty_problem_brzegowy} dla którego istnienie rozwiązania wymusza istnienie rozwiązanie odpowiadającego problemu, zaś same rozwiązania są wzajemnie łatwe do wyznaczenia. 
+
+\begin{theorem}[{\citep{kincaid1991numerical}}]
+Jeżeli $f(t,s)$ jest funkcją ciągłą, gdzie $t \in [0,1]$ i $s \in \setR$ spełniającą warunek taki, że
+$$
+|f(t,s_1) - f(t,s_2)| \leq k|s_1 - s_2|, \quad k<8,
+$$
+to zagadnienie brzegowe postaci \eqref{zagad_brzeg} posiada jednoznaczne rozwiązanie ciągłe w $[0,1]$. 
+\end{theorem}
+Dokładniejszy szkic dowodu tego faktu może zostać odszukany w \citep{kincaid1991numerical}. Tu w pracy wspomnimy jedynie, że wykorzystuje on postać całkową równania, dla której to stosowane jest potem twierdzenie o punkcie stałym Banacha. Powyższe twierdzenie dodatkowo wykazuje, że rozwiązanie do tego problemu może posiadać rozwiązanie w klasie funkcji ciągłych. Warto odnotować, że przedstawione wcześniej transformacje opisujące zależności pomiędzy \eqref{pierwszy_problem_brzegowy} a \eqref{czwarty_problem_brzegowy}, nie zaburzają ciągłości - gdyż składają funkcje ciągłe z innymi funkcjami ciągłymi. 
+
+\subsection{Metoda strzału}
+W tej części przedstawimy jeden ze schematów rozwiązywania problemu brzegowego postaci:
+\begin{equation}\label{metoda_strzalu}
+\left\{\begin{array}{ll}
+u''(t)=h(t,u(t),u'(t)), & \\
+u(a)= \alpha, & \\
+u(b)= \beta.
+\end{array}\right.
+\end{equation}
+Schemat ten będziemy nazywali metodą strzału. 
+\begin{algorithm}[Metoda Strzału]
+Problem brzegowy postaci \eqref{metoda_strzalu} rozwiązujemy w następujący sposób:
+\begin{enumerate}
+\item Rozważamy zagadnienie początkowe postaci
+\begin{equation} \label{eq-shooting-auxiliary}
+\left\{\begin{array}{ll}
+u''(t)=h(t,u(t),u'(t)), & \\
+u(a)= \alpha, & \\
+u'(a)= z.
+\end{array}\right.
+\end{equation}
+\item Oznaczmy przez $\Phi$ funkcję przypisującą dla wybranego $z \in \setR$ funkcję będącą rozwiązaniem \eqref{eq-shooting-auxiliary}.
+\item Rozwiązujemy równanie postaci 
+$$
+\Phi(z) = \beta.
+$$ 
+\end{enumerate}
+Najtrudniejszym krokiem powyższego algorytmu jest końcowe rozwiązanie równania, z uwagi na bardzo skomplikowaną, a często niejawną postać funkcji $\Phi$. Do rozwiązywania problemów tą metodą wykorzystuje się kilka podejść - w szczególności
+\begin{itemize}
+\item Metodą siecznych,
+\item Dekompozycję funkcji liniowej, czy
+\item Metodę stycznych Newtona.
+\end{itemize}
+\end{algorithm}
+Więcej o odmianach metody strzału odszukać można w pracy \citep{kincaid1991numerical}. Dalej przejdziemy do najbardziej nas interesującej metody różnic skończonych - wykorzystującej znane nam koncepcje z rozdziału \ref{chapter-Cauchy-problems}.
+\subsection{Metoda różnic skończonych} \label{subsection-boundary-theory-finite-differences}
+Wiemy, że (przy założeniu istnienia odpowiedniu wielu pochodnych rozwiązania) następujące warunki szacujące są prawdziwe:
+\begin{equation}
+u'(t) = \frac{1}{2h}[u(t+h) - u(t-h)] - \frac{1}{6}h^2u'''(\xi),
+\end{equation}
+oraz 
+\begin{equation}
+u''(t) = \frac{1}{h^2}[u(t+h) - 2u(t) + u(t+h)] - \frac{1}{12}h^2x^{(4)}(\tau).
+\end{equation}
+Jak przedtem zajmujemy się problemem brzegowym postaci \eqref{metoda_strzalu}. Podzielmy przedział $[a,b]$ punktami $ a=t_0<t_1<\cdots<t_N<t_{N+1}=b $. W praktyce przyjmuje się, że są one równoodległe $t_n = a + nh$ dla $n \in \set{0,\cdots,N+1}$. Niech $y_n$ oznacza przybliżoną wartość $u(t_n)$. Wersja dyskretna zadania oparta na wspomnianych wzorach jest następująca:
+$$
+\left\{\begin{array}{ll}
+y_0 = \alpha, & \\
+\frac{1}{h^2}(y_{n-1}-2y_n + y_{n+1}) = f\left(t_n,y_n,\frac{1}{2h}(y_{n+1} - y_{n-1})\right),& n \in \set{1,\cdots,N} \\
+y_{n+1} = \beta.
+\end{array}\right. 
+$$
+Powyższy układ $N$ równań z $N$ niewiadomymi $y_1,\cdots,y_N$ jest potencjalnie nieliniowy. Rozwiązywanie układu w tej postaci jest kłopotliwe. Zupełnie inaczej jest jednak w przypadku liniowym. Rozważmy zatem dalej szczególny przypadek gdzie:
+$$
+f(t,u,w) =f(t) +  g(t) u + m(t) w,
+$$
+Co pozwala na sprowadzenie naszego problemu do następującej postaci:
+\begin{equation}
+\left\{\begin{array}{ll}
+u''(t)=f(t) + g(t) u(t) + m(t) u'(t), & t \in (a,b) \\
+u(a)= \alpha, & \\
+u(b)= \beta.
+\end{array}\right.
+\end{equation}
+W przypadku tym układ równań do rozwiąznia jest układem równań liniowych opisanych poniższymi zależnościami:
+$$
+\left\{\begin{array}{ll}
+y_0 = \alpha, & \\
+\left(1+ \frac{1}{2}h m(t_i)\right)y_{n-1} - (2+ h^2 g(t_i))y_n + (1- \frac{1}{2}h m(t_i))y_{n+1} = h^2 f(t_i) ,& n \in \set{1,\cdots,N} \\
+y_{n+1} = \beta,
+\end{array}\right. 
+$$ 
+Wprowadzmy oznaczenia :
+\begin{align*}
+a_i:= 1 + \frac{1}{2}m(t_i),\\
+d_i:= -(2+h^2 g(t_i)), \\
+c_i:= 1 - \frac{1}{2}m(t_i), \\
+b_i:= h^2 f(t_i).
+\end{align*}
+Wtedy powyższy układ równań możemy zapisać w postaci macierzowej:
+\begin{equation}\label{macierz}
+\left[ \begin{array}{ccccc}
+d_1 & c_1 & 0 & 0 & 0 \\
+a_1 & d_2 & c_2 & 0 & 0\\
+\cdots & \cdots & \cdots &\cdots  &\cdots \\
+0 & 0 & a_{N-2} & d_{N-1} & c_{N-1}\\
+0 & 0 & 0 & a_{N-1} & d_N 
+\end{array} \right] \cdot
+\left[ \begin{array}{c}
+y_1 \\
+y_2 \\
+\cdots \\
+y_{N-1} \\
+y_{N}  
+\end{array} \right] =
+\left[ \begin{array}{c}
+b_1 - a_0\alpha\\
+b_2 \\
+\cdots \\
+b_{n-1} \\
+b_n -c_n\beta 
+\end{array} \right] .
+\end{equation}
+Zauważmy też, że jeśli $g(t)>0$, a $h$ jest na tyle małe, że$ |h m(t)| \leq 2$, to ta macierz jest zdominowana przekątniowo. Istotnie, wtedy $ 1 \pm \frac{1}{2}hw_n \geq 0 $ i
+$$
+|2 + h^2v_n| > |1 + \frac{1}{2}hw_n| + |1 - \frac{1}{2}h^2w_n| = 2
+$$
+
+W tej dalszej części uzasadnimy, że dla $h \to 0$ rozwiązania zadania dyskretnego są zbieżne do rozwiązania problemu brzegowego postaci
+\begin{equation}\label{zagad_brzeg_zbiez}
+\left\{\begin{array}{cl}
+u''(t) = f(t) + g(t) u(t) + m(t) u'(t), &  t \in (a,b)\\
+u(a) = \alpha, & \\
+u(b) = \beta.
+\end{array}\right.
+\end{equation}
+Istnienie i jednoznaczność rozwiązania takiego zagadnienia wynika z następującego twierdzenia.
+\begin{theorem}[{\citep{kincaid1991numerical}}]
+Zagadnienie brzegowe postaci
+\begin{equation}
+\left\{\begin{array}{cl}
+u''(t) = f(t,u(t),u'(t)), & \\
+c_{11}u(a) + c_{12}u'(a) = c_{13}, & \\
+c_{21}u(b) + c_{22}u'(b) = c_{23}
+\end{array}\right.
+\end{equation}
+ma jednoznaczne rozwiązanie w przedziale $[a,b]$, jeśli
+\begin{enumerate}
+\item Funkcja $f$ i jej pierwsze pochodne cząstkowe $f_t$,$f_u$,$f_{u'}$ są ciągłe w obszarze $D:= [a,b] \times \setR \times \setR$.
+\item $f_t >0, f_u \leq M$ i $|f_{u'}| \leq M$ w $D$.
+\item $|c_{11}| + |c_{12}| > 0$, $|c_{21}| + |c_{22}| >0$ i $c_{11}c_{12}\leq 0 \leq c_{21}c_{22}$.
+\end{enumerate}
+\end{theorem}
+Wróćmy do zagadnienia \eqref{zagad_brzeg_zbiez}. Niech $u(t)$ będzie jego rozwiązaniem, a wektor $(y_1,\cdots,y_n)$ będzie rozwiązaniem układu (macierz), oczywiście zależnym od $h$. Udowodnimy, że $|x_n - y_n|$ dązy do $0$, gdy $h \to 0$. Z (spr ozn rownan) i (znowu rown) wynika, że dla $ n \in \set{1\cdots,N}$
+$$
+\begin{array}{cl}
+\frac{1}{h} (x_{n-1} - 2x_n + x_{n+1}) - \frac{1}{12}h^2x^{(4)}(\tau_{n}) = u_n + v_nu_n + w_n\left[\frac{1}{2h}(x_{n+1} - x_{n-1}) - \frac{1}{6}h^2x'''(\xi_n)\right].
+\end{array}
+$$
+Natomiast rozwiązanie zadania dyskretnego spełnia równanie wynikające z poprzednich przez odrzucenie składników $x'''(t)$ i $x^{(4)}$:
+$$
+\frac{1}{h^2}(y_{n-1} -2y_n + y_{n+1})= u_n+v_+v_ny_n + w_n\frac{1}{2h} (y_{n+1}+y_{n-1})
+$$
+Odejmujemy stronami odpowiednie równania z obu układów, przyjmując oznaczenie $e_1:=x_n - y_n$
+\begin{equation}
+\frac{1}{h^2}(e_{n-1} - 2e_n + e_{n+1}) = w_ne_n + w_n(\frac{1}{2h})(e_{n+1} - e_{n-1})+ h^2g_n
+\end{equation}
+gdzie 
+\begin{equation}
+g:= \frac{1}{12} x^{(4)}(\tau_n) - \frac{1}{6} x'''(\xi_n).
+\end{equation}
+Po oczywistych przekształceniach otrzymujemy układ podobny do (tutaj eqref)
+$$
+\begin{array}{cl}
+\left(1+ \frac{1}{2}hw_n\right)e_{n-1} - (2+ h^2v_n)e_n + (1- \frac{1}{2}hw_n)e_{n+1} = h^4w_n ,& n \in \set{1,\cdots,N}
+\end{array}
+$$
+czyli układ
+$$
+a_{n-1}e_{n-1} + d_ne_n + c_ne_{n+1} = h^4g_n, \quad n \in \set{1,\cdots,N}
+$$
+Stąd $|d_n||e_n| \leq h^4|g_n| + |c_n||e_{n+1}| + |a_{n-1}||e_{n-1}|$. Niech $\lambda := {\norm{e}}_\infty$ i niech $n$ będzie takie, że $|e_n| = \lambda$. Dla tego $n$ zachodzi nierównośc
+$$
+|d_n|\lambda \leq h^4 {\norm{g}}_\infty + |c_n|\lambda + |a_n -1|\lambda,
+$$
+czyli 
+$$
+\lambda(|d_n|-|c_n|-|a_{n-1}|) \leq h^4 {\norm{g}}_\infty.
+$$
+Stąd i z (eqref) wynika, że 
+$$
+h^2 v_n \lambda \leq h^4  {\norm{g}}_\infty, \quad {\norm{e}}_\infty \leq h^2 {\norm{g}}_\infty / \inf v(t).
+$$
+Wobec (eqref) jest
+$$
+\norm{g} \leq \frac{\norm{x^{(4)}}}{12}+\frac{\norm{x'''}}{6}.
+$$
+Ta suma, jak i $\inf v(t)$ nie zależy od $h$, więc ${\norm{e}}_\infty = O(h^2)$ dla $h \to 0$ 

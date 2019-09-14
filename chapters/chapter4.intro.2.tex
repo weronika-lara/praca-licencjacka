@@ -1,0 +1,99 @@
+Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
+\begin{equation} \label{boundary_diff_equa}
+\left\{ \begin{array}{ll}
+-u_{xx}(x) + cu(x) =f(x), & x \in \Omega,\\
+u(a) = \alpha, & \\
+u(b) = \beta. & 
+\end{array} \right.
+\end{equation}
+gdzie stała $c$ jest nieujemna, odcinek $ [a,b]$ jest ustalony i znane są wartości $\alpha$ oraz $\beta$. Wykorzystajmy wzór na różnicę skończoną w przód i różnicę skończoną w tył z definicji \ref{operator_wporzd} oraz \ref{operator_wtyl} . Dla $h>0$ :
+\begin{equation} \label{finite_diff}
+\begin{array}{c}
+\delta_h u(x) = \frac{u(x+h) - u(x)}{h},   \\
+\overline{\delta_h} u(x) = \frac{u(x)-u(x-h)}{h} . 
+\end{array}
+\end{equation}
+Jeżeli $h$ będzie miało ustaloną wartość to będziemy opuszczali indeks dolny. Przyjmijmy następujące przybliżenie drugiej pochodnej:
+$$
+-u_{xx}(x) \approx -\delta \overline{\delta} u(x).
+$$
+Podstawmy \eqref{finite_diff} do \eqref{boundary_diff_equa}. Wówczas dla ustalonego $h>0$ mamy: 
+\begin{equation}
+\begin{array}{rl}
+-\delta (\frac{u(x)-u(x-h}{h}) + cu(x) &= f(x),  \\
+- \frac{1}{h} (\delta u(x) - \delta u(x-h) ) + cu(x) &= f(x), \\
+-\frac{1}{h} (\frac{u(x+h)-u(x)}{h} - \frac{u(x)-u(x-h)}{h}) + cu(x) &= f(x), \\
+-\frac{u(x+h)}{h^2} + \frac{u(x)}{h^2} + \frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x)& = f(x), \\
+-\frac{u(x+h)}{h^2} + 2\frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x) &= f(x) .
+\end{array}
+\end{equation}
+Mnożąc obie strony przez $-h^2$ otrzymujemy:
+\begin{equation}
+u(x+h) - 2u(x) + u(x-h) - cu(x)h^2 = -f(x)h^2,
+\end{equation}
+wprowadźmy siatkę, czyli zbiór dyskretny dla $ h= \frac{b-a}{N}$ , $k \in \set{1,\cdots,N-1}$. Mamy: 
+\begin{equation} \label{boundary_model}
+u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) + cu(x_k)h^2 + f(x_k)h^2.
+\end{equation}
+W zagadnieniach brzegowych nie jest znana wartość $u(x_1)$. Zauważmy, że gdy rozważymy jej wartość $u(x_1) = s \in \setR$, to stosując nasz schemat możemy obliczyć wszystkie kolejne iteracje. Zatem nasze zadanie wymagać będzie rozwiązania problemu odnalezienia takiego $s$, że $u(x_1) = s$ i $u(x_k) = \beta$. Przyjmując oznaczenie $ x_k = x_0 + kh$, dla $ k \in \set{1, \cdots,N-1} $ otrzymujemy układ równań liniowych postaci:
+\begin{equation}
+\left\{ \begin{array}{ll}
+u(x_0) = \alpha ,& \\
+u(x_2) = 2u(x_1) - u(x_{0}) + cu(x_1)h^2 + f(x_1)h^2 ,& \\ 
+\vdots  & \\
+u(x_{N}) = 2u(x_{N-1}) - u(x_{N-2}) + cu(x_{N-1})h^2 + f(x_{N-1})h^2 , & \\
+u(x_N) = \beta. &
+\end{array} \right.
+\end{equation}
+Otrzymaliśmy układ $N+1$ równań liniowych z $N+1$ niewiadomymi. Problem w obecnej postaci jesteśmy wstanie rozwiązać, o ile otrzymana macierz jest nieosobliwa. Zapiszmy ten układ za pomocą postaci macierzowej :
+$$ 
+\left[ \begin{array}{ccccc}
+1 & 0 & 0 & \cdots &0 \\
+1 & -2-ch^2 & 1 &\cdots &0 \\
+0 & 1 & -2-ch^2 &\cdots &0 \\
+\vdots & \vdots & \vdots &  &\vdots \\
+0& 0 & \cdots& 1 & -2-ch^2 \\
+0 & 0 & 0&\cdots & 1 
+\end{array} \right] \cdot
+\left[ \begin{array}{c}
+u_0 \\
+u_1 \\
+u_2 \\
+\vdots \\
+u_{N-1} \\
+u_{N}  
+\end{array} \right] =
+\left[ \begin{array}{c}
+\alpha \\
+-f(x_1)h^2 \\
+-f(x_2)h^2\\
+\vdots \\
+-f(x_{N}) \\
+\beta   
+\end{array} \right] .
+$$
+Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz otrzymując  wtedy :
+$$
+\left[ \begin{array}{ccccc}
+-2-ch^2 & 1 & 0 & \cdots & 0 \\
+1 & -2-ch^2 & 1& \cdots & 0 \\
+0 & 1 & -2-ch^2& \cdots & 1 \\
+\vdots &  & \ddots & \ddots & \vdots \\ 
+0 & 0 & \cdots & 1 & -2-ch^2 \\
+\end{array} \right] \cdot
+\left[ \begin{array}{c}
+u_1 \\
+u_2 \\
+u_3 \\
+\vdots \\
+u_{N-1} 
+\end{array} \right] =
+\left[ \begin{array}{c}
+-f(x_1)-\alpha \\
+-f(x_2)h^2 \\
+-f(x_3)h^2\\
+\vdots \\
+-f(x_{N-1})h^2 -\beta    
+\end{array} \right] . 
+$$
+Rozwiązując powyższy układ otrzymamy taką wartość $u(x_1)$, że $u(x_N) = \beta$. Powyższy algorytm nazywać będziemy schematem brzegowym dla równań liniowych rzędu drugiego. 

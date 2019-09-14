@@ -7,6 +7,7 @@
 \usepackage{ifthen}
 \usepackage{url}
 \usepackage{hyperref}
+\usepackage{xcolor}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{natbib} %bibtex!!
 \usepackage[polish, section]{dyschemist}
@@ -361,7 +362,7 @@ Istnieją również równania hiperboliczne pierwszego i drugiego rzędu oraz r�
 %$$
 %\end{example}
 
-\chapter{Numeryczne zagadnienia początkowe}
+\chapter{Numeryczne zagadnienia początkowe} \label{chapter-Cauchy-problems}
 
 \section{Ogólna teoria numerycznego rozwiązywania równań różniczkowych}
 
@@ -750,352 +751,12 @@ W tym rozdziale odmiennie niż w rozdziałach poprzednich posługiwać się  bę
 \item drugą pochodną danej funkcji zamiast $\ddx[^2]{x} u(x)$ będziemy oznaczali przez $u_{xx}$.
 \end{itemize}
 Oznaczenia przyjęte w tej części są typowe w teorii równań cząstkowych. 
-\section{Problemy brzegowe}
-\begin{theorem}[O istenienu rozwiązania \citep{cheney2006analiza}]
-Jeśli funckja $u'(x)$ jest ciągła, nieujemna i ograniczona w obszarze określonym nierównościami $0\leq t \leq 1$, $-\infty < x < +\infty$ to problem brzegowy postaci:
-\begin{equation}\label{zagad_brzeg}
-\left\{\begin{array}{ll}
-u''(t)=f(t,x), & \\
-u(0)=0, & \\
-u(1)=0,
-\end{array}\right.
-\end{equation}
-posiada jednoznaczne rozwiązanie w przedziale $[0,1]$.
-\end{theorem}
 
-\begin{theorem}\citep{kincaid1991numerical}
-Rozważmy następujące problemy brzegowe:
-\begin{equation}\label{pierwszy_problem_brzegowy}
-\left\{\begin{array}{ll}
-u''(t)=f(t,u(t)), & \\
-u(a)=\alpha, & \\
-u(b)=\beta,
-\end{array}\right.
-\end{equation}
-\begin{equation}\label{drugi_problem_brzegowy}
-\left\{\begin{array}{ll}
-y''(t)=g(t,y(t)), & \\
-y(0)= \alpha, & \\
-y(1)= \beta,
-\end{array}\right.
-\end{equation}
-gdzie 
-$$
-g(p,q) = (b-a)^2f(a+(b-a)p,q).
-$$
-Jeśli $y$ jest rozwiązaniem \eqref{drugi_problem_brzegowy}, wówczas funkcja $u$ postaci $u(t)=y\left(\frac{t-a}{b-a}\right)$ jest rozwiązaniem problemu \eqref{pierwszy_problem_brzegowy}. Ponadto, jeśli $u$ jest rozwiązaniem \eqref{pierwszy_problem_brzegowy}, wówczas $y(a+(b-a)t)$ jest rozwiązaniem problemu \eqref{drugi_problem_brzegowy}.
-\end{theorem}
-\begin{proof}\citep{kincaid1991numerical}
-Dowód powyższego twierdzenia wygląda w następujący sposób:
-$$
-\begin{array}{rl}
-u(a) &= y\left(\frac{a-a}{b-a}\right)= y(0) = \alpha \\
-u(b) &= y\left(\frac{b-a}{b-a}\right)= y(1) = \beta \\
-u'(t) &= y'\left(\frac{t-a}{b-a}\right)\frac{1}{b-a} \\
-u''(t) &= y\left(\frac{t-a}{b-a}\right)\frac{1}{(b-a)^2} \\
-&= g\left(\frac{t-a}{b-a},y\left(\frac{t-a}{b-a})\right)\right) \frac{1}{(b-a)^2}\\
-&= (b-a)^2f\left(a+(b-a)\frac{t-a}{b-a},y\left(\frac{t-a}{b-a}\right)\right)\frac{1}{(b-a)^2} \\
-&= f(t,u(t)).
-\end{array}
-$$
-\end{proof}
-\begin{theorem}\citep{kincaid1991numerical}
-Rozważmy problemy brzegowe postaci:
-\begin{equation}\label{trzeci_problem_brzegowy}
-\left\{\begin{array}{ll}
-y''(t)=g(t,y(t)), & \\
-y(0)=\alpha, & \\
-y(1)=\beta,
-\end{array}\right.
-\end{equation}
-\begin{equation}\label{czwarty_problem_brzegowy}
-\left\{\begin{array}{ll}
-z''(t)=h(t,z(t)), & \\
-z(0)= 0, & \\
-z(1)= 0,
-\end{array}\right.
-\end{equation}
-gdzie 
-$$
-h(p,q)= g(p,q+\alpha + (\beta - \alpha)p).
-$$
-Jeśli $z$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}, to funkcja $y(t) = z(t) + \alpha + (\beta - \alpha)t$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}. Co więcej jeżeli $y$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}, to $z(t) = y(t) - [\alpha + (\beta - \alpha)t]$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}.
-\end{theorem}
-\begin{proof}
-Dowód tego twierdzenia wynika bezpośrednio z:
-$$
-\begin{array}{rl}
-y(0)&= z(0) + \alpha + (\beta - \alpha)0 = \alpha \\
-y(1)&= z(1) + \alpha + (\beta - \alpha)1 = \beta \\
-y''(t)&= z''(t) = h(t,z(t)) = g(t,z(t) + \alpha + (\beta - \alpha)t) \\
-&= g(t,y(t)).
-\end{array}
-$$
-\end{proof}
+\section{Zagadnienia brzegowe dla równań zwyczajnych}
+\input{chapters/chapter4.1}
 
-\begin{theorem}\citep{kincaid1991numerical}
-Jeżeli $f(t,s(t))$ jest funkcją ciągłą, gdzie $t \in [0,1]$ i $(-\infty,+\infty)$ spełniającą warunek taki, że
-$$
-|f(t,s_1) - f(t,s_2)| \leq k|s_1 - s_2|, \quad k<8,
-$$
-to zagadnienie brzegowe postaci \eqref{zagad_brzeg} posiada jednoznaczne rozwiązanie ciągłe w $[0,1]$. 
-\end{theorem}
-\begin{proof}
-szkic dowodu
-\end{proof}
-
-\subsection{Metoda strzału}
-W tej częsci przedstawimy jeden ze schematów rozwiązywania problemu brzegowego postaci:
-\begin{equation}\label{metoda_strzalu}
-\left\{\begin{array}{ll}
-u''(t)=h(t,u(t),u'(t)), & \\
-u(a)= \alpha, & \\
-u(b)= \beta.
-\end{array}\right.
-\end{equation}
-Schemat ten będziemy nazywali metodą strzału. 
-\begin{algorithm}[Metoda Strzału]
-Problem brzegowy postaci \eqref{metoda_strzalu} rozwiązujemy w następujący sposób:
-\begin{enumerate}
-\item Zamieniamy problem brzegowy, na zagadnienie początkowe dowolnie dobierając wartość $u'(a)$. 
-\item Rozwiązujemy powstałe zagadnienie początkowe uzyskując wartość $u(b)$.
-\item Jeśli dobór wartośći $u'(a)$ z punktu (1) był odpowiedni to $u(b) = \beta$, co kończy obliczenia. Jeżeli $u(b) \neq \beta$ należy wrócić do punktu (1), ponownie wybrać (tym razem oczywiście inne u'(a)) i przejść do punktu (2) oraz (3). 
-\end{enumerate}
-\end{algorithm}
-\subsection{Metoda różnic skończonych}
-Inny sposób rozwiązywania problemów brzegowych polega na zastąpieniu pochodnych wyrażeniami przybliżonymi i dyskretyzacji dziedziny. Posługiwać będziemy się wzorami:
-\begin{equation}
-u'(t) = \frac{1}{2h}[u(t+h) - u(t-h)] - \frac{1}{6}h^2u'''(\xi),
-\end{equation}
-\begin{equation}
-u''(t) = \frac{1}{h^2}[u(t+h) - 2u(t) + u(t+h)] - \frac{1}{12}h^2x^{(4)}(\tau).
-\end{equation}
-Jak przedtem zajmujemy się problemem brzegowym postaci \eqref{metoda_strzalu}. Podzielmy przedział $[a,b]$ punktami $ a=t_0<t_1<\cdots<t_n<t_{N+1}=b $. W praktyce przyjmuje się, że są one równoodległe $t_n = a + nh$ dla $n \in \set{0,\cdots,N+1}$. Niech $y_n$ oznacza przybliżoną wartość $u(t_n)$. Wersja dyskretna zadania oparta na wspomnianych wzorach jest następująca:
-$$
-\left\{\begin{array}{ll}
-y_0 = \alpha, & \\
-\frac{1}{h^2}(y_{n-1}-2y_n + y_{n+1} = f\left(t_n,y_n,\frac{1}{2h}(y_{n+1} - y_n)\right),& n \in \set{1,\cdots,N} \\
-y_{n+1} = \beta.
-\end{array}\right. 
-$$
-powyższy układ $N$ równań z $N$ niewiadomymi $y_1,\cdots,y_N$ jest nieliniowy. Rozwiązywanie ukłądu w tej postaci jest kłopotliwe, znacznie łatwiej jest go rozwiązać w przypadku liniowym. Rozważmy zatem równanie:
-$$
-f(t,x(t),x'(t)) = u(t) + v(t)x + w(t)x',
-$$
-wówczas mamy układ:
-$$
-\left\{\begin{array}{ll}
-y_0 = \alpha, & \\
-\left(1+ \frac{1}{2}hw_n\right)y_{n-1} - (2+ h^2v_n)y_n + (1- \frac{1}{2}hw_n)y_{n+1} = h^2w_n ,& n \in \set{1,\cdots,N} \\
-y_{n+1} = \beta,
-\end{array}\right. 
-$$
-gdzie $u_n := u(t_n)$. Wprowadzmy oznaczenia :
-$ a_n:= 1 + \frac{1}{2}w_{n+1}, d_n:= -(2+h^2v_n), c_n:= 1 - \frac{1}{2}hw_n, b_n:= h^2u_n $
-i zapiszmy powyższy układ w postaci macierzowej:
-\begin{equation}\label{macierz}
-\left[ \begin{array}{ccccc}
-d_1 & c_1 & 0 & 0 & 0 \\
-a_1 & d_2 & c_2 & 0 & 0\\
-\cdots & \cdots & \cdots &\cdots  &\cdots \\
-0 & 0 & a_{N-2} & d_{N-1} & c_{N-1}\\
-0 & 0 & 0 & a_{N-1} & d_N 
-\end{array} \right] \cdot
-\left[ \begin{array}{c}
-y_1 \\
-y_2 \\
-\cdots \\
-y_{N-1} \\
-y_{N}  
-\end{array} \right] =
-\left[ \begin{array}{c}
-b_1 - a_0\alpha\\
-b_2 \\
-\cdots \\
-b_{n-1} \\
-b_n -c_n\beta 
-\end{array} \right] .
-\end{equation}
-Macierz układu jest trójprzekątniowa, co pozwala rozwiązać go za pomocą spejalnej wersji eliminacji Gaussa. Zauważmy też, że jeśli $v(t)>0$, a $h$ jest na tyle małe, że$ |hw_n| \leq 2$, to ta macierz jest przekątniowo dominująca. Istotnie, wtedy $ 1 \pm \frac{1}{2}hw_n \geq 0 $ i
-$$
-|2 + h^2v_n| > |1 + \frac{1}{2}hw_n| + |1 - \frac{1}{2}h^2w_n| = 2
-$$
-W dalszej częsci będziemy korzystać z równości:
-\begin{equation}
-|d_n| - |c_n| - |a_{n-1}| = h^2v_n,
-\end{equation}
-poprawnej przy powyższych założeniach o $v$ i $h$. 
-\subsection{Zbieżność}
-W tej seksji wykażemy, że dla $h \to 0$ rozwiązanie zadania dyskretnego jest zbieżne do rozwiązania problemu brzegowego postaci
-\begin{equation}\label{zagad_brzeg_zbiez}
-\left\{\begin{array}{cl}
-u''(t) = u(t) + wu'(t) + vu(t), & \\
-u(a) = \alpha, & \\
-u(b) = \beta.
-\end{array}\right.
-\end{equation}
-Istnienie i jednoznaczność rozwiązania tego zagadnienia wynika z następującego twierdzenia.
-\begin{theorem}\citep{cheney2006analiza}
-Zagadnienie brzegowe postaci
-\begin{equation}
-\left\{\begin{array}{cl}
-u''(t) = f(t,u(t),u'(t)), & \\
-c_{11}u(a) + c_{12}u'(a) = c_{13}, & \\
-c_{21}u(b) + c_{22}u'(b) = c_{23}
-\end{array}\right.
-\end{equation}
-ma jednoznaczne rozwiązanie w przedziale $[a,b]$, jeśli
-\begin{enumerate}
-\item Funkcja $f$ i jej pierwsze pochodne cząstkowe $f_t$,$f_x$,$f_{x'}$ są ciągłe w obszarze $D:= [a,b] \times \setR^2$.
-\item $f_x >0, f_x \leq M$ i $|f_{x'}| \leq M$ w $D$.
-\item $|c_{11}| + |c_{12}| > 0$, $|c_{21}| + |c_{22}| >0$ i $c_{11}c_{12}\leq 0 \leq c_{21}c_{22}$.
-\end{enumerate}
-\end{theorem}
-Wróćmy do zagadnienia \eqref{zagad_brzeg_zbiez}. Niech $u(t)$ będzie jego rozwiązaniem, a wektor $(y_1,\cdots,y_n)$ będzie rozwiązaniem układu (macierz), oczywiście zależnym od $h$. Udowodnimy, że $|x_n - y_n|$ dązy do $0$, gdy $h \to 0$. Z (spr ozn rownan) i (znowu rown) wynika, że dla $ n \in \set{1\cdots,N}$
-$$
-\begin{array}{cl}
-\frac{1}{h} (x_{n-1} - 2x_n + x_{n+1}) - \frac{1}{12}h^2x^{(4)}(\tau_{n}) = u_n + v_nu_n + w_n\left[\frac{1}{2h}(x_{n+1} - x_{n-1}) - \frac{1}{6}h^2x'''(\xi_n)\right].
-\end{array}
-$$
-Natomiast rozwiązanie zadania dyskretnego spełnia równanie wynikające z poprzednich przez odrzucenie składników $x'''(t)$ i $x^{(4)}$:
-$$
-\frac{1}{h^2}(y_{n-1} -2y_n + y_{n+1})= u_n+v_+v_ny_n + w_n\frac{1}{2h} (y_{n+1}+y_{n-1})
-$$
-Odejmujemy stronami odpowiednie równania z obu układów, przyjmując oznaczenie $e_1:=x_n - y_n$
-\begin{equation}
-\frac{1}{h^2}(e_{n-1} - 2e_n + e_{n+1}) = w_ne_n + w_n(\frac{1}{2h})(e_{n+1} - e_{n-1})+ h^2g_n
-\end{equation}
-gdzie 
-\begin{equation}
-g:= \frac{1}{12} x^{(4)}(\tau_n) - \frac{1}{6} x'''(\xi_n).
-\end{equation}
-Po oczywistych przekształceniach otrzymujemy układ podobny do (tutaj eqref)
-$$
-\begin{array}{cl}
-\left(1+ \frac{1}{2}hw_n\right)e_{n-1} - (2+ h^2v_n)e_n + (1- \frac{1}{2}hw_n)e_{n+1} = h^4w_n ,& n \in \set{1,\cdots,N}
-\end{array}
-$$
-czyli układ
-$$
-a_{n-1}e_{n-1} + d_ne_n + c_ne_{n+1} = h^4g_n, \quad n \in \set{1,\cdots,N}
-$$
-Stąd $|d_n||e_n| \leq h^4|g_n| + |c_n||e_{n+1}| + |a_{n-1}||e_{n-1}|$. Niech $\lambda := {\norm{e}}_\infty$ i niech $n$ będzie takie, że $|e_n| = \lambda$. Dla tego $n$ zachodzi nierównośc
-$$
-|d_n|\lambda \leq h^4 {\norm{g}}_\infty + |c_n|\lambda + |a_n -1|\lambda,
-$$
-czyli 
-$$
-\lambda(|d_n|-|c_n|-|a_{n-1}|) \leq h^4 {\norm{g}}_\infty.
-$$
-Stąd i z (eqref) wynika, że 
-$$
-h^2 v_n \lambda \leq h^4  {\norm{g}}_\infty, \quad {\norm{e}}_\infty \leq h^2 {\norm{g}}_\infty / \inf v(t).
-$$
-Wobec (eqref) jest
-$$
-\norm{g} \leq \frac{\norm{x^{(4)}}}{12}+\frac{\norm{x'''}}{6}.
-$$
-Ta suma, jak i $\inf v(t)$ nie zależy od $h$, więc ${\norm{e}}_\infty = O(h^2)$ dla $h \to 0$ 
-\section{Schemat brzegowy dla problemu jednowymiarowego}
-Rozważmy następujące zagadnienie brzegowe. Niech $ x \in \Omega = (a,b) $
-\begin{equation} \label{boundary_diff_equa}
-\left\{ \begin{array}{ll}
--u_{xx}(x) + cu(x) =f(x), & x \in \Omega,\\
-u(a) = \alpha, & \\
-u(b) = \beta. & 
-\end{array} \right.
-\end{equation}
-gdzie stała $c$ jest nieujemna, odcinek $ [a,b]$ jest ustalony i znane są wartości $\alpha$ oraz $\beta$. Wykorzystajmy wzór na różnicę skończoną w przód i różnicę skończoną w tył z definicji \ref{operator_wporzd} oraz \ref{operator_wtyl} . Dla $h>0$ :
-\begin{equation} \label{finite_diff}
-\begin{array}{c}
-\delta_h u(x) = \frac{u(x+h) - u(x)}{h},   \\
-\overline{\delta_h} u(x) = \frac{u(x)-u(x-h)}{h} . 
-\end{array}
-\end{equation}
-Jeżeli $h$ będzie miało ustaloną wartość to będziemy opuszczali indeks dolny. Przyjmijmy następujące przybliżenie drugiej pochodnej:
-$$
--u_{xx}(x) \approx -\delta \overline{\delta} u(x).
-$$
-Podstawmy \eqref{finite_diff} do \eqref{boundary_diff_equa}. Wówczas dla ustalonego $h>0$ mamy: 
-\begin{equation}
-\begin{array}{rl}
--\delta (\frac{u(x)-u(x-h}{h}) + cu(x) &= f(x),  \\
-- \frac{1}{h} (\delta u(x) - \delta u(x-h) ) + cu(x) &= f(x), \\
--\frac{1}{h} (\frac{u(x+h)-u(x)}{h} - \frac{u(x)-u(x-h)}{h}) + cu(x) &= f(x), \\
--\frac{u(x+h)}{h^2} + \frac{u(x)}{h^2} + \frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x)& = f(x), \\
--\frac{u(x+h)}{h^2} + 2\frac{u(x)}{h^2} - \frac{u(x-h)}{h^2} +cu(x) &= f(x) .
-\end{array}
-\end{equation}
-Mnożąc obie strony przez $-h^2$ otrzymujemy:
-\begin{equation}
-u(x+h) - 2u(x) + u(x-h) - cu(x)h^2 = -f(x)h^2,
-\end{equation}
-wprowadźmy siatkę, czyli zbiór dyskretny dla $ h= \frac{b-a}{N}$ , $k \in \set{1,\cdots,N-1}$. Mamy: 
-\begin{equation} \label{boundary_model}
-u(x_{k+1}) = 2u(x_k) - u(x_{k-1}) + cu(x_k)h^2 + f(x_k)h^2.
-\end{equation}
-W zagadnieniach brzegowych nie jest znana wartość $u(x_1)$. Zauważmy, że gdy rozważymy jej wartość $u(x_1) = s \in \setR$, to stosując nasz schemat możemy obliczyć wszystkie kolejne iteracje. Zatem nasze zadanie wymagać będzie rozwiązania problemu odnalezienia takiego $s$, że $u(x_1) = s$ i $u(x_k) = \beta$. Przyjmując oznaczenie $ x_k = x_0 + kh$, dla $ k \in \set{1, \cdots,N-1} $ otrzymujemy układ równań liniowych postaci:
-\begin{equation}
-\left\{ \begin{array}{ll}
-u(x_0) = \alpha ,& \\
-u(x_2) = 2u(x_1) - u(x_{0}) + cu(x_1)h^2 + f(x_1)h^2 ,& \\ 
-\vdots  & \\
-u(x_{N}) = 2u(x_{N-1}) - u(x_{N-2}) + cu(x_{N-1})h^2 + f(x_{N-1})h^2 , & \\
-u(x_N) = \beta. &
-\end{array} \right.
-\end{equation}
-Otrzymaliśmy układ $N+1$ równań liniowych z $N+1$ niewiadomymi. Problem w obecnej postaci jesteśmy wstanie rozwiązać, o ile otrzymana macierz jest nieosobliwa. Zapiszmy ten układ za pomocą postaci macierzowej :
-$$ 
-\left[ \begin{array}{ccccc}
-1 & 0 & 0 & \cdots &0 \\
-1 & -2-ch^2 & 1 &\cdots &0 \\
-0 & 1 & -2-ch^2 &\cdots &0 \\
-\vdots & \vdots & \vdots &  &\vdots \\
-0& 0 & \cdots& 1 & -2-ch^2 \\
-0 & 0 & 0&\cdots & 1 
-\end{array} \right] \cdot
-\left[ \begin{array}{c}
-u_0 \\
-u_1 \\
-u_2 \\
-\vdots \\
-u_{N-1} \\
-u_{N}  
-\end{array} \right] =
-\left[ \begin{array}{c}
-\alpha \\
--f(x_1)h^2 \\
--f(x_2)h^2\\
-\vdots \\
--f(x_{N}) \\
-\beta   
-\end{array} \right] .
-$$
-Warto zauważyć, że możemy usunąć pierwszy i ostatni wiersz otrzymując  wtedy :
-$$
-\left[ \begin{array}{ccccc}
--2-ch^2 & 1 & 0 & \cdots & 0 \\
-1 & -2-ch^2 & 1& \cdots & 0 \\
-0 & 1 & -2-ch^2& \cdots & 1 \\
-\vdots &  & \ddots & \ddots & \vdots \\ 
-0 & 0 & \cdots & 1 & -2-ch^2 \\
-\end{array} \right] \cdot
-\left[ \begin{array}{c}
-u_1 \\
-u_2 \\
-u_3 \\
-\vdots \\
-u_{N-1} 
-\end{array} \right] =
-\left[ \begin{array}{c}
--f(x_1)-\alpha \\
--f(x_2)h^2 \\
--f(x_3)h^2\\
-\vdots \\
--f(x_{N-1})h^2 -\beta    
-\end{array} \right] . 
-$$
-Rozwiązując powyższy układ otrzymamy taką wartość $u(x_1)$, że $u(x_N) = \beta$. Powyższy algorytm nazywać będziemy schematem brzegowym dla równań liniowych rzędu drugiego. 
+%\section{Schemat brzegowy dla problemu jednowymiarowego}
+%\input{chapter/chapter4.intro.2}
 
 \section{Przykładowe rozwiązanie przy użyciu schematu brzegowego jednowymiarowego}
 W tej części zaprezentujemy przykładowe rozwiązanie otrzymane przy wykorzystaniu schematu brzegowego jednowymiarowego. Przyjrzymy się liniowemu równaniu drugiego stopnia niejednorodnemu z warunkami brzegowymi w przypadku jednowymiarowym. Interesuje nas równanie postaci
@@ -1108,7 +769,7 @@ u(b) = \beta
 \end{array}
 \right.
 $$
-Do rozwiązania tego zagadnienia wykorzystamy nietypowy bo mieszane przybliżenie operatora drugiej pochodnej. Dokładnie skorzystamy z operatorów 
+Do rozwiązania tego zagadnienia wykorzystamy następujące przybliżenie operatora drugiej pochodnej. Dokładnie skorzystamy z operatorów 
 $$
 \delta_h \colon u \mapsto \frac{u(x+h) - u(x)}{h}
 $$
@@ -1120,6 +781,7 @@ Do aproksymacji drugiej pochodnej użyjemy następującego operatora:
 $$
 u'' \approx \delta_h \overline{\delta}_h u.
 $$
+Zauważmy, że jest to szczególny przypadek rozważany w sekcji \ref{subsection-boundary-theory-finite-differences} - jednak z uwagi na stałość poszczególnych współczynników jego implementacja jest prostsza. 
 \begin{example}
 W tym przykładzie konkretnie omówimy równanie drugiego rzędu postaci
 $$
@@ -1173,6 +835,35 @@ lines(solution$time, solution$values,col='red')
 @
 
 \end{example}
+
+\section{Implementacja pełnego schematu brzegowego}
+
+W tej sekcji przedstawimy rozwiązanie wykorzystujące już pełną implementację schematu omówioniego w sekcji \ref{subsection-boundary-theory-finite-differences}
+
+<<>>=
+schemat_brzegowy = function(f, g, m , t0 , tN, x0, xN , N)
+{
+  h = (tN-t0)/N
+  t = seq(from=t0+h, to=t0+(N-1)*h,length.out = N-1)
+  A = diag(-2,nrow=N-1,ncol=N-1)
+  b = -1 * f(t) * h
+  b[1] = b[1] - x0
+  b[N-1] = b[N-1] - xN
+  for (i in (1:(N-1))){
+    if (i >1 )
+      A[i, i-1] = A[i, i-1] +1 + 0.5*h *m(t[i])
+    A[i,i] = A[i,i] - h^2 * g(t[i])
+    if (i < (N-1))
+      A[i,i+1] =  A[i, i+1] +1 - 0.5*h *m(t[i])
+  }
+  x = solve(A, b)
+  result = list(time=c(t0, t, tN), values = c(x0, x, xN))
+  return(result)
+}
+@
+
+{\color{red} Rozwiązać za pomocą powyższego kodu zadanie 8.9 -> 1 oraz 5, strona 550-551 }
+
 \section{Schemat brzegowy dla problemu dwuwymiarowego}
 \begin{problem}
 Rozważmy modelowe zadanie eliptyczne na kwadracie jednostkowym $ \overline{\Omega} = [0,1]^2 $ postaci 
