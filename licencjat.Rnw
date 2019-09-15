@@ -841,7 +841,7 @@ lines(solution$time, solution$values,col='red')
 W tej sekcji przedstawimy rozwiązanie wykorzystujące już pełną implementację schematu omówioniego w sekcji \ref{subsection-boundary-theory-finite-differences}
 
 <<>>=
-schemat_brzegowy = function(f, g, m , t0 , tN, x0, xN , N)
+schemat_brzegowy_pelny = function(f, g, m , t0 , tN, x0, xN , N)
 {
   h = (tN-t0)/N
   t = seq(from=t0+h, to=t0+(N-1)*h,length.out = N-1)
