@@ -864,6 +864,53 @@ schemat_brzegowy_pelny = function(f, g, m , t0 , tN, x0, xN , N)
 
 {\color{red} Rozwiązać za pomocą powyższego kodu zadanie 8.9 -> 1 oraz 5, strona 550-551 }
 
+\begin{example}
+{\color{brown} Próbna zadania 5}
+Rozwiążmy równanie postaci
+$$
+u''(t)= -u(t), \quad u(0)=3, \quad u(\frac{\pi}{2}) = 7
+$$
+Rozwiązanie teoretyczne jest postaci:
+$$
+u(t) = 7\sin(t) + 3\cos(t)
+$$
+Zdefiniujmy funkcje $f$,$g$,$m$
+<<>>=
+f = function(t){
+  return(rep(0,times = length(t)))
+}
+
+t0 = 0
+tN = 5*pi/2
+x0 = 0
+xN = 1
+N =100
+@
+
+<<>>=
+g = function(t){
+  return(t=7)
+}
+@
+
+<<>>=
+m = function(t){
+  return(t=3)
+}
+solution1 = schemat_brzegowy_pelny(f,g,m,t0 , tN, x0, xN , N)
+@
+
+Wygenerujmy wykres:
+<<fig=TRUE>>=
+t = seq(0,to=4*pi, length.out = 1000)
+plot(t, sin(t),type = 'l')
+lines(solution1$time, solution1$values,col='red')
+@
+\end{example}
+\begin{example}
+
+\end{example}
+
 \section{Schemat brzegowy dla problemu dwuwymiarowego}
 \begin{problem}
 Rozważmy modelowe zadanie eliptyczne na kwadracie jednostkowym $ \overline{\Omega} = [0,1]^2 $ postaci 
