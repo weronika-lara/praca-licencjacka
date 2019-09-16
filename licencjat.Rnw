@@ -207,14 +207,14 @@ którego rozwiązaniem jest funkcja $x \in \Ck{k}{(a,b), \setR^n}$.
 Jeśli dane jest równanie różniczkowe rzędu $n$ w przestrzeni $\setR^m$, to zagadnienie początkowe dla tego równania przyjmuje postać 
 \begin{equation} 
 \left\{\begin{array}{ll}
-\ddx[^n]{t^n} x(t) = f(t,x(t), \ddx{t}x(t), \cdots, \ddx[^{n-1}]{t^{n-1}}x(t),) & t \in (t_0,b),   \\
+\ddx[^n]{t^n} x(t) = f(t,x(t), \ddx{t}x(t), \cdots, \ddx[^{n-1}]{t^{n-1}}x(t)) & t \in (t_0,b),   \\
 x(t_0) = x_0, & \\
 \ddx{t}x(t_0) = x_1, & \\
 \vdots & \\
 \ddx[^{n-1}]{t^{n-1}}x(t_0) = x_{n-1}, &
 \end{array} \right.
 \end{equation}
-gdzie $ \set{x_0,\cdots,x_{n-1}}$ są wektorami m-wymiarowymi, dla $t_0 \in (a,b)$. 
+gdzie $ \set{x_0,\cdots,x_{n-1}}$ są wektorami m-wymiarowymi, dla $t_0 \in (a,b)$. Rozwiązaniem tego równania nazwiemy funkcję $x$ klasy $C^{n}(t_0,b) \cap C^{n-1}([t_0,b))$ spełniającą jego warunki.
 \end{definition}
 
 
@@ -233,14 +233,14 @@ gdzie $(a,b) \subset \setR$ jest dowolnym nietrywialnym i ograniczonym przedzia�
 Interesować nas będzie między innymi następująca klasa problemów nazywana zagadnieniami początkowymi lub zagadnieniami Cauchy'ego.
 
 \begin{problem}[Zagadnienie Cauchy'ego pierwszego rzędu \citep{marcinkowski2011numeryczne}] \label{prob-zagadnienie-cauchy}
-Zagadnienie Cauchy'ego pierwszego rzędu nazywamy równanie różniczkowe zwyczajne z warunkiem początkowym nazywamy problem postaci:
+Zagadnienie Cauchy'ego pierwszego rzędu nazywamy równanie różniczkowe zwyczajne z warunkiem początkowym postaci:
 \begin{equation} 
 \left\{\begin{array}{ll}
 \ddx{t} x(t) = f(t,x(t)), & t \in (t_0,b) ,\\
 x(t_0) = x_0 &,
 \end{array} \right.
 \end{equation}
-gdzie $t_0 \in (a,b)$, $x_0 \in G$ są ustalone z góry. 
+gdzie $t_0 \in (a,b)$, $x_0 \in G$ są ustalone z góry. Rozwiązaniem tego równania nazwiemy funkcję $x$ klasy $C^{1}(t_0,b) \cap C([t_0,b))$ spełniającą powyższe warunki. 
 \end{problem}
 
 \begin{theorem}[Peano \citep{marcinkowski2011numeryczne}]
@@ -266,7 +266,7 @@ x(t_0) = s ,& \\
 \ddx{t} x(t_0) = v &,
 \end{array} \right.
 \end{equation}
-gdzie $ s$ i $v$ to ustalone wartości.
+gdzie $ s$ i $v$ to ustalone wartości. Rozwiazaniem tego zagadnienia nazwiemy funkcję $x$ klasy $C^2(t_0,b) \cap C^1([t_0,b))$ spełniającą powyższe warunki.
 \end{problem}
 
 \begin{problem}[Zagadnienie brzegowe]
@@ -278,7 +278,7 @@ x(a) = \alpha, & \\
 x(b) = \beta ,&
 \end{array} \right.
 \end{equation}
-gdzie $\alpha$ i $\beta$ są ustalone. 
+gdzie $\alpha$ i $\beta$ są ustalone. Rozwiązaniem tego zagadnienia nazwiemy funkcje $x$ klasy $C^2(a,b) \cap C([a,b])$ spełniającym powyższe warunki.
 \end{problem}
 %Pokażemy teraz przykład, który obrazuje zastosowanie równań różniczkowych zwyczajnych. 
 %\begin{example}[Model populacji gatunku ]
@@ -318,7 +318,7 @@ Niech $u \in C^2(\Omega) \cap C(\overline{\Omega})$ wówczas równanie eliptyczn
 u(s) = g(s),& s \in \delta \Omega.
 \end{array} \right. 
 \end{equation}
-nazywamy równaniem Poissona.
+nazywamy równaniem Poissona, a $u$ nazywamy jego rozwiązaniem.
 \end{problem}
 Możemy również wyróżnić ogólniejszą definicję równania eliptycznego drugiego rzędu. Rozważmy równanie różniczkowe liniowe drugiego rzędu dla ogólnego operatora liniowego drugiego rzędu $L$, określonego dla $ u \in C^2(G)$ dla $G \subset \setR^{n}$ : 
 \begin{equation}\label{line operator}
