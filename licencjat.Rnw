@@ -870,7 +870,6 @@ schemat_brzegowy_pelny = function(f, g, m , t0 , tN, x0, xN , N)
 @
 
 \begin{example}
-{\color{brown} Próbna zadania 5}
 Rozwiążmy równanie postaci
 $$
 u''(t)= -u(t), \quad u(0)=3, \quad u(\frac{\pi}{2}) = 7
