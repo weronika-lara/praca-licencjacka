@@ -88,7 +88,7 @@ W całości pracy stosowane są następujące oznaczenia dla powszechnie znanych
 \item $\delta \Omega $ brzeg zbioru.
 \item $J$ dowolny przedział.
 %\item $\operatorname{IntB}$ wnętrze zbioru.
-\item $\ball{(t_0,x_0)}{\delta}$ kula o pomieniu $\delta$ w punkcie $(t_0,x_0)$.
+\item $\ball{(t_0,x_0)}{\delta}$ kula o promieniu $\delta$ w punkcie $(t_0,x_0)$.
 \item $C^k(U) = \set{u: U \to \setR} $ funkcja $u$ jest k-krotnie różniczkowalna w sposób ciągły na przedziale $U$ \citep{evans2012rownania}.
 \item $\ddx{t} f(t)$ - oznaczać będzie pochodna funkcji $f$ po zmiennej $t$. W szczególności $\ddx[^n]{t^n}$ oznaczać będzie $n$-tą pochodną po tejże zmiennej.
 \item $t, x, y, u$ - W przekroju pracy rozważane są równania zwyczajne oraz cząstkowe. W przypadku równań zwyczajnych najczęściej symbolem $t$ oznaczać będziemy zmienną, natomiast $x$ będzie używane do oznaczania poszukiwanej funkcji. W przypadku równań cząstkowych natomiast symbolami $t,x,y$ oznaczać będziemy zmienne (czasami również $x_1,\ldots,x_n$) natomiast $u$ oznaczać będzie naszą nieznaną i poszukiwaną funkcję.
@@ -194,7 +194,7 @@ gdzie $x \in \Ck{k}{(a,b); \setR^n}$ dla $F \colon D \to \setR^n$ i D zbioru otw
 Rzędem takiego równania nazywamy wtedy liczbę naturalną $k$. 
 \end{definition}
 
-Powyższa postać równania różniczkowego nie jest jednak najpowszechniej spotykaną. Powyższą postać możnaby utożsamiać z postacią uwikłaną funkcji. Częściej natomiast interesują nas równania różniczkowe zadane w postaci jawnej.
+Powyższa postać równania różniczkowego nie jest jednak najpowszechniej spotykaną. Powyższą postać można by utożsamiać z postacią uwikłaną funkcji. Częściej natomiast interesują nas równania różniczkowe zadane w postaci jawnej.
 
 \begin{definition}[Postać jawna równania różniczkowego zwyczajnego \citep{marcinkowski2011numeryczne}]
 Równaniem różniczkowym zwyczajnym w postaci jawnej nazwiemy równanie postaci
@@ -591,7 +591,7 @@ Gdy $ N \to \infty $ to $ h \to 0 $ oraz $ E_N \to 0$. Zatem schemat jest zbież
 
 
 \section{Przykłady rozwiązywania równań za pomocą schematów dla problemów początkowych}
-W sekcji tej zaprezentujemy przykłady wykorzystujące schemat Eulera otwarty(w skrócie będziemy pisali schemat Eulera) oraz Rungego-Kutty rzędu 4 (w skórcie będziemy oznaczali RK4). Weźmy równanie różniczkowe postaci:
+W sekcji tej zaprezentujemy przykłady wykorzystujące schemat Eulera otwarty(w skrócie będziemy pisali schemat Eulera) oraz Rungego-Kutty rzędu 4 (w skrócie będziemy oznaczali RK4). Weźmy równanie różniczkowe postaci:
 $$
 x'' = -x \quad x(0)=0, x'(0) = 1.
 $$
@@ -679,7 +679,7 @@ solution1 = schemat_otwarty(rownanie1, x0, t0, h , N)
 solution2 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
-Przedstawimy wspólny wykres funkcji $\sin(t)$ porównujący te dwa schematy. Kolor czerowny odpowiada przybliżeniu otrzymanego przez schemat Eulera, zielony obrazuje przybliżenie otrzymane z RK4.
+Przedstawimy wspólny wykres funkcji $\sin(t)$ porównujący te dwa schematy. Kolor czerwony odpowiada przybliżeniu otrzymanego przez schemat Eulera, zielony obrazuje przybliżenie otrzymane z RK4.
 <<fig=TRUE>>=
 t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black')
@@ -687,7 +687,7 @@ lines(solution1$time, solution1$values[1,], col='red')
 lines(solution2$time, solution2$values[1,], col='green')
 @
 
-Patrząc na zaprezentowane przez nas wyżej wzory definiujące odpowiednie schematy, można było przypuszczać, który ze schematów okaże się dokładniejszy. Wykres pokazuje, że schemat RK4, przez to że ma wzór złożony z większej ilości składowych, daje nam lepsze przyblżenie niż prostszy schemat Eulera.
+Patrząc na zaprezentowane przez nas wyżej wzory definiujące odpowiednie schematy, można było przypuszczać, który ze schematów okaże się dokładniejszy. Wykres pokazuje, że schemat RK4, przez to że ma wzór złożony z większej ilości składowych, daje nam lepsze przybliżenie niż prostszy schemat Eulera.
 \end{example}
 \begin{example}
 W tej części pokażemy jak istotny jest dobór odpowiedniego $N$. Różnice zaprezentujemy dla funkcji $sin(t)$ przybliżając ją schematem RK4. 
@@ -703,7 +703,7 @@ h = (t_end - t0) / N
 solution2_1 = RK4_otwarty(rownanie1, x0, t0, h , N)
 @
 
-Prezentujemy wspólny wykres. Kolor czerowny odpowiada przybliżeniu uzyskanemu ze schematu RK4 dla $N=25$.
+Prezentujemy wspólny wykres. Kolor czerwony odpowiada przybliżeniu uzyskanemu ze schematu RK4 dla $N=25$.
 
 <<fig=TRUE>>=
 t = seq (t0, to= 4*pi, by=0.01)
@@ -739,7 +739,7 @@ plot(t, sin(t), type = 'l', col = 'black')
 lines(solution2_3$time, solution2_3$values[1,], col='purple')
 @
 
-Zaprezentujemy teraz fragment wykresu pokazujący róznice uzyskane przez przybliżenia dla $N=25$, $N=50$, $N=100$. 
+Zaprezentujemy teraz fragment wykresu pokazujący różnice uzyskane przez przybliżenia dla $N=25$, $N=50$, $N=100$. 
 <<fig=TRUE>>=
 t = seq (t0, to= 4*pi, by=0.01)
 plot(t, sin(t), type = 'l', col = 'black', ylim=c(0.95,1.0001), xlim=c(7.5,8.5))
@@ -794,7 +794,7 @@ W tym przykładzie konkretnie omówimy równanie drugiego rzędu postaci
 $$
 u'' = -u \quad u(0)=0, u'(0) = 1.
 $$
-Jego rozwiązaniem jest funkcja $\sin(t)$. Zdefiniujmy kod dla naszego schematu. Potrzebne będzie 7 paramterów:
+Jego rozwiązaniem jest funkcja $\sin(t)$. Zdefiniujmy kod dla naszego schematu. Potrzebne będzie 7 parametrów:
 \begin{itemize}
 \item Ilość kroków $N$.
 \item Warunki brzegowe $t0$, $tN$, $x0$, $xN$.
@@ -834,7 +834,7 @@ N =100
 solution = schemat_brzegowy(f,c, t0, tN, x0, xN, N)
 @
 
-Przedstawimy wykres funckji $sin(t)$ wraz z przybliżeniem otrzymanym z algorytmu. Przybliżenie otrzymane przy użyciu schematu brzegowego jednowymiarowego oznaczone jest kolorem czerwonym.
+Przedstawimy wykres funkcji $sin(t)$ wraz z przybliżeniem otrzymanym z algorytmu. Przybliżenie otrzymane przy użyciu schematu brzegowego jednowymiarowego oznaczone jest kolorem czerwonym.
 <<fig=TRUE>>=
 t = seq(0,to=4*pi, length.out = 1000)
 plot(t, sin(t),type = 'l')
@@ -845,7 +845,7 @@ lines(solution$time, solution$values,col='red')
 
 \section{Implementacja pełnego schematu brzegowego}
 
-W tej sekcji przedstawimy rozwiązanie wykorzystujące już pełną implementację schematu omówioniego w sekcji \ref{subsection-boundary-theory-finite-differences}
+W tej sekcji przedstawimy rozwiązanie wykorzystujące już pełną implementację schematu omówionego w sekcji \ref{subsection-boundary-theory-finite-differences}
 
 <<>>=
 schemat_brzegowy_pelny = function(f, g, m , t0 , tN, x0, xN , N)
@@ -870,7 +870,6 @@ schemat_brzegowy_pelny = function(f, g, m , t0 , tN, x0, xN , N)
 @
 
 \begin{example}
-{\color{brown} Próbna zadania 5}
 Rozwiążmy równanie postaci
 $$
 u''(t)= -u(t), \quad u(0)=3, \quad u(\frac{\pi}{2}) = 7
@@ -1051,7 +1050,7 @@ u(s) = g(s), \quad s \in \delta \Omega.
 \right.
 $$
 \begin{example}
-Weźmy równanie róznicowe liniowe drugiego rzędu z warunkami brzegowymi postaci:
+Weźmy równanie różnicowe liniowe drugiego rzędu z warunkami brzegowymi postaci:
 $$
 \left\lbrace
 \begin{array}{c}

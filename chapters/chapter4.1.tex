@@ -12,7 +12,7 @@ u(1)=0,
 \end{equation}
 posiada jednoznaczne rozwiązanie w przedziale $[0,1]$.
 \end{theorem}
-Powyższe twierdzenie pokazuje, że istnienie rozwiązania problemu brzegowego może być rozstrzygnięte za pomocą odpowiednich warunków nałożonych na funkcję prawej strony równania. Nie wszystkie jednak problemy brzegowowe posiadają - najprostszy - zerowy warunek brzegowy oraz dziedzinę jaką jest przedział $(0,1)$. 
+Powyższe twierdzenie pokazuje, że istnienie rozwiązania problemu brzegowego może być rozstrzygnięte za pomocą odpowiednich warunków nałożonych na funkcję prawej strony równania. Nie wszystkie jednak problemy brzegowe posiadają - najprostszy - zerowy warunek brzegowy oraz dziedzinę jaką jest przedział $(0,1)$. 
 
 \begin{theorem}[{\citep{kincaid1991numerical}}]
 Rozważmy następujące dwa problemy brzegowe:
@@ -148,7 +148,7 @@ W przypadku rozwiązań numerycznych zauważmy, że do wyznaczania wartości fun
 
 Więcej o odmianach metody strzału odszukać można w pracy \citep{kincaid1991numerical}. Dalej przejdziemy do najbardziej nas interesującej metody różnic skończonych - wykorzystującej znane nam koncepcje z rozdziału \ref{chapter-Cauchy-problems}.
 \subsection{Metoda różnic skończonych} \label{subsection-boundary-theory-finite-differences}
-Wiemy, że (przy założeniu istnienia odpowiedniu wielu pochodnych rozwiązania) następujące warunki szacujące są prawdziwe:
+Wiemy, że (przy założeniu istnienia odpowiednio wielu pochodnych rozwiązania) następujące warunki szacujące są prawdziwe:
 \begin{equation}\label{roznice_skoncz_I}
 u'(t) = \frac{1}{2h}[u(t+h) - u(t-h)] - \frac{1}{6}h^2u'''(\xi),
 \end{equation}
@@ -293,7 +293,7 @@ Wobec \eqref{funkcja_g} jest
 $$
 \norm{v} \leq \frac{{\norm{u^{(4)}}}_\infty}{12}+\frac{{\norm{u'''}}_\infty}{6} \norm[\infty]{m}.
 $$
-Ta suma, jak i $\inf v(t)$ nie zależy od $h$, więc ${\norm{e}}_\infty = O(h^2)$ dla $h \to 0$ 
+Ta suma, jak i $\inf v(t)$ nie zależy od $h$, więc ${\norm{e}}_\infty \to 0$ dla $h \to 0$ 
 \end{proof}
 
 
