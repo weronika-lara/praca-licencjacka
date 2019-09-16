@@ -105,24 +105,24 @@ $$
 $$
 Liczbę $\ddx{x}f(t)$ nazywamy wówczas pochodną funkcji $f$ w punkcie $t$.  
 \end{definition}
-\begin{definition}[Funkcja różniczkowalna \citep{andrzejczak2019analiza1}]
-Funkcję $ f: J \to \setR $ nazywamy różniczkowalną, jeśli jest ona różniczkowalna w każdym punkcie swej dziedziny. Funkcję $\ddx{x}f: x \mapsto \ddx{x}f(x)$ dla $x \in J$,  $\ddx{x}f : J \to \setR $, nazywamy wówczas pochodną funkcji $f$. 
-\end{definition}
-
-\begin{definition}[Pochodne cząstkowe \citep{grabowski1997analiza}]
-Niech $f$ będzie funkcją odwzorowującą zbiór $D \subset \setR^k $ w przestrzeń unormowaną $Y$. Zatem $f$ jest funkcją $k$ zmiennych rzeczywistych $\set{x_1,\cdots,x_k}$. Niech $a=(a_1,\cdots,a_k) \in D $. Dla ustalonego wskaźnika $i \leq k$ rozważmy funkcję 
-\begin{equation}\label{def_poch_czastk}
-x_i \mapsto f(a_1,\cdots,a_{i-1},x_i,a_{i+1},\cdots,a_k).
-\end{equation}
-określoną na zbiorze 
-$$
-\set{x_i \in \setR: (a_1,\cdots,a_{i-1},x_i,a_{i+1},\cdots,a_k) \in D}.
-$$
-Jeżeli funkcja \eqref{def_poch_czastk} jest różniczkowalna w punkcie $a_i$, to mówimy, że funkcja $f$ jest różniczkowalna względem zmiennej $x_i$, w punkcie $a$. Pochodną funkcji \eqref{def_poch_czastk} w punkcie $a$ nazywamy pochodną cząstkową funkcji $f$ względem zmiennej $x_i$ w punkcie $a$ i oznaczamy przez $\ddx{x_i} f(a) $. Innymi słowy 
-\begin{equation}
-\ddx{x_i} f(a) = \lim_{x_i \to a} = \frac{f(a_1,\cdots,a_{i-1},x_i,a_{i+1},\cdots,a_k) - f(a_1,\cdots,a_{i-1},a_i,a_{i+1},\cdots,a_k)}{x_i - a} .
-\end{equation}
-\end{definition}
+% \begin{definition}[Funkcja różniczkowalna \citep{andrzejczak2019analiza1}]
+% Funkcję $ f: J \to \setR $ nazywamy różniczkowalną, jeśli jest ona różniczkowalna w każdym punkcie swej dziedziny. Funkcję $\ddx{x}f: x \mapsto \ddx{x}f(x)$ dla $x \in J$,  $\ddx{x}f : J \to \setR $, nazywamy wówczas pochodną funkcji $f$. 
+% \end{definition}
+% 
+% \begin{definition}[Pochodne cząstkowe \citep{grabowski1997analiza}]
+% Niech $f$ będzie funkcją odwzorowującą zbiór $D \subset \setR^k $ w przestrzeń unormowaną $Y$. Zatem $f$ jest funkcją $k$ zmiennych rzeczywistych $\set{x_1,\cdots,x_k}$. Niech $a=(a_1,\cdots,a_k) \in D $. Dla ustalonego wskaźnika $i \leq k$ rozważmy funkcję 
+% \begin{equation}\label{def_poch_czastk}
+% x_i \mapsto f(a_1,\cdots,a_{i-1},x_i,a_{i+1},\cdots,a_k).
+% \end{equation}
+% określoną na zbiorze 
+% $$
+% \set{x_i \in \setR: (a_1,\cdots,a_{i-1},x_i,a_{i+1},\cdots,a_k) \in D}.
+% $$
+% Jeżeli funkcja \eqref{def_poch_czastk} jest różniczkowalna w punkcie $a_i$, to mówimy, że funkcja $f$ jest różniczkowalna względem zmiennej $x_i$, w punkcie $a$. Pochodną funkcji \eqref{def_poch_czastk} w punkcie $a$ nazywamy pochodną cząstkową funkcji $f$ względem zmiennej $x_i$ w punkcie $a$ i oznaczamy przez $\ddx{x_i} f(a) $. Innymi słowy 
+% \begin{equation}
+% \ddx{x_i} f(a) = \lim_{x_i \to a} = \frac{f(a_1,\cdots,a_{i-1},x_i,a_{i+1},\cdots,a_k) - f(a_1,\cdots,a_{i-1},a_i,a_{i+1},\cdots,a_k)}{x_i - a} .
+% \end{equation}
+% \end{definition}
 
 
 %\begin{definition}[klasa $C^{(k)}$]
@@ -170,6 +170,13 @@ $$
 Dla ustalonego kroku $h>0$. Operatorem różnicowym w tył nazywać będziemy 
 $$
 \overline{\delta_h} u(x) = \frac{u(x)-u(x-h)}{h} 
+$$
+\end{definition}
+
+\begin{definition}[Operator różnicowy symetryczny \citep{marcinkowski2011numeryczne}]
+Dla ustalonego kroku $h>0$. Operatorem różnicowym symetrycznym nazywać będziemy 
+$$
+\overline{\delta_h} u(x) = \frac{u(x+h)-u(x-h)}{2h} 
 $$
 \end{definition}
 
@@ -293,7 +300,7 @@ $$
 dla $ x \in \Omega \subset \setR^{n} $.
 \end{definition}
 
-\subsection{Równania Eliptyczne}
+\subsection{Równania eliptyczne}
 W tej sekcji pokażemy podstawowe przykłady równań eliptycznych. 
 \begin{problem}[Równanie Laplace'a]
 Równanie eliptyczne postaci 
@@ -596,7 +603,7 @@ Jego rozwiązaniem jest funkcja $\sin(t)$. Zdefiniujmy teraz kody odpowiadające
 \item chwili $t_0$
 \item oraz ilości kroków $N$.
 \end{itemize}
-\begin{example}\;abel{example-otwarty-euler}
+\begin{example}\label{example-otwarty-euler}
 Zacznijmy od schematu Eulera. Przypomnijmy wzór dla tego algorytmu:
 $$
 x(t_n) = x(t_{n-1}) + hf(t_{n-1},x(t_{n-1})) \quad n \in \set{1,\cdots,N-1}.
@@ -683,7 +690,7 @@ lines(solution2$time, solution2$values[1,], col='green')
 Patrząc na zaprezentowane przez nas wyżej wzory definiujące odpowiednie schematy, można było przypuszczać, który ze schematów okaże się dokładniejszy. Wykres pokazuje, że schemat RK4, przez to że ma wzór złożony z większej ilości składowych, daje nam lepsze przyblżenie niż prostszy schemat Eulera.
 \end{example}
 \begin{example}
-W teh częsci pokażemy jak istotny jest dobór odpowiedniego $N$. Różnice zaprezentujemy dla funkcji $sin(t)$ przybliżając ją schematem RK4. 
+W tej części pokażemy jak istotny jest dobór odpowiedniego $N$. Różnice zaprezentujemy dla funkcji $sin(t)$ przybliżając ją schematem RK4. 
 \begin{itemize}
 \item $N=25$,
 \item $N=50$,
@@ -745,10 +752,10 @@ Eksperyment ten pokazuje nam jak istotną role odgrywa odpowiedni dobór paramet
 
 \end{example}
 \chapter{Numeryczne zagadnienia brzegowe}
-W tym rozdziale odmiennie niż w rozdziałach poprzednich posługiwać się  będziemy literą $u$ do oznaczania poszukiwanej funkcji. Zmienne w równaniu oznaczać natomiast będziemy $x$,$y$. Ponadto zastosujemy następujące oznaczenie dla pochodnych w równaniu:
+W tym rozdziale odmiennie niż w rozdziałach poprzednich posługiwać się  będziemy literą $u$ do oznaczania poszukiwanej funkcji. Zmienne w równaniu oznaczać natomiast będziemy $t$,$x$,$y$. Ponadto używać będziemy zamiennie następujące oznaczenia dla pochodnych w równaniu:
 \begin{itemize}
-\item pierwszą pochodną danej funkcji zamiast $\ddx{x} u(x) $ będziemy oznaczali przez $u_{x}$,
-\item drugą pochodną danej funkcji zamiast $\ddx[^2]{x} u(x)$ będziemy oznaczali przez $u_{xx}$.
+\item pierwszą pochodną danej funkcji $\ddx{x} u(x) $ zamiennie będziemy oznaczali przez $u_{x}$ lub $u'$ gdy nie ma wątpliwości co do zmiennej po której różniczkujemy,
+\item drugą pochodną danej funkcji $\ddx[^2]{x} u(x)$ zamiennie będziemy oznaczali przez $u_{xx}$ lub $u''$ gdy nie ma wątpliwości co do zmiennej po której różniczkujemy.
 \end{itemize}
 Oznaczenia przyjęte w tej części są typowe w teorii równań cząstkowych. 
 
@@ -803,7 +810,7 @@ schemat_brzegowy = function(f, c , t0 , tN, x0, xN , N)
   A = diag(-2-c*h^2,nrow=N-1,ncol=N-1)
   A[row(A) - col(A) == -1] = 1
   A[row(A) - col(A) == 1] = 1
-  b = -1 * f(t) * h
+  b = -1 * f(t) * h *h
   b[1] = b[1] - x0
   b[N-1] = b[N-1] - xN
   x = solve(A, b)
@@ -846,9 +853,9 @@ schemat_brzegowy_pelny = function(f, g, m , t0 , tN, x0, xN , N)
   h = (tN-t0)/N
   t = seq(from=t0+h, to=t0+(N-1)*h,length.out = N-1)
   A = diag(-2,nrow=N-1,ncol=N-1)
-  b = -1 * f(t) * h
-  b[1] = b[1] - x0
-  b[N-1] = b[N-1] - xN
+  b = f(t) * h*h
+  b[1] = b[1] - (1+0.5*h* m(t0)) * x0
+  b[N-1] = b[N-1] - (1-0.5*h * m(tN)) * xN
   for (i in (1:(N-1))){
     if (i >1 )
       A[i, i-1] = A[i, i-1] +1 + 0.5*h *m(t[i])
@@ -861,8 +868,6 @@ schemat_brzegowy_pelny = function(f, g, m , t0 , tN, x0, xN , N)
   return(result)
 }
 @
-
-{\color{red} Rozwiązać za pomocą powyższego kodu zadanie 8.9 -> 1 oraz 5, strona 550-551 }
 
 \begin{example}
 {\color{brown} Próbna zadania 5}
@@ -880,33 +885,29 @@ f = function(t){
   return(rep(0,times = length(t)))
 }
 
-t0 = 0
-tN = 5*pi/2
-x0 = 0
-xN = 1
-N =100
-@
-
-<<>>=
 g = function(t){
-  return(t=7)
+  return(-1)
 }
-@
-
-<<>>=
 m = function(t){
-  return(t=3)
+  return(0)
 }
+
+t0 = 0
+tN = pi/2
+x0 = 3
+xN = 7
+N =100
 solution1 = schemat_brzegowy_pelny(f,g,m,t0 , tN, x0, xN , N)
 @
 
 Wygenerujmy wykres:
 <<fig=TRUE>>=
-t = seq(0,to=4*pi, length.out = 1000)
-plot(t, sin(t),type = 'l')
+t = seq(0,to=pi, length.out = 1000)
+plot(t, 7*sin(t)+3*cos(t),type = 'l')
 lines(solution1$time, solution1$values,col='red')
 @
 \end{example}
+
 \begin{example}
 Weźmy równanie różnicowe postaci
 $$
@@ -919,32 +920,26 @@ $$
 Zdefiniujmy funkcje $f$, $g$ oraz $m$:
 <<>>=
 f = function(t){
-  return(2*exp(t)^t)
+  return(2*exp(t))
+}
+g = function(t){
+  return(-1)
+}
+m = function(t){
+  return(0)
 }
 t0 = 0
-tN = 5*pi/2
-x0 = 0
-xN = 1
-N =100
-@
-
-<<>>=
-g = function(t){
-  return(t=1)
-}
-@
-
-<<>>=
-m = function(t){
-  return(t=1)
-}
+tN = 1
+x0 = 2
+xN = exp(1)+cos(1)
+N =25
 solution1 = schemat_brzegowy_pelny(f,g,m,t0 , tN, x0, xN , N)
 @
 
 Wygenerujmy wykres:
 <<fig=TRUE>>=
-t = seq(0,to=5*pi/2, length.out = 1000)
-plot(t, sin(t),type = 'l')
+t = seq(0,to=1.2, length.out = 1000)
+plot(t, exp(t)+cos(t),type = 'l')
 lines(solution1$time, solution1$values,col='red')
 @
 
@@ -959,13 +954,13 @@ lines(solution1$time, solution1$values,col='red')
 Rozważmy modelowe zadanie eliptyczne na kwadracie jednostkowym $ \overline{\Omega} = [0,1]^2 $ postaci 
 \begin{equation} \label{eliptical_equation}
 \left\{ \begin{array}{ll}
--\Delta u(x) + cu(x) = f(x) & x \in \Omega\\
-u(s) = g(s) & s \in \overline{\Omega}
+-\Delta u(x) + cu(x) = f(x) &, x \in \Omega,\\
+u(s) = g(s) &, s \in \overline{\Omega},
 \end{array} \right.
 \end{equation}
-gdzie $\Delta u = x_{xx} + u_{yy}$, a $c$ jest ustaloną nieujemną stałą. Funkcja $f$ jest ciągła na $\Omega$, natomiast funkcja $g$ jest ciągła na $\delta \Omega$. Zakładamy, że istnieje jednoznaczne rozwiązanie \eqref{eliptical_equation}. Dla $h>0$ korzystając z różnicy skończonej wprzód i w tył z \eqref{finite_diff} zastosujemy następującą aproksymację drugiej pochodnej cząstkowej :
+gdzie $\Delta u = x_{xx} + u_{yy}$, a $c$ jest ustaloną nieujemną stałą. Funkcja $f$ jest ciągła na $\Omega$, natomiast funkcja $g$ jest ciągła na $\delta \Omega$. Zakładamy, że istnieje jednoznaczne rozwiązanie \eqref{eliptical_equation}. Dla $h>0$ korzystając z różnicy skończonej wprzód i w tył zastosujemy następującą aproksymację drugiej pochodnej cząstkowej :
 \begin{equation}
--(u_{xx} + u_{yy})= -\left(\frac{u(x-he_{k}) - 2u(x) + u(x+he_k)}{h^2}\right),
+-u_{{x}_k{x}_k}= -\left(\frac{u(x-he_{k}) - 2u(x) + u(x+he_k)}{h^2}\right),
 \end{equation}
 gdzie $e_k$ jest k-tym wersorem. Zatem dla $ i,j \in \set{1,\cdots,N-1} $ otrzymujemy 
 $$
@@ -977,12 +972,12 @@ u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j}) + u(x_{i,j-1}) + u(x_{i,j+1}) - ch^2u(
 \end{equation}
 dla $i,j \in \set{1,\cdots,N-1}$. Zatem nasz problem będzie postaci
 \begin{equation}
-\left\{ \begin{array}{ll}
--\left(\frac{u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j})+u(x_{i,j-1})+u(x_{i,j+1})}{h^2}\right) + cu(x_{i,j}) = f(x_{i,j}) & i,j \in \set{1,\cdots, N-1} ,\\
-u(x_{i,j}) = g(x_{i,j})  & i,j \in \set{0,\cdots,N} .
+\left\{ \begin{array}{l}
+-\left(\frac{u(x_{i-1,j}) - 4u(x_{i,j}) + u(x_{i+1,j})+u(x_{i,j-1})+u(x_{i,j+1})}{h^2}\right) + cu(x_{i,j}) = f(x_{i,j}), i,j \in \set{1,\cdots, N-1} ,\\
+u(x_{i,j}) = g(x_{i,j}), \quad i,j \in \set{0,\cdots,N} \land \left( i \in \set{0,N} \lor j \in \set{0,N} \right).
 \end{array} \right.
 \end{equation}
-Zapis tego problemu dla siatki $i,j = \set{0,\cdots,N-1} $ jest zadaniem trudnym, dlatego algorytm ten zaprezentujemy na konkretnym przykładzie.
+Zapis tego problemu dla siatki $i,j = \set{0,\cdots,N} $ jest zadaniem trudnym, dlatego algorytm ten zaprezentujemy na konkretnym przykładzie.
 \begin{example}
 Zacznijmy od stworzenia siatki, która będzie składała się z punktów postaci $x_{i,j} \in \Omega = [0,1]^2$ dla $i,j = \set{0,1,\cdots,5}$.
 \begin{align*}
