@@ -1,0 +1,290 @@
+\documentclass[notheorems]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{polski}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{centernot}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{natbib} %bibtex
+\usepackage[polish]{dyschemist}
+\newtheorem{tw}{Twierdzenie}
+%\usepackage{dyschemist}
+\author{Weronika Lara, 204107}
+\title{Numeryczne rozwiązywanie równań różniczkowych drugiego rzędu z warunkami brzegowymi}
+\date{19.09.2019}
+\institute{Praca licencjacka przygotowana pod opieką dr, mgr inż. Piotra Kowalskiego}
+\newcommand{\parauporzadkowana}[2]{\left\langle {#1}; {#2} \right\rangle}
+\newcommand{\zbior}[1]{\left\lbrace {#1} \right\rbrace }
+\newcommand{\domkniecie}[1]{\left[ {#1} \right] }
+\newcommand{\notiff}{%
+  \mathrel{{\ooalign{\hidewidth$\not\phantom{"}$\hidewidth\cr$\iff$}}}}
+%\newcommand{\tuple}[1]{\left\langle {#1} \right\rangle}
+
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+\begin{frame}
+\begin{definition}[Zagadnienie Cauchy'ego n-tego rzędu ]
+Jeśli dane jest równanie różniczkowe rzędu $n$ w przestrzeni $\setR^m$, to zagadnienie początkowe dla tego równania przyjmuje postać 
+\begin{equation} 
+\left\{\begin{array}{ll}
+\ddx[^n]{t^n} x(t) = f(t,x(t), \ddx{t}x(t), \cdots, \ddx[^{n-1}]{t^{n-1}}x(t)) & t \in (t_0,b),   \\
+x(t_0) = x_0, & \\
+\ddx{t}x(t_0) = x_1, & \\
+\vdots & \\
+\ddx[^{n-1}]{t^{n-1}}x(t_0) = x_{n-1}, &
+\end{array} \right.
+\end{equation}
+gdzie $ \set{x_0,\cdots,x_{n-1}}$ są wektorami m-wymiarowymi, dla $t_0 \in (a,b)$. Rozwiązaniem tego równania nazwiemy funkcję $x$ klasy $C^{n}(t_0,b) \cap C^{n-1}([t_0,b))$ spełniającą jego warunki.
+\end{definition}
+\end{frame}
+\begin{frame}
+\begin{problem}[Zagadnienie Cauchy'ego pierwszego rzędu] \label{prob-zagadnienie-cauchy}
+Zagadnienie Cauchy'ego pierwszego rzędu nazywamy równanie różniczkowe zwyczajne z warunkiem początkowym postaci:
+\begin{equation} 
+\left\{\begin{array}{ll}
+\ddx{t} x(t) = f(t,x(t)), & t \in (t_0,b) ,\\
+x(t_0) = x_0 &,
+\end{array} \right.
+\end{equation}
+gdzie $t_0 \in (a,b)$, $x_0 \in G$ są ustalone z góry. Rozwiązaniem tego równania nazwiemy funkcję $x$ klasy $C^{1}(t_0,b) \cap C([t_0,b))$ spełniającą powyższe warunki. 
+\end{problem}
+\end{frame}
+\begin{frame}
+W teorii numerycznych równań różniczkowych spotyka się dwa rodzaje dyskretyzacji:
+\begin{itemize}
+\item dyskretyzacja w dziedzinie,
+\item dyskretyzacja w przestrzeni funkcyjnej.
+\end{itemize}
+\end{frame}
+\begin{frame}
+\begin{definition}[Przybliżenie pochodnej dla schematu otwartego]
+Przybliżeniem pochodnej w modelach dyskretyzacji opartych o schemat otwarty Eulera nazywamy przybliżenie pochodnej funkcji $\ddx{t}x$ za pomocą formuły 
+$$
+ \frac{x(t+h) - x(t)}{h},
+$$
+gdzie $h >0, h \in \setR $ jest ustalonym krokiem. 
+\end{definition}  
+\end{frame}
+\begin{frame}
+\begin{algorithm}[Schemat otwarty Eulera]\label{Euler_algoritm}
+Następujące postępowanie służące do rozwiązywania problemu \ref{prob-zagadnienie-cauchy} nazywamy schematem otwartym Eulera:
+\begin{enumerate}
+\item Ustalamy $N$ ilość punktów w dziedzinie równania. 
+\item Dla ustalonego $N$ wyznaczamy krok $h>0$ według wzoru $h=\frac{T_N - t_0}{N}$. 
+\item Generujemy dyskretyzację dziedziny dla $ n \in \set{0,\cdots,N}  t_0 = t_0, t_1 = t_0 + h, \cdots, t_N = t_{0}+ Nh$. 
+\item Ustalamy $x(t_0) = x_0$ zgodnie z warunkiem początkowym.
+\item Dla kolejny $n \in \set{1, \ldots, N}$ stosujemy wzór
+$$
+x(t_{n}) = x(t_{n-1}) + h f(t_{n-1}, x(t_{n-1})).
+$$
+\end{enumerate}
+\end{algorithm}
+\end{frame}
+\begin{frame}
+\begin{algorithm}[Schemat Rungego-Kutty rzędu 4]
+Dla problemu \ref{prob-zagadnienie-cauchy} następujące postępowanie nazywamy schematem Rungego-Kutty rzędu 4 
+\begin{enumerate}
+\item Ustalamy $N$ ilość punktów w dziedzinie równania. 
+\item Dla ustalonego $N$ wyznaczamy krok $h>0$ według wzoru $h=\frac{T_N-t_0}{N}$. 
+\item Generujemy dyskretyzację dziedziny dla $n \in \set{0,\cdots,N}  t_0 = t_0, t_1 = t_0 + h, \cdots, t_N = t_{0}+ Nh$. 
+\item Ustalamy $x(t_0) = x_0$ zgodnie z warunkiem początkowym.
+\item Dla kolejny $n \in \set{1, \ldots, N}$ stosujemy wzór
+$$
+x(t_{n}) = x(t_{n-1}) + \frac{h}{6} ( K_1 + 2K_2 + 2K_3 + K_4 )
+$$
+gdzie :
+$$
+\begin{array}{cl}
+K_1 &= f(t_{n-1},x_{n-1}) \\
+K_2 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_1) \\
+K_3 &= f(t_{n-1} + \frac{h}{2}, x_{n-1} + \frac{h}{2} K_2) \\
+K_4 &= f(t_{n-1} + h, x_{n-1} + hK_3) 
+\end{array}
+$$
+\end{enumerate}
+\end{algorithm}
+\end{frame}
+\begin{frame}
+\begin{theorem}[O zbieżności schematu jednokrokowego] \label{theorem-convergence-one-step-schema} 
+Jeśli rozwiązanie problemu \ref{prob-zagadnienie-cauchy} $x \in C^{p+1}([t_0,T])$, schemat jednokrokowy jest zgodny i jest rzędu $p\geqslant1$, to ten schemat jest zbieżny z rzędem p. 
+\end{theorem}
+\end{frame}
+\begin{frame} 
+(przykład wykresu)
+\end{frame}
+\begin{frame}
+\begin{definition}[Zagadnienie brzegowe]
+Zagadnieniem brzegowym liniowego problemu drugiego rzędu dla $ t \in (a,b) $ będziemy nazywać:
+\begin{equation}
+\left\{\begin{array}{ll}
+\ddx [^2]{t} x(t) + c_1\ddx{t} x(t) + c_2x(t) = f(t), t \in (a,b), & \\
+x(a) = \alpha, & \\
+x(b) = \beta ,&
+\end{array} \right.
+\end{equation}
+gdzie $\alpha$ i $\beta$ są ustalone. Rozwiązaniem tego zagadnienia nazwiemy funkcje $x$ klasy $C^2(a,b) \cap C([a,b])$ spełniającym powyższe warunki.
+\end{definition}
+\end{frame}
+\begin{frame}
+\begin{theorem}[O istnieniu rozwiązania]
+Jeśli funkcja $\frac{df}{du}(t,u)$ jest ciągła, nieujemna i ograniczona w obszarze określonym nierównościami $0\leq t \leq 1$, $-\infty < u < +\infty$ to problem brzegowy postaci:
+\begin{equation}\label{zagad_brzeg}
+\left\{\begin{array}{ll}
+u''(t)=f(t,u), & t \in (0,1) \\
+u(0)=0, & \\
+u(1)=0,
+\end{array}\right.
+\end{equation}
+posiada jednoznaczne rozwiązanie w przedziale $[0,1]$.
+\end{theorem}
+\end{frame}
+\begin{frame}
+\begin{theorem}
+Rozważmy następujące dwa problemy brzegowe:
+\begin{equation}\label{pierwszy_problem_brzegowy}
+\left\{\begin{array}{ll}
+u''(t)=f(t,u(t)), & t \in (a,b) \\
+u(a)=\alpha, & \\
+u(b)=\beta,
+\end{array}\right.
+\end{equation}
+\begin{equation}\label{drugi_problem_brzegowy}
+\left\{\begin{array}{ll}
+y''(t)=g(t,y(t)), &  t \in (0,1)\\
+y(0)= \alpha, & \\
+y(1)= \beta,
+\end{array}\right.
+\end{equation}
+gdzie 
+$$
+g(p,q) = (b-a)^2f(a+(b-a)p,q).
+$$
+Wtedy jeśli $y$ jest rozwiązaniem \eqref{drugi_problem_brzegowy}, wówczas funkcja $u: t \mapsto y\left(\frac{t-a}{b-a}\right)$ jest rozwiązaniem problemu \eqref{pierwszy_problem_brzegowy}. Ponadto, jeśli $u$ jest rozwiązaniem \eqref{pierwszy_problem_brzegowy}, wówczas $y: t \mapsto u(a+(b-a)t)$ jest rozwiązaniem problemu \eqref{drugi_problem_brzegowy}.
+\end{theorem}
+\end{frame}
+\begin{frame}
+\begin{theorem}
+Rozważmy problemy brzegowe postaci:
+\begin{equation}\label{trzeci_problem_brzegowy}
+\left\{\begin{array}{ll}
+y''(t)=g(t,y(t)), t \in(0,1)& \\
+y(0)=\alpha, & \\
+y(1)=\beta,
+\end{array}\right.
+\end{equation}
+\begin{equation}\label{czwarty_problem_brzegowy}
+\left\{\begin{array}{ll}
+z''(t)=h(t,z(t)), & t \in (0,1)\\
+z(0)= 0, & \\
+z(1)= 0,
+\end{array}\right.
+\end{equation}
+gdzie 
+$$
+h(p,q)= g(p,q+\alpha + (\beta - \alpha)p).
+$$
+Jeśli $z$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}, to funkcja $y: t \mapsto z(t) + \alpha + (\beta - \alpha)t$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}. Co więcej jeżeli $y$ jest rozwiązaniem \eqref{trzeci_problem_brzegowy}, to $z: t \mapsto y(t) - [\alpha + (\beta - \alpha)t]$ jest rozwiązaniem \eqref{czwarty_problem_brzegowy}.
+\end{theorem}
+\end{frame}
+\begin{frame}
+\begin{theorem}
+Jeżeli $f(t,s)$ jest funkcją ciągłą, gdzie $t \in [0,1]$ i $s \in \setR$ spełniającą warunek taki, że
+$$
+|f(t,s_1) - f(t,s_2)| \leq k|s_1 - s_2|, \quad k<8,
+$$
+to zagadnienie brzegowe postaci \eqref{zagad_brzeg} posiada jednoznaczne rozwiązanie ciągłe w $[0,1]$. 
+\end{theorem}
+\end{frame}
+\begin{frame}
+\begin{algorithm}[Metoda Strzału]
+\begin{enumerate}
+\item Rozważamy zagadnienie początkowe postaci
+\begin{equation} \label{eq-shooting-auxiliary}
+\left\{\begin{array}{ll}
+u''(t)=h(t,u(t),u'(t)), & \\
+u(a)= \alpha, & \\
+u'(a)= z.
+\end{array}\right.
+\end{equation}
+\item Oznaczmy przez $\Phi$ funkcję przypisującą dla wybranego $z \in \setR$ funkcję będącą rozwiązaniem \eqref{eq-shooting-auxiliary}.
+\item Rozwiązujemy równanie postaci 
+$$
+\Phi(z) = \beta.
+$$ 
+\end{enumerate}
+\end{algorithm}
+\end{frame}
+\begin{frame}
+\begin{theorem}
+Zagadnienie brzegowe postaci
+\begin{equation}
+\left\{\begin{array}{cl}
+u''(t) = f(t,u(t),u'(t)), & \\
+c_{11}u(a) + c_{12}u'(a) = c_{13}, & \\
+c_{21}u(b) + c_{22}u'(b) = c_{23}
+\end{array}\right.
+\end{equation}
+ma jednoznaczne rozwiązanie w przedziale $[a,b]$, jeśli
+\begin{enumerate}
+\item Funkcja $f$ i jej pierwsze pochodne cząstkowe $f_t$,$f_u$,$f_{u'}$ są ciągłe w obszarze $D:= [a,b] \times \setR \times \setR$.
+\item $f_t >0, f_u \leq M$ i $|f_{u'}| \leq M$ w $D$.
+\item $|c_{11}| + |c_{12}| > 0$, $|c_{21}| + |c_{22}| >0$ i $c_{11}c_{12}\leq 0 \leq c_{21}c_{22}$.
+\end{enumerate}
+\end{theorem}
+\end{frame}
+\begin{frame}
+W tej części zaprezentujemy przykładowe rozwiązanie otrzymane przy wykorzystaniu schematu brzegowego jednowymiarowego. Przyjrzymy się liniowemu równaniu drugiego stopnia niejednorodnemu z warunkami brzegowymi w przypadku jednowymiarowym. Interesuje nas równanie postaci
+$$
+\left\lbrace
+\begin{array}{c}
+-u''(x) + c u(x) = f(x), \quad x \in (a,b), \\
+u(a) = \alpha \\
+u(b) = \beta
+\end{array}
+\right.
+$$
+\end{frame}
+\begin{frame}
+\begin{problem}
+Rozważmy modelowe zadanie eliptyczne na kwadracie jednostkowym $ \overline{\Omega} = [0,1]^2 $ postaci 
+\begin{equation} \label{eliptical_equation}
+\left\{ \begin{array}{ll}
+-\Delta u(x) + cu(x) = f(x) &, x \in \Omega,\\
+u(s) = g(s) &, s \in \overline{\Omega},
+\end{array} \right.
+\end{equation}
+gdzie $\Delta u = x_{xx} + u_{yy}$, a $c$ jest ustaloną nieujemną stałą. Funkcja $f$ jest ciągła na $\Omega$, natomiast funkcja $g$ jest ciągła na $\delta \Omega$. Zakładamy, że istnieje jednoznaczne rozwiązanie \eqref{eliptical_equation}.
+\end{problem}
+\end{frame}
+\begin{frame}
+\begin{example}
+Weźmy równanie różnicowe liniowe drugiego rzędu z warunkami brzegowymi postaci:
+$$
+\left\lbrace
+\begin{array}{c}
+-\Delta u(x,y) - \frac{\pi^2}{2}u(x,y) = f(x,y), \quad (x,y) \in \Omega, \\
+u(x,y) = g(x,y), \quad (x,y) \in \delta \Omega.\\
+\end{array}
+\right.
+$$
+Dla funkcji $g$ oraz $f$ takich,że
+$$
+g(x,y) = \sin(\frac{\pi}{2}x) \cdot \sin(\frac{\pi}{2}y), \quad f(x,y)=0
+$$
+\end{example}
+\end{frame}
+\begin{frame}{Bibliografia}
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+\end{frame}
+\end{document}
