@@ -186,7 +186,7 @@ $$
 \begin{frame}
 \begin{scriptsize}
 \frametitle{Metoda różnic skończonych}
-Sprowadźmy nasz problem do następującej postaci:
+Rozważmy szczególny przypadek równania różniczkowego drugiego rzędu postaci:
 \begin{equation}\label{rownanie_brzegowe}
 \left\{\begin{array}{ll}
 u''(t)=f(t) + g(t) u(t) + m(t) u'(t), & t \in (a,b) \\
@@ -194,7 +194,7 @@ u(a)= \alpha, & \\
 u(b)= \beta.
 \end{array}\right.
 \end{equation}
-W przypadku tym układ równań do rozwiązania jest układem równań liniowych opisanych poniższymi zależnościami:
+Wtedy przy ustalonym $h>0$ odpowiada ono rozwiązaniu układu równań liniowych opisanych następującymi zależnościami: 
 \begin{equation}\label{zagadnienie_liniowe}
 \left\{\begin{array}{ll}
 y_0 = \alpha, & \\
@@ -233,15 +233,15 @@ y_{N}
 b_1 - a_0\alpha\\
 b_2 \\
 \cdots \\
-b_{n-1} \\
-b_n -c_n\beta 
+b_{N-1} \\
+b_N -c_N\beta 
 \end{array} \right] .
 \end{equation}
 \end{small}
 \end{frame}
 \begin{frame}
 \begin{theorem}
-Dla $h \to 0$ rozwiązania zadania dyskretnego są zbieżne do rozwiązania problemu brzegowego postaci \eqref{rownanie_brzegowe}.
+Dla $h \to 0$ ciąg rozwiązań odpowiadających zadania dyskretnego \eqref{macierz} jest zbieżny w normie $\norm[\infty]{\cdot}$ do rozwiązania problemu brzegowego postaci \eqref{rownanie_brzegowe}.
 \end{theorem}
 \end{frame}
 \begin{frame}
