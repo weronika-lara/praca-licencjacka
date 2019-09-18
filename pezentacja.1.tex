@@ -1,10 +1,10 @@
 \documentclass[notheorems]{beamer}
 \usepackage[utf8]{inputenc}
+\usepackage{Sweave}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{polski}
-\usepackage{babel}
 \usepackage{amsmath}
 \usepackage{centernot}
 \usepackage{amsfonts}
@@ -184,6 +184,27 @@ $$
 \end{algorithm}
 \end{frame}
 \begin{frame}
+\begin{scriptsize}
+\frametitle{Metoda różnic skończonych}
+Sprowadźmy nasz problem do następującej postaci:
+\begin{equation}\label{rownanie_brzegowe}
+\left\{\begin{array}{ll}
+u''(t)=f(t) + g(t) u(t) + m(t) u'(t), & t \in (a,b) \\
+u(a)= \alpha, & \\
+u(b)= \beta.
+\end{array}\right.
+\end{equation}
+W przypadku tym układ równań do rozwiązania jest układem równań liniowych opisanych poniższymi zależnościami:
+\begin{equation}\label{zagadnienie_liniowe}
+\left\{\begin{array}{ll}
+y_0 = \alpha, & \\
+(1+ \frac{1}{2}h m(t_n))y_{n-1} - (2+ h^2 g(t_n))y_n + (1- \frac{1}{2}h m(t_n))y_{n+1} = h^2 f(t_n) ,& n \in \set{1,\cdots,N} \\
+y_{N+1} = \beta,
+\end{array}\right. 
+\end{equation}
+\end{scriptsize}
+\end{frame}
+\begin{frame}
 \begin{small}
 Wprowadźmy oznaczenia :
 \begin{align*}
@@ -220,14 +241,7 @@ b_n -c_n\beta
 \end{frame}
 \begin{frame}
 \begin{theorem}
-Dla $h \to 0$ rozwiązania zadania dyskretnego są zbieżne do rozwiązania problemu brzegowego postaci
-\begin{equation}\label{zagad_brzeg_zbiez}
-\left\{\begin{array}{cl}
-u''(t) = f(t) + g(t) u(t) + m(t) u'(t), &  t \in (a,b)\\
-u(a) = \alpha, & \\
-u(b) = \beta.
-\end{array}\right.
-\end{equation}
+Dla $h \to 0$ rozwiązania zadania dyskretnego są zbieżne do rozwiązania problemu brzegowego postaci \eqref{rownanie_brzegowe}.
 \end{theorem}
 \end{frame}
 \begin{frame}
